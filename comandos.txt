@@ -1,0 +1,15 @@
+php artisan migrate:fresh
+php artisan migrate:refresh
+php artisan migrate
+php artisan make:model Doctor -mcr
+php artisan make:controller RoleController -r
+
+
+Roles y Permisos
+composer require spatie/laravel-permission
+
+Seed
+php artisan make:seeder RoleSeeder
+
+created_at->format("Y")
+created_at->diffForHumans()
