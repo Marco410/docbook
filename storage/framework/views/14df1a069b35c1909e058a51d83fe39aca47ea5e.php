@@ -65,26 +65,26 @@
 						</div>
                         <div class="col-md-3 text-center cardf " >
                             <i class="fas fa-search icon"></i>
-                            <h4>Encuentra tu especialista</h4>
-                            <p>Las opiniones reales de todos los pacientes te ayudarán a tomar siempre la mejor decisión.</p>
+                            <h4 class="text-white" >Encuentra tu especialista</h4>
+                            <p class="text-white" >Las opiniones reales de todos los pacientes te ayudarán a tomar siempre la mejor decisión.</p>
                         </div>
                         
                         <div class="col-md-3 text-center cardf " >
                             <img  src="assets/img/icons/calendar.png" class="img-fluid dr-img" alt=""  >
-                            <h4>Pide cita de forma fácil</h4>
-                            <p>Elige la hora que prefieras y pide cita sin necesidad de llamar. Es fácil, cómodo y muy rápido.</p>
+                            <h4 class="text-white" >Pide cita de forma fácil</h4>
+                            <p class="text-white" >Elige la hora que prefieras y pide cita sin necesidad de llamar. Es fácil, cómodo y muy rápido.</p>
                         </div> 
                         
                         <div class="col-md-3 text-center cardf " >
                             <img  src="assets/img/icons/reloj.png" class="img-fluid dr-img" alt=""  >
-                            <h4>Recordatorio</h4>
-                            <p>Te confirmamos la cita al instante y te enviaos un recordatorio a tu correo o whatsapp antes de la cita.</p>
+                            <h4 class="text-white" >Recordatorio</h4>
+                            <p class="text-white" >Te confirmamos la cita al instante y te enviaos un recordatorio a tu correo o whatsapp antes de la cita.</p>
                         </div> 
                         
                         <div class="col-md-3 text-center cardf " >
                             <img  src="assets/img/icons/costos.png" class="img-fluid dr-img" alt=""  >
-                            <h4>Sin costos añadidos</h4>
-                            <p>La reserva de cita es un servicio gratuito en nuestra plataforma.</p>
+                            <h4 class="text-white" >Sin costos añadidos</h4>
+                            <p class="text-white" >La reserva de cita es un servicio gratuito en nuestra plataforma.</p>
                         </div>
                     </div>
                 
@@ -305,14 +305,14 @@
 								</div>
 								<div class="doctors-body">
 									<div class="inner-section">
-										<span class="float-left"><?php echo e($doctor->espe); ?></span>
+										<span class="float-left"><?php echo e($doctor->especialidad()->get()[0]->nombre); ?></span>
 										<div class="rating text-right">
 											<i class="fas fa-star filled"></i>
 											<i class="fas fa-star filled"></i>
 											<i class="fas fa-star filled"></i>
 											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star"></i>
-											<span class="d-inline-block average-ratings">3.5</span>
+											<i class="fas fa-star filled"></i>
+											<span class="d-inline-block average-ratings">5</span>
 										</div>
 										<a href="doctor-profile"><h4>Dr. <?php echo e($doctor->nombre); ?> <?php echo e($doctor->apellido_p); ?> <?php echo e($doctor->apellido_m); ?></h4></a>
 										<!--<p>MBBS, MD - General Medicine, DNB - Cardiology</p>-->
@@ -320,9 +320,7 @@
 									<div class="row row-sm loc-details">
 										<div class="col-6">
 											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/map-plus.png" alt="" />
-												</a> 
+												<i class="fas fa-map-marker-alt mr-2" ></i>
 												<a href="javascript:void(0);">
 													<span class="available-info">Ubicación</span>
 													<span class="data-info"><?php echo e($doctor->estado); ?>, México</span>
@@ -331,44 +329,48 @@
 										</div>
 										<div class="col-6">
 											<div class="d-flex align-items-center">
+													<i class="fas fa-phone-alt mr-2" ></i>
 												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/alarm.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Available on</span>
-													<span class="data-info">Fri, 22 March</span>
+													<span class="available-info">Whatsapp</span>
+													<span class="data-info"><?php echo e($doctor->telefono); ?></span>
 												</a>
 											</div>
 										</div>
 										<div class="col-6">
 											<div class="d-flex align-items-center">
+												<i class="fas fa-stethoscope mr-2" ></i>
 												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/consult.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Consulting</span>
-													<span class="data-info">500+ Patients</span>
+													<span class="available-info">Precio con pago en consulta</span>
+													<span class="data-info txt-primary"><small>1RA CONSULTA</small></span><br>
+													<span class="data-info"><?php echo e($doctor->primera); ?></span><br>
+													<span class="data-info txt-primary"><small>SEGUIMIENTO</small></span><br>
+													<span class="data-info"><?php echo e($doctor->seguimiento); ?></span>
 												</a>
 											</div>
 										</div>
 										<div class="col-6">
 											<div class="d-flex align-items-center">
+												<i class="fas fa-globe mr-2" ></i>
 												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/exper.png" alt="" />
-												</a> 
+													<span class="available-info">PÁGINA WEB</span>
+													<span class="data-info">DocBook</span>
+												</a>
+											</div>
+											<div class="d-flex align-items-center">
+												<i class="fab fa-facebook mr-2" ></i>
 												<a href="javascript:void(0);">
-													<span class="available-info">EXPERIENCE</span>
-													<span class="data-info">25+ Years</span>
+													<span class="available-info">REDES SOCIALES</span>
+													<span class="data-info">/<?php echo e($doctor->nombre); ?>-<?php echo e($doctor->apellido_p); ?></span>
 												</a>
 											</div>
 										</div>
 									</div>
 									<div class="row row-sm align-items-center p-3">
 										<div class="col-6">
-											<a href="doctor-profile" class="amt-txt" tabindex="0">$50 - $100</a>
+											<a href="<?php echo e(route('citas',$doctor->id)); ?>" class="btn book-btn" tabindex="0">Pedir Cita</a>
 										</div>
 										<div class="col-6">
-											<a href="<?php echo e(route('citas',$doctor->id)); ?>" class="btn book-btn" tabindex="0">Cita</a>
+											<a href="tel:<?php echo e($doctor->telefono); ?>" class="btn btn-warning text-white" style="border-radius: 30px;" tabindex="0">  LLamar </a>
 										</div>
 									</div>
 								</div>
@@ -378,243 +380,8 @@
 						<?php endif; ?>
 						
 						<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-						<div class="col-lg-3 col-md-6">
-							<div class="book-best-doctors">
-								<div class="book-header">
-									<a href="doctor-profile"><img src="assets/img/doctors/doctor-02.jpg" alt="" class="img-fluid"></a>
-									<div class="img-overlay">
-										<i class="fas fa-star"></i>
-									</div>
-								</div>
-								<div class="doctors-body">
-									<div class="inner-section">
-										<span class="float-left">PSICOLOGIST</span>
-										<div class="rating text-right">
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star"></i>
-											<span class="d-inline-block average-ratings">3.5</span>
-										</div>
-										<a href="doctor-profile"><h4>Dr. Darren Elder</h4></a>
-										<p>MBBS, MD - General Medicine, DNB - Cardiology</p>
-									</div>
-									<div class="row row-sm loc-details">
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/map-plus.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Location</span>
-													<span class="data-info">Newyork, USA</span>
-												</a>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/alarm.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Available on</span>
-													<span class="data-info">Fri, 22 March</span>
-												</a>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/consult.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Consulting</span>
-													<span class="data-info">500+ Patients</span>
-												</a>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/exper.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">EXPERIENCE</span>
-													<span class="data-info">25+ Years</span>
-												</a>
-											</div>
-										</div>
-									</div>
-									<div class="row row-sm align-items-center p-3">
-										<div class="col-6">
-											<a href="doctor-profile" class="amt-txt" tabindex="0">$50 - $100</a>
-										</div>
-										<div class="col-6">
-											<a href="booking" class="btn book-btn" tabindex="0">Book Now</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6">
-							<div class="book-best-doctors">
-								<div class="book-header">
-									<a href="doctor-profile"><img src="assets/img/doctors/doctor-03.jpg" alt="" class="img-fluid"></a>
-									<div class="img-overlay">
-										<i class="fas fa-star"></i>
-									</div>
-								</div>
-								<div class="doctors-body">
-									<div class="inner-section">
-										<span class="float-left">PSICOLOGIST</span>
-										<div class="rating text-right">
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star"></i>
-											<span class="d-inline-block average-ratings">3.5</span>
-										</div>
-										<a href="doctor-profile"><h4>Dr. Deborah Angel</h4></a>
-										<p>MBBS, MD - General Medicine, DNB - Cardiology</p>
-									</div>
-									<div class="row row-sm loc-details">
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/map-plus.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Location</span>
-													<span class="data-info">Newyork, USA</span>
-												</a>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/alarm.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Available on</span>
-													<span class="data-info">Fri, 22 March</span>
-												</a>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/consult.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Consulting</span>
-													<span class="data-info">500+ Patients</span>
-												</a>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/exper.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">EXPERIENCE</span>
-													<span class="data-info">25+ Years</span>
-												</a>
-											</div>
-										</div>
-									</div>
-									<div class="row row-sm align-items-center p-3">
-										<div class="col-6">
-											<a href="doctor-profile" class="amt-txt" tabindex="0">$50 - $100</a>
-										</div>
-										<div class="col-6">
-											<a href="booking" class="btn book-btn" tabindex="0">Book Now</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6">
-							<div class="book-best-doctors">
-								<div class="book-header">
-									<a href="doctor-profile"><img src="assets/img/doctors/doctor-04.jpg" alt="" class="img-fluid"></a>
-									<div class="img-overlay">
-										<i class="fas fa-star"></i>
-									</div>
-								</div>
-								<div class="doctors-body">
-									<div class="inner-section">
-										<span class="float-left">PSICOLOGIST</span>
-										<div class="rating text-right">
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star filled"></i>
-											<i class="fas fa-star"></i>
-											<span class="d-inline-block average-ratings">3.5</span>
-										</div>
-										<a href="doctor-profile"><h4>Dr. Sofia Brient</h4></a>
-										<p>MBBS, MD - General Medicine, DNB - Cardiology</p>
-									</div>
-									<div class="row row-sm loc-details">
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/map-plus.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Location</span>
-													<span class="data-info">Newyork, USA</span>
-												</a>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/alarm.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Available on</span>
-													<span class="data-info">Fri, 22 March</span>
-												</a>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/consult.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">Consulting</span>
-													<span class="data-info">500+ Patients</span>
-												</a>
-											</div>
-										</div>
-										<div class="col-6">
-											<div class="d-flex align-items-center">
-												<a href="javascript:void(0);">
-													<img src="assets/img/shapes/exper.png" alt="" />
-												</a> 
-												<a href="javascript:void(0);">
-													<span class="available-info">EXPERIENCE</span>
-													<span class="data-info">25+ Years</span>
-												</a>
-											</div>
-										</div>
-									</div>
-									<div class="row row-sm align-items-center p-3">
-										<div class="col-6">
-											<a href="doctor-profile" class="amt-txt" tabindex="0">$50 - $100</a>
-										</div>
-										<div class="col-6">
-											<a href="booking" class="btn book-btn" tabindex="0">Book Now</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						
+					
 					</div>
                     <!---
 					<div class="view-all-more text-center">	

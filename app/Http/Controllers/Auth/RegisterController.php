@@ -178,9 +178,7 @@ class RegisterController extends Controller
        $datosClinicastep2 = request()->except("_token");
        $id_dr = $datosClinicastep2['id'];
 
-       $reg = $datosClinicastep2['clinic_is'];
-
-       
+       $reg = $datosClinicastep2['clinic_is'];       
 
         if ($reg === "0"){
 
@@ -200,7 +198,6 @@ class RegisterController extends Controller
         }else if ($reg === "1") {
             $clinica = Clinica::findOrFail($datosClinicastep2['clinica']);
         }
-    
        
        //se busca al DR
        $doctor = Doctor::findOrFail($id_dr);
@@ -224,10 +221,14 @@ class RegisterController extends Controller
             'cedula' => ['required'],
             'especialidad' => 'required',
             'institucion_cedula' => 'required',
+            'primera' => 'required',
+            'seguimiento' => 'required',
         ],[
             'cedula.required' => 'Ingresa tu cédula profesional',
             'especialidad.required' => 'Ingresa tu especialidad',
             'institucion_cedula.required' => 'Ingresa la institución que te otorgo la cédula',
+            'primera.required' => 'Ingresa el costo de la 1er consulta',
+            'seguimiento.required' => 'Ingresa el costo de la 2da consulta',
         ]);
 
         //se busca la especialidad

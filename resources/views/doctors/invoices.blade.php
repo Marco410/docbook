@@ -1,7 +1,8 @@
-<?php $page="invoices1";?>
+{{-- <?php $page="invoices1";?>
 @extends('layout.mainlayout')
-@section('content')
+@section('content') --}}
 <!-- Breadcrumb -->
+{{ $data }}
 <div class="breadcrumb-bar">
 				<div class="container-fluid">
 					<div class="row align-items-center">
@@ -415,4 +416,4 @@
 			</div>		
             <!-- /Page Content -->
 </div>
-@endsection
+{{-- @endsection --}}

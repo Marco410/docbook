@@ -18,7 +18,7 @@
 @include('layout.partials.header_index7')
 @yield('content')
 @if(!Route::is(['chat-doctor','map-grid','map-list','chat','voice-call','video-call']))
-@include('layout.partials.footer_index4')
+@include('layout.partials.footer')
 @endif
 @include('layout.partials.footer-scripts')
   </body>

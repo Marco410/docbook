@@ -72,14 +72,29 @@
 		<script  src="/assets/js/view_controllers/historial/alergias_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/vacunas_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/medicamentos_vs.js"></script>
-		<script  src="/assets/js/view_controllers/historial_vs.js"></script>
+		<script  src="/assets/js/view_controllers/historial/motivo_consultarapida_vs.js"></script>
+		<script  src="/assets/js/view_controllers/historial/articulos_vs.js"></script>
 		<script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
 		<script>
-			
-		ClassicEditor
+			var txtConsulta;
+			var notas_historial;
+			ClassicEditor
 			.create( document.querySelector( '#txtconsulta_rapida' ) )
+			.then(editor =>{
+				txtConsulta = editor;
+			})
 			.catch( error => {
-			console.error( error );
+				console.error( error );
+			} );
+			
+			ClassicEditor
+			.create( document.querySelector( '#notas_historial' ) )
+			.then(editor2 =>{
+				notas_historial = editor2;
+			})
+			.catch( error => {
+				console.error( error );
 			} );
 			</script>
+		<script  src="/assets/js/view_controllers/historial_vs.js"></script>
 		@endif

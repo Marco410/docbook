@@ -10,6 +10,7 @@ use App\Clinica;
 use App\Paciente;
 use App\Diagnostic;
 use App\Especialidad;
+use App\Funciones;
 
 
 class AdminController extends Controller
@@ -29,15 +30,10 @@ class AdminController extends Controller
             ->select('doctors.id','doctors.nombre','doctors.apellido_p','doctors.created_at','doctors.status','doctors.foto','especialidads.nombre as espe')
             ->get();
 
-        $doctorse =  DB::table('doctors')
-            
-        ->rightJoin('doctor_has_especialidad', 'doctors.id', '=', 'doctor_has_especialidad.doctor_id')
-        ->rightJoin('especialidads', 'doctor_has_especialidad.especialidad_id', '=', 'especialidads.id')
-        ->select('doctors.id','doctors.nombre','doctors.apellido_p','doctors.created_at','doctors.status','doctors.foto')
-        ->get();
+     
 
         //$doctors = Doctor::all();
-        return view('admin.doctor-list',['doctors'=> $doctors, 'doctorse' => $doctorse]);
+        return view('admin.doctor-list',['doctors'=> $doctors]);
 
     }
 
@@ -70,15 +66,15 @@ class AdminController extends Controller
 
         $especialidad = request()->except("_token");
 
-        $nombre_imagen = $this->eliminar_acentos($especialidad['nombre']);
+        $nombre_imagen = Funciones::eliminar_acentos($especialidad['nombre']);
 
         $date = Date("ishdmy");
 
         if ($request->hasFile("imagen")){
             
-            $request->file("imagen")->storeAs("public","especialidades/".$nombre_imagen.$date.".png");
+            $request->file("imagen")->storeAs("public","especialidades/".$nombre_imagen.".png");
 
-            $especialidad['imagen'] = "especialidades/".$nombre_imagen.$date.".png";
+            $especialidad['imagen'] = "especialidades/".$nombre_imagen.".png";
         } 
 
         Especialidad::create($especialidad);
@@ -96,14 +92,14 @@ class AdminController extends Controller
 
         $date = Date("ishdmy");
 
-        $nombre_imagen = $this->eliminar_acentos($especialidad['nombre_edit']);
+        $nombre_imagen = Funciones::eliminar_acentos($especialidad['nombre_edit']);
 
 
         if ($request->hasFile("imagen")){
             
-             $request->file("imagen")->storeAs("public","especialidades/".$nombre_imagen.$date.".png");
+             $request->file("imagen")->storeAs("public","especialidades/".$nombre_imagen.".png");
 
-             $especialidad['imagen'] = "especialidades/".$nombre_imagen.$date.".png";
+             $especialidad['imagen'] = "especialidades/".$nombre_imagen.".png";
 
             Especialidad::where('id','=',$id)->update([
                 'nombre' => $especialidad['nombre_edit'],

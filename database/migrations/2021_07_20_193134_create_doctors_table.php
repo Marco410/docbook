@@ -26,6 +26,9 @@ class CreateDoctorsTable extends Migration
             $table->string("foto")->nullable();
             $table->string("sexo")->nullable();
 
+            $table->string("primera")->nullable();
+            $table->string("seguimiento")->nullable();
+
             /* $table->string("nombre_organizacion")->nullable();
             $table->string("tipo_organizacion")->nullable();
             $table->string("no_medicos")->nullable();

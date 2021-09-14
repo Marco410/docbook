@@ -33,6 +33,10 @@ input[type=number] {
     min-height: 350px;
 }
 
+.notas {
+    min-height: 200px;
+}
+
 .back-sec{
 	background-color: var(--sec);
 	color: white;

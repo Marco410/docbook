@@ -155,7 +155,6 @@ $('#btn-save-pato').on("click", function(){
     const response =  axios.post('/store-patologicos',fd,{
        
     }).then(res =>  {
-
         iziToast.success({
             timeout: 6000,
             title: 'Éxito',
@@ -284,16 +283,12 @@ $('#btn-save-notas-his').on("click", function(){
                 
     const response =  axios.post('/store-notas-his',fd,{
     }).then(res =>  {
-
         iziToast.success({
             timeout: 6000,
             title: 'Éxito',
             position: 'topRight',
             message: 'Nota del Historial Guardada.',
         });
-
-        console.log(res);
-
     }).catch((err) => {
         iziToast.error({
             timeout: 6000,
@@ -304,7 +299,200 @@ $('#btn-save-notas-his').on("click", function(){
     });  
 });
 
+$(".btn-add-diagnostico").on("click",function(){
+    $("#diagnostico_principal").val($(this).attr("data-value"));
 
+    $("#diagnostico_principal").attr("data-id",$(this).attr("data-id"));
+
+    $("#agregar_diagnostico").modal("hide");
+
+    $("#agregar_diagnostico").on("hidden.bs.modal",function(){
+        $(".body-historial").addClass("modal-open");
+    });
+    
+});
+
+
+$(".btn-add-estudio").on("click",function(){
+
+    $("#panel-estudios-rapida-estudio").append("<div class='card estudio"+$(this).attr("data-id")+"' ><div class='card-header'><div class='card-title'><h5 class='text-info'  > <i class='fas fa-file' ></i> "+$(this).attr("data-value")+" <i onclick='removeEstudio(this)' data-id='"+$(this).attr("data-id")+"' class='fas fa-times-circle text-danger' ></i></h5></div></div> <div class='card-body'><textarea class='form-control' name='observaciones' placeholder='Escribe las observaciones' ></textarea><input type='hidden' name='id_estudio' value='"+$(this).attr("data-id")+"' /> </div></div>");
+
+    $("#agregar_estudio").modal("hide");
+    
+    $("#agregar_estudio").on("hidden.bs.modal",function(){
+        $(".body-historial").addClass("modal-open");
+    });
+
+});
+
+function removeEstudio(elemento){
+    $(".estudio"+elemento.getAttribute("data-id")).remove();
+}
+
+$("#sol_error").on("click",function(){
+    var body = document.body;
+    body.classList.add("modal-open"); 
+});
+
+$("#btn-add-consulta-rapida").on("click", function(){
+
+    if($("#input_buscar_motivo_rapida").is(":hidden")){
+        if($("#diagnostico_principal").val() != "" ){
+            if(txtConsulta.getData() != "" ){
+                if($("#estatura-signos2").val() != ""){
+                    if($("#peso-signos2").val() != ""){
+                        if($("#temperatura-signos2").val() != ""){
+                            if($("#frec_respiratoria-signos2").val() != ""){
+                                if($("#sistolica2").val() != ""){
+                                    if($("#diastolica2").val() != ""){
+
+                                        var motivo = $("#motivo_consulta_rapida").val();
+                                        var diagnostico = $("#diagnostico_principal").attr("data-id");
+                                        var notas = txtConsulta.getData();
+                                        var estatura = $("#estatura-signos2").val();
+                                        var peso = $("#peso-signos2").val();
+                                        var masa_corporal = $("#masa_corporal2").val();
+                                        var temperatura = $("#temperatura-signos2").val();
+                                        var frec_signos = $("#frec_respiratoria-signos2").val();
+                                        var sistolica = $("#sistolica2").val();
+                                        var diastolica = $("#diastolica2").val();
+
+                                        create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_corporal,temperatura,frec_signos,sistolica,diastolica);
+                                    }else{
+                                        $("#diastolica2").focus();
+                                        warning("Agregue la Diastólica");
+                                    }    
+                                }else{
+                                    $("#sistolica2").focus();
+                                    warning("Agregue la Sistólica");
+                                }                        
+                            }else{
+                                $("#frec_respiratoria-signos2").focus();
+                                warning("Agregue la frecuencia respiratoria");
+                            }
+                        }else{
+                            $("#temperatura-signos2").focus();
+                            warning("Agregue la temperatura");
+                        }
+                    }else{
+                        $("#peso-signos2").focus();
+                        warning("Agregue el peso");
+                    }
+                }else{
+                    $("#estatura-signos2").focus();
+                    warning("Agregue la estatura");
+                }
+            }else{
+                $("#txtconsulta_rapida").focus();
+                warning("Agregue algunas notas");
+            }
+        }else{
+            $("#diagnostico_principal").focus();
+            warning("Diagnostico Principal");
+        }
+    }else {
+        $("#buscar_motivo_rapida").focus();
+        warning("Motivo de Consulta");
+        
+    }
+});
+function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_corporal,temperatura,frec_signos,sistolica,diastolica){
+
+    var fd = new FormData();
+    fd.append("paciente_id",$("#paciente_id").val());
+    fd.append("motivo",motivo);
+    fd.append("diagnostico",diagnostico);
+    fd.append("notas",notas);
+    fd.append("estatura",estatura);
+    fd.append("peso",peso);
+    fd.append("masa_corporal",masa_corporal);
+    fd.append("temperatura",temperatura);
+    fd.append("frec_signos",frec_signos);
+    fd.append("sistolica",sistolica);
+    fd.append("diastolica",diastolica);
+    fd.append("id_estudios",check_idestudios());
+    fd.append("obsEstudios",check_obsEstudios());
+    fd.append("id_articulos",check_idarticulos());
+    fd.append("indiArticulos",check_indiArticulos());
+                
+    const response =  axios.post('/store-motivo-consulta-rapida',fd,{
+    }).then(res =>  {
+        iziToast.success({
+            timeout: 6000,
+            title: 'Éxito',
+            position: 'topRight',
+            message: 'Consulta rápida creada.',
+        });
+    }).catch((err) => {
+        iziToast.error({
+            timeout: 6000,
+            title: 'Error',
+            position: 'topRight',
+            message: 'Algo salio mal, intentelo de nuevo y recargue.',
+        });
+    }); 
+
+}
+
+function check_idarticulos(){
+    var idArticulo = new Array();
+    if($("input[name=id_articulo]").length > 0){
+        $("input[name=id_articulo]").each(function(){
+            idArticulo.push($(this).val());
+        }); 
+    }else{
+        //console.log("No agrego articulos");
+    }
+    return idArticulo;
+}
+
+function check_indiArticulos(){
+    var indiArticulo = new Array();
+    $("textarea[name=indicaciones]").each(function(){
+        if($(this).val() != ""){
+            indiArticulo.push($(this).val());
+        }else{
+            warning("Agregue indicaciones al medicamento");
+        }
+    }); 
+
+    return indiArticulo;
+}
+
+function check_idestudios(){
+
+    var idEstudios = new Array();
+    if($("input[name=id_estudio]").length > 0){
+        $("input[name=id_estudio]").each(function(){
+            idEstudios.push($(this).val());
+        }); 
+        
+    }else{
+        //console.log("No agrego estudios");
+    }
+    return idEstudios;
+}
+
+function check_obsEstudios(){
+    var obsEstudios = new Array();
+    $("textarea[name=observaciones]").each(function(){
+        if($(this).val() != ""){
+            obsEstudios.push($(this).val());
+        }else{
+            warning("Agregue observaciones al estudio");
+        }
+    }); 
+
+    return obsEstudios;
+}
+
+function warning(input){
+    iziToast.warning({
+        title: 'Cuidado',
+        position: 'center',
+        message: 'Selecciona: '+input,
+    });
+}
 
 
 function getCookie(name) {

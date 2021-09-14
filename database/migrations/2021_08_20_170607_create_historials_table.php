@@ -46,33 +46,33 @@ class CreateHistorialsTable extends Migration
             $table->string("pato_respiratorias")->nullable();
             $table->string("pato_gastro")->nullable();
             $table->string("sexual")->nullable();
-            $table->string("pato_otros")->nullable();
+            $table->text("pato_otros")->nullable();
 
             $table->string("fisica")->nullable();
             $table->string("tabaco")->nullable();
             $table->string("alcohol")->nullable();
             $table->string("sustancias")->nullable();
             $table->string("vacuna_reciente")->nullable();
-            $table->string("npato_otros")->nullable();
+            $table->text("npato_otros")->nullable();
 
 
             $table->string("heredo_diabetes")->nullable();
             $table->string("h_cardio")->nullable();
             $table->string("h_hipertension")->nullable();
             $table->string("h_tiroideas")->nullable();
-            $table->string("heredo_otros")->nullable();
+            $table->text("heredo_otros")->nullable();
 
-            $table->string("historia_familiar")->nullable();
+            $table->text("historia_familiar")->nullable();
             $table->string("conciencia")->nullable();
-            $table->string("psiqui_areas")->nullable();
-            $table->string("psiqui_tratamientos")->nullable();
+            $table->text("psiqui_areas")->nullable();
+            $table->text("psiqui_tratamientos")->nullable();
             $table->string("psiqui_apoyo")->nullable();
-            $table->string("psiqui_grupo_familiar")->nullable();
-            $table->string("psiqui_vida_social")->nullable();
-            $table->string("psiqui_vida_laboral")->nullable();
-            $table->string("psiqui_autoridad")->nullable();
-            $table->string("psiqui_impulsos")->nullable();
-            $table->string("psiqui_frustracion")->nullable();
+            $table->text("psiqui_grupo_familiar")->nullable();
+            $table->text("psiqui_vida_social")->nullable();
+            $table->text("psiqui_vida_laboral")->nullable();
+            $table->text("psiqui_autoridad")->nullable();
+            $table->text("psiqui_impulsos")->nullable();
+            $table->text("psiqui_frustracion")->nullable();
 
             $table->string("desayuno")->nullable();
             $table->string("colacion")->nullable();
@@ -82,7 +82,7 @@ class CreateHistorialsTable extends Migration
             $table->string("apetito")->nullable();
             $table->string("hambre")->nullable();
             $table->string("vasos")->nullable();
-            $table->string("prefer_alimentos")->nullable();
+            $table->text("prefer_alimentos")->nullable();
             $table->string("malestares")->nullable();
             $table->string("complementos")->nullable();
             $table->string("otras_dietas")->nullable();
@@ -91,9 +91,9 @@ class CreateHistorialsTable extends Migration
             $table->string("antecedentes_peso")->nullable();
             $table->string("consumo_liquidos")->nullable();
             $table->string("educacion_nutri")->nullable();
-            $table->string("nutri_otros")->nullable();
+            $table->text("nutri_otros")->nullable();
 
-            $table->string("notas_historial")->nullable();
+            $table->text("notas_historial")->nullable();
 
             $table->foreign('paciente_id')->references('id')->on('pacientes')->onDelete('restrict')->onUpdate('cascade');
 

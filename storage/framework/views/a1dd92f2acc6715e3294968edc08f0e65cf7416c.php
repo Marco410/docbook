@@ -1,7 +1,7 @@
-<?php $page="invoices1";?>
 
-<?php $__env->startSection('content'); ?>
 <!-- Breadcrumb -->
+<?php echo e($data); ?>
+
 <div class="breadcrumb-bar">
 				<div class="container-fluid">
 					<div class="row align-items-center">
@@ -415,5 +415,4 @@
 			</div>		
             <!-- /Page Content -->
 </div>
-<?php $__env->stopSection(); ?>
-<?php echo $__env->make('layout.mainlayout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\pixelar_doc\laravel-files\template\resources\views/doctors/invoices.blade.php ENDPATH**/ ?>
+<?php /**PATH D:\xampp\htdocs\pixelar_doc\laravel-files\template\resources\views/doctors/invoices.blade.php ENDPATH**/ ?>

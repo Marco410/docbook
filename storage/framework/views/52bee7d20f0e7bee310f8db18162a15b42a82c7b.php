@@ -80,6 +80,15 @@
 														<input required accept="image/png,image/jpeg" type="file" id="certificado_consultorio" name="certificado_consultorio" value="<?php echo e(old('certificado_consultorio')); ?>">
 													</div>
 												</div>
+												<div class="col-sm-12 form-group mt-3">
+													<label>Precio 1RA Consulta $ (MXN)<span class="text-danger">*</span></label>
+													<input required type="number" name="primera" id="primera" class="form-control" placeholder="Ejem: 700" value="<?php echo e(old('primera')); ?>" />
+												</div>
+
+												<div class="col-sm-12 form-group mt-3">
+													<label>Precio 2da Consulta $ (MXN)<span class="text-danger">*</span></label>
+													<input required type="number" name="seguimiento" min="1" id="seguimiento" placeholder="Ejem: 500" class="form-control" value="<?php echo e(old('seguimiento')); ?>" />
+												</div>
 												<div class="col-sm-12 mt-3">
 													<div class="remember-me-col d-flex justify-content-between">
 														<span class="">Certifico que la información es correcta y puede ser usada para generar <strong>recetas médicas</strong><span class="text-danger">*</span></span>

@@ -66,8 +66,12 @@ class RoleSeeder extends Seeder
             'nombre' => "Doctor",
             'apellido_p' => "Pixel",
             'apellido_m' => "Art",
+            'telefono' => "4434012693",
+            'foto' => "doctor_perfil/dr-2.png",
             'email' => "doctor@gmail.com",
             'password' => bcrypt('1234567890'),
+            'primera' => "700",
+            'seguimiento' => "500",
             'status' => 1
         ])->assignRole('Doctor');
 

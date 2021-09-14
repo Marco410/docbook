@@ -3,21 +3,23 @@
 @section('content')
 	<!-- Breadcrumb -->
     <div class="breadcrumb-bar">
-				<div class="container-fluid">
-					<div class="row align-items-center">
-						<div class="col-md-12 col-12">
-							<nav aria-label="breadcrumb" class="page-breadcrumb">
-								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index">Inicio</a></li>
-									<li class="breadcrumb-item active" aria-current="page"> <a href="{{ route('mis-pacientes') }}"> Mis Pacientes</a></li>
-									<li class="breadcrumb-item active" aria-current="page">Historial</li>
-								</ol>
-							</nav>
-							<h2 class="breadcrumb-title">Historial  </h2>
-						</div>
-					</div>
+		<div class="container-fluid">
+			<div class="row align-items-center">
+				<div class="col-md-12 col-12">
+					<nav aria-label="breadcrumb" class="page-breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index">Inicio</a></li>
+							<li class="breadcrumb-item active" aria-current="page"> <a href="{{ route('mis-pacientes') }}"> Mis Pacientes</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Historial</li>
+						</ol>
+					</nav>
+					<h2 class="breadcrumb-title">Historial  </h2>
 				</div>
 			</div>
+		</div>
+	</div>
+	
+	<input type="hidden" id="clinic_id" value="{{ Auth::user()->clinicas()->get()[0]->id }}" >
 			<!-- /Breadcrumb -->
 			
 			<!-- Page Content -->
@@ -1356,7 +1358,7 @@
 									<div class="card-body">
 										<form id="formNotasHis">
 											<div class="col-sm-12">
-												<textarea name="notas_historial"  rows="6" placeholder="Escribe aquí" id="" class="form-control" >{{$paciente->pluck('historial')[0][0]->notas_historial ?? '' }}</textarea>
+												<textarea name="notas_historial" id="notas_historial"  rows="6" placeholder="Escribe aquí" id="" class="form-control notas" >{{$paciente->pluck('historial')[0][0]->notas_historial ?? '' }}</textarea>
 												
 											</div>
 											<div class="col-sm-8 offset-2 mt-4">
@@ -1497,24 +1499,45 @@
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-sm-7 mb-3">
-						<div class="input-group mb-4">
-							<input type="text" class="form-control" placeholder="Selecciona o agrega un motivo de consulta" />
+					<div class="col-sm-12 mb-4">
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="col-sm-12">
+									<div class="input-group mb-4" id="input_buscar_motivo_rapida">
+										<input type="text" class="form-control" id="buscar_motivo_rapida" 
+										placeholder="Escribe para buscar motivo de consulta..." />
+										
+									</div>
+								</div>
+								
+								<div class="col-sm-12">
+									<div id="panel-motivo-select" ></div>
+								</div>
+								
+							</div>
+							<div class="col-sm-8">
+								<div class="input-group ">
+									<input type="text" class="form-control" placeholder="Diagnostico Principal" id="diagnostico_principal" readonly />
+									<button class="btn btn-sm btn-info"  data-toggle="modal" data-target="#agregar_diagnostico" > <i class="fas fa-search" ></i> Buscar</button>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div id="panel-motivos" ></div>
+							</div>
 						</div>
+						
+					</div>
+					<div class="col-sm-7 mb-3">
+						
 						<textarea name="txtconsulta_rapida" id="txtconsulta_rapida" height="400px" rows="10" placeholder="Empieza a escribir aquí tu notas"></textarea>
 					</div>
 					<div class="col-sm-5 mb-3" >
-						<div class="input-group mb-4">
-							<input type="text" class="form-control" placeholder="Diagnostico Principal" readonly />
-							<button class="btn btn-sm btn-info"  data-toggle="modal" data-target="#agregar_diagnostico" > <i class="fas fa-search" ></i> Buscar</button>
-						</div>
-
 						<div class="form-group row">
 							<div class="col-sm-9">
 								<label class="col-form-label"> <i class="fas fa-ruler-vertical text-info" ></i> Estatura</label>
 							</div>
 							<div class="col-sm-3 row" >
-								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->estatura }}" class="form-control" id="estatura-signos2" name="estatura" placeholder="m" maxlength="3" min="100"  >
+								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->estatura }}" class="form-control" id="estatura-signos2" name="estatura-signos2" placeholder="m" maxlength="3" min="100"  >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -1522,7 +1545,7 @@
 								<label class="col-form-label "> <i class="fas fa-weight text-info" ></i> Peso</label>
 							</div>
 							<div class="col-sm-3 row" >
-								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->peso }}" class="form-control" id="peso-signos2" name="peso" placeholder="Kg" maxlength="3"  >
+								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->peso }}" class="form-control" id="peso-signos2" name="peso_signos2" placeholder="Kg" maxlength="3"  >
 								
 							</div>
 						</div>
@@ -1531,7 +1554,7 @@
 								<label class="col-form-label"> <i class="fas fa-male text-info" ></i> Masa Corporal</label>
 							</div>
 							<div class="col-sm-3 row" >
-								<input type="hidden" id="masa_corporal2" name="masa_corporal" value="{{ $paciente->pluck('historial')[0][0]->masa_corporal ?? '' }}" >
+								<input type="hidden" id="masa_corporal2" name="masa_corporal2" value="{{ $paciente->pluck('historial')[0][0]->masa_corporal ?? '' }}" >
 								<label id="masa-corporal-label2">{{ $paciente->pluck('historial')[0][0]->masa_corporal ?? '' }} kg/m2</label>
 							</div>
 							<div class="col-sm-12" hidden >
@@ -1543,7 +1566,7 @@
 								<label class="col-form-label"> <i class="fas fa-thermometer-three-quarters text-info" ></i> Temperatura</label>
 							</div>
 							<div class="col-sm-3 row" >
-								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->temperatura ?? '' }}" name="temperatura" class="form-control form-control-sm" placeholder="°C" maxlength="3"   >
+								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->temperatura ?? '' }}" name="temperatura-signos2" id="temperatura-signos2" class="form-control form-control-sm" placeholder="°C" maxlength="3"   >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -1551,7 +1574,7 @@
 								<label class="col-form-label"><i class="fas fa-walking text-info"></i> Frecuencia Respiratoria</label>
 							</div>
 							<div class="col-sm-3 row" >
-								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->frec_respiratoria ?? '' }}" class="form-control form-control-sm" placeholder="r/m" name="frec_respiratoria" maxlength="3"   >
+								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->frec_respiratoria ?? '' }}" class="form-control form-control-sm" placeholder="r/m" id="frec_respiratoria-signos2" name="frec_respiratoria-signos2" maxlength="3"   >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -1559,7 +1582,7 @@
 								<label class="col-form-label"> <i class="fas fa-heartbeat text-info" ></i> Sistólica</label>
 							</div>
 							<div class="col-sm-3 row" >
-								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->sistolica ?? '' }}" class="form-control form-control-sm" placeholder="mmHg" name="sistolica" maxlength="3"   >
+								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->sistolica ?? '' }}" class="form-control form-control-sm" placeholder="mmHg" id="sistolica2" name="sistolica2" maxlength="3"   >
 							</div>
 						</div>
 						<div class="form-group row">
@@ -1567,15 +1590,26 @@
 								<label class="col-form-label"> <i class="fas fa-heartbeat text-info" ></i> Diastólica</label>
 							</div>
 							<div class="col-sm-3 row" >
-								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->diastolica ?? '' }}" class="form-control form-control-sm" placeholder="mmHg" name="diastolica" maxlength="3"  >
+								<input type="number" value="{{ $paciente->pluck('historial')[0][0]->diastolica ?? '' }}" class="form-control form-control-sm" placeholder="mmHg" id="diastolica2" name="diastolica2" maxlength="3"  >
 							</div>
 						</div>
 
 					</div>
+					<div id="panel-estudios-rapida" class="col-sm-6 text-center">
+						<h4>Estudios</h4>
+						<div id="panel-estudios-rapida-estudio" class="col-sm-12" ></div>
+						
+					</div>
+					<div id="panel-medi-rapida" class="col-sm-6 text-center">
+						<h4>Medicamentos</h4>
+						<div id="panel-articulos-rapida-articulo" class="col-sm-12" ></div>
+
+					</div>
 					<div class="col-sm-12 mb-2 text-center" st>
 						<div  class="">
-							<button class="btn btn-sm btn-info" >Agregar Estudio</button>
-							<button class="btn btn-sm btn-info"  data-toggle="modal" data-target="#agregar_articulo" >Agregar Artículo</button>
+							<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#agregar_estudio" > <i class="fas fa-plus" ></i> Agregar Estudio</button>
+							<button class="btn btn-sm btn-info"  data-toggle="modal" data-target="#agregar_articulo" > <i class="fas fa-plus" ></i> Agregar Artículo</button>
+							<button class="btn btn-sm btn-info" id="sol_error"  >Habilitar Scroll de la página</button>
 							
 						</div>
 					</div>
@@ -1585,7 +1619,7 @@
 			</div>
 			<div class="modal-footer">
 				<div class="col-sm-12" >
-					<button class="btn btn-sm btn-primary btn-block">Terminar Consulta</button>
+					<button class="btn btn-sm btn-primary btn-block" id="btn-add-consulta-rapida">Terminar Consulta</button>
 				</div>
 			</div>
 			
@@ -1593,6 +1627,7 @@
 	</div>
 </div>
 <!-- /Consulta Rápida Modal -->
+
 <!-- / Agregar Artículo Modal -->
 <div class="modal fade" id="agregar_articulo" aria-hidden="true" role="dialog" >
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
@@ -1610,8 +1645,100 @@
 			</div>
 			<div class="modal-body">
 				<div class="row">
+					<div class="col-sm-12 mb-2 text-center">
+						<table class="datatable table table-hover table-center mb-0" id="table-articulos">
+							<thead>
+								<tr>
+									<th>Identificador</th>
+									<th>Nombre del Medicamento</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach ($articulos as $a)
+								<tr>
+									<td>M-{{ $a->id }}</td>
+									<td>{{ $a->articulo }}</td>
+									<td class="text-right">
+										<div class="actions btn-group">
+											<button type="button" title="Consulta" class="btn btn-sm bg-primary-light btn-editar btn-add-articulo" data-id="{{ $a->id }}" data-value="{{ $a->articulo }}" data-cant="{{$a->cantidad  }}" data-des="{{ $a->descripcion }}"  href="">
+												<i class="fas fa-plus"></i></button>
+										</div>
+									</td>
+								</tr>
+								@endforeach
+							
+							</tbody>
+						</table>
+						
+					</div>
 					
-					<div class="col-sm-12 mb-2 text-center" st>
+				</div>
+				
+			</div>
+			<div class="modal-footer">
+				<div class="row ">
+					<div clas="col-sm-4" >
+						<input type="text"  class="form-control form-control-sm" name="new_articulo_rapida" id="new_articulo_rapida" placeholder="Ingrese el nombre del nuevo artículo" >
+					</div>
+					
+					<div clas="col-sm-4" >
+						<input type="text" class="form-control form-control-sm" name="new_descripcion_rapida" id="new_descripcion_rapida" placeholder="Ingrese la descripción del nuevo artículo" >
+					</div>
+					<div class="col-sm-4" >
+						<button id="btn-add-new-articulo" class="btn btn-sm btn-warning text-white" > <small> <i class="fas fa-plus" ></i> Añadir nuevo artículo inexistente</small> </button>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<!-- / Cierra Agregar Artículo Modal -->
+
+<!-- / Agregar Estudios Modal -->
+<div class="modal fade" id="agregar_estudio" aria-hidden="true" role="dialog" >
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
+		<div class="modal-content sombra" >
+			<div class="modal-header back-sec" >
+				<h5 class="modal-title text-white"> <i clas="fas fa-search" ></i>
+					Busqueda de Estudios<br>
+					<small  >Capture el nombre del estudio en la barra de busqueda</small>
+				</h5>
+				
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true" class="text-white" >&times;</span>
+				</button>
+				
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					
+					<div class="col-sm-12 mb-2 text-center">
+						<table class="datatable table table-hover table-center mb-0">
+							<thead>
+								<tr>
+									<th>Identificador</th>
+									<th>Nombre del Estudio</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach ($estudios as $e)
+								<tr>
+									<td>E-{{ $e->id }}</td>
+									<td>{{ $e->estudio }}</td>
+									<td class="text-right">
+										<div class="actions btn-group">
+											<button type="button" title="Consulta" class="btn btn-sm bg-primary-light btn-editar btn-add-estudio" data-id="{{ $e->id }}" data-value="{{ $e->estudio }}"  href="">
+												<i class="fas fa-plus"></i></button>
+										</div>
+									</td>
+								</tr>
+								@endforeach
+							
+							</tbody>
+						</table>
 						
 					</div>
 					
@@ -1627,7 +1754,7 @@
 		</div>
 	</div>
 </div>
-<!-- / Cierra Agregar Artículo Modal -->
+<!-- / Cierra Agregar Estudios Modal -->
 
 <!-- / Agregar Diagnóstico Modal -->
 <div class="modal fade" id="agregar_diagnostico" aria-hidden="true" role="dialog" >
@@ -1667,8 +1794,8 @@
 									<td>{{ $d->descripcion_4 }}</td>
 									<td class="text-right">
 										<div class="actions btn-group">
-											<a title="Consulta" class="btn btn-sm bg-primary-light btn-editar"  href="">
-												<i class="fas fa-notes-medical"></i></a>
+											<button type="button" title="Consulta" class="btn btn-sm bg-primary-light btn-editar btn-add-diagnostico" data-id="{{ $d->id }}" data-value="{{ $d->descripcion_4 }}"  href="">
+												<i class="fas fa-plus"></i></button>
 										</div>
 									</td>
 								</tr>

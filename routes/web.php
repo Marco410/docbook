@@ -126,6 +126,8 @@ Route::post('/paciente/registro','DoctorController@patient_registro')->name('doc
 
 Route::get('/get_patient/{paciente}','DoctorController@get_patient')->name('get_patient');
 
+Route::post('/store-motivo-consulta-rapida','DoctorController@new_consulta_rapida')->name('store-motivo-consulta-rapida');
+
 
 ###### RUTAS HISTORIAL ######
 
@@ -181,6 +183,13 @@ Route::post('/save-new-vacuna','DataController@save_new_vacuna')->name('save-new
 Route::get('/get-medis','DataController@get_medis')->name('get-medis');
 
 Route::post('/save-new-medi','DataController@save_new_medi')->name('save-new-medi');
+
+Route::get('/get-motivo-consulta','DataController@get_motivo_consulta')->name('get-motivo_consulta');
+
+Route::post('/save-new-motivo','DataController@save_new_motivo')->name('save-new-motivo');
+
+Route::post('/save-new-articulo','DataController@save_new_articulo')->name('save-new-articulo');
+
 
 
 

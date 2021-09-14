@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\PDF;
 use Illuminate\Validation\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Doctor;
@@ -12,6 +13,8 @@ use App\Paciente;
 use App\Historial;
 use App\Especialidad;
 use App\Diagnostic;
+use App\Estudios;
+use App\Articulos;
 use Auth;
 
 use Spatie\Permission\Models\Role;
@@ -65,8 +68,10 @@ class DoctorController extends Controller
         }
 
         $d = Diagnostic::all();
+        $e = Estudios::all();
+        $a = Articulos::where('clinica_id', Auth::user()->clinicas()->get()[0]->id)->get();
 
-        return view('doctors.historial', ['paciente' => $pa,'diagnosticos'=> $d]);
+        return view('doctors.historial', ['paciente' => $pa,'diagnosticos'=> $d,'estudios'=> $e,'articulos'=> $a]);
      }
 
      
@@ -137,10 +142,21 @@ class DoctorController extends Controller
             Paciente::where('id','=',$paciente['id'])->update($datosPacienteU);
         }
 
-        
-
         return redirect()->route('mis-pacientes');
-       
+    
+    }
+
+    public function new_consulta_rapida(){
+
+         $data = "Paciente: " . request()->paciente_id . "Motivo: " . request()->motivo . "Diagnostico: " . request()->diagnostico . "Notas: " . request()->notas . "Estatura: " . request()->estatura . "Peso: " . request()->peso . "Masa: " . request()->masa_corporal . "Temp: " . request()->temperatura . "Signos: " . request()->frec_signos . "Sis: " . request()->sistolica . "Dias: " . request()->diastolica . "IdEstudios: " . request()->id_estudios . "ObsEstudios: " . request()->obsEstudios . "IdArticulos: " . request()->id_articulos . "IndiArticulo: " . request()->indiArticulos;
+
+        //$pdf = App::make('dompdf.wrapper');
+        $pdf = \PDF::loadView('doctors.invoices',['data'=> $data ]);
+        $pdf->save("storage/receta.pdf");
+        //$pdf->download("receta.pdf");
+        return "Se guardo";
+
+       /*  return "Paciente: " . request()->paciente_id . "Motivo: " . request()->motivo . "Diagnostico: " . request()->diagnostico . "Notas: " . request()->notas . "Estatura: " . request()->estatura . "Peso: " . request()->peso . "Masa: " . request()->masa_corporal . "Temp: " . request()->temperatura . "Signos: " . request()->frec_signos . "Sis: " . request()->sistolica . "Dias: " . request()->diastolica . "IdEstudios: " . request()->id_estudios . "ObsEstudios: " . request()->obsEstudios . "IdArticulos: " . request()->id_articulos . "IndiArticulo: " . request()->indiArticulos ; */
 
     }
 

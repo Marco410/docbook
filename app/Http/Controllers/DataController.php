@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Alergia;
 use App\Vacuna;
 use App\Medicamento;
+use App\MotivoConsulta;
+use App\Articulos;
 
 class DataController extends Controller
 {
@@ -60,5 +62,33 @@ class DataController extends Controller
         ]);
 
         return $medi;
+    }
+
+    public function get_motivo_consulta(Request $request){
+        $term = $request->get('term');
+
+        $querys = MotivoConsulta::where('motivo', 'LIKE' ,'%' . $term . '%' )->get();
+
+        return $querys;
+    }
+
+    public function save_new_motivo(Request $request){
+        
+        $motivo = MotivoConsulta::create([
+            'motivo' => request()->motivo
+        ]);
+
+        return $motivo;
+    }
+
+    public function save_new_articulo(Request $request){
+        
+        $articulo = Articulos::create([
+            'articulo' => request()->articulo,
+            'descripcion' => request()->descripcion,
+            'clinica_id' => request()->clinica_id
+        ]);
+
+        return $articulo;
     }
 }
