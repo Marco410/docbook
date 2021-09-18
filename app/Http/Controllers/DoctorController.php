@@ -150,15 +150,41 @@ class DoctorController extends Controller
 
          $data = "Paciente: " . request()->paciente_id . "Motivo: " . request()->motivo . "Diagnostico: " . request()->diagnostico . "Notas: " . request()->notas . "Estatura: " . request()->estatura . "Peso: " . request()->peso . "Masa: " . request()->masa_corporal . "Temp: " . request()->temperatura . "Signos: " . request()->frec_signos . "Sis: " . request()->sistolica . "Dias: " . request()->diastolica . "IdEstudios: " . request()->id_estudios . "ObsEstudios: " . request()->obsEstudios . "IdArticulos: " . request()->id_articulos . "IndiArticulo: " . request()->indiArticulos;
 
+        $doctor = Doctor::where('id',1)->with(['clinicas'])->get()[0];
+        $paciente = Paciente::where('id',request()->paciente_id)->get()[0];
+
+        $arrayIdArt = json_decode(request()->id_articulos);
+        $arrayIndi = json_decode(request()->indiArticulos);
+        $i = 0;
+
+       /*  for ($i = 1; $i <= count($arrayIdArt); $i++) {
+            echo $i;
+        } */
+        foreach ($arrayIdArt as $idArticulo){
+            $articulo = Articulos::where('id', $idArticulo)->get()[0];
+            $articulos[$i] = array(
+                "articulo" =>$articulo->articulo,
+                "indicaciones" => $arrayIndi[$i]
+            );  
+            $i++;
+        }
+
+        
+
+        //$arrayIndi = explode(",",request()->indiArticulos);
+
+        //return view('invoice-view',['doctor'=> $doctor,'paciente'=>$paciente ]);
+
         //$pdf = App::make('dompdf.wrapper');
-        $pdf = \PDF::loadView('doctors.invoices',['data'=> $data ]);
+        $pdf = \PDF::loadView('invoice-view',['doctor'=> $doctor,'paciente'=>$paciente,'indicaciones' => $articulos]);
         $pdf->save("storage/receta.pdf");
         //$pdf->download("receta.pdf");
-        return "Se guardo";
+        return  "Se guardo";
 
        /*  return "Paciente: " . request()->paciente_id . "Motivo: " . request()->motivo . "Diagnostico: " . request()->diagnostico . "Notas: " . request()->notas . "Estatura: " . request()->estatura . "Peso: " . request()->peso . "Masa: " . request()->masa_corporal . "Temp: " . request()->temperatura . "Signos: " . request()->frec_signos . "Sis: " . request()->sistolica . "Dias: " . request()->diastolica . "IdEstudios: " . request()->id_estudios . "ObsEstudios: " . request()->obsEstudios . "IdArticulos: " . request()->id_articulos . "IndiArticulo: " . request()->indiArticulos ; */
-
     }
+
+    
 
  
 }

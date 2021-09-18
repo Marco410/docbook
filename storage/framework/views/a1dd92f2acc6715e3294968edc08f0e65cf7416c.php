@@ -1,4 +1,6 @@
+<?php $page="invoices1";?>
 
+<?php $__env->startSection('content'); ?>
 <!-- Breadcrumb -->
 <?php echo e($data); ?>
 
@@ -415,4 +417,5 @@
 			</div>		
             <!-- /Page Content -->
 </div>
-<?php /**PATH D:\xampp\htdocs\pixelar_doc\laravel-files\template\resources\views/doctors/invoices.blade.php ENDPATH**/ ?>
+
+<?php echo $__env->make('layout.mainlayout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\pixelar_doc\laravel-files\template\resources\views/doctors/invoices.blade.php ENDPATH**/ ?>

@@ -128,6 +128,8 @@ Route::get('/get_patient/{paciente}','DoctorController@get_patient')->name('get_
 
 Route::post('/store-motivo-consulta-rapida','DoctorController@new_consulta_rapida')->name('store-motivo-consulta-rapida');
 
+Route::get('/receta','IndexController@receta')->name('receta');
+
 
 ###### RUTAS HISTORIAL ######
 

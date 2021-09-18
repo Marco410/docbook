@@ -280,6 +280,9 @@ $('#btn-save-notas-his').on("click", function(){
 
     var fd = new FormData($("#formNotasHis")[0]);
     fd.append("paciente_id",$("#paciente_id").val());
+    fd.append("notas_historial",notas_historial.getData());
+
+    
                 
     const response =  axios.post('/store-notas-his',fd,{
     }).then(res =>  {
@@ -336,7 +339,7 @@ $("#sol_error").on("click",function(){
 
 $("#btn-add-consulta-rapida").on("click", function(){
 
-    if($("#input_buscar_motivo_rapida").is(":hidden")){
+   /*  if($("#input_buscar_motivo_rapida").is(":hidden")){
         if($("#diagnostico_principal").val() != "" ){
             if(txtConsulta.getData() != "" ){
                 if($("#estatura-signos2").val() != ""){
@@ -394,7 +397,22 @@ $("#btn-add-consulta-rapida").on("click", function(){
         $("#buscar_motivo_rapida").focus();
         warning("Motivo de Consulta");
         
-    }
+    } */
+
+    var motivo = $("#motivo_consulta_rapida").val();
+    var diagnostico = $("#diagnostico_principal").attr("data-id");
+    var notas = txtConsulta.getData();
+    var estatura = $("#estatura-signos2").val();
+    var peso = $("#peso-signos2").val();
+    var masa_corporal = $("#masa_corporal2").val();
+    var temperatura = $("#temperatura-signos2").val();
+    var frec_signos = $("#frec_respiratoria-signos2").val();
+    var sistolica = $("#sistolica2").val();
+    var diastolica = $("#diastolica2").val();
+
+    create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_corporal,temperatura,frec_signos,sistolica,diastolica);
+
+    
 });
 function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_corporal,temperatura,frec_signos,sistolica,diastolica){
 
@@ -410,10 +428,10 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
     fd.append("frec_signos",frec_signos);
     fd.append("sistolica",sistolica);
     fd.append("diastolica",diastolica);
-    fd.append("id_estudios",check_idestudios());
-    fd.append("obsEstudios",check_obsEstudios());
-    fd.append("id_articulos",check_idarticulos());
-    fd.append("indiArticulos",check_indiArticulos());
+    fd.append("id_estudios",JSON.stringify(check_idestudios()));
+    fd.append("obsEstudios",JSON.stringify(check_obsEstudios()));
+    fd.append("id_articulos",JSON.stringify(check_idarticulos()));
+    fd.append("indiArticulos",JSON.stringify(check_indiArticulos()));
                 
     const response =  axios.post('/store-motivo-consulta-rapida',fd,{
     }).then(res =>  {

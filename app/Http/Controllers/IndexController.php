@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Doctor;
+use App\Paciente;
 use App\Especialidad;
 
 
@@ -30,5 +31,13 @@ class IndexController extends Controller
         $dr = Doctor::findOrFail($doctor);
 
         return view('booking',compact('dr'));
+    }
+
+    public function receta(){
+
+        $doctor = Doctor::where('id',3)->with(['clinicas'])->get()[0];
+        $paciente = Paciente::where('id',1)->get()[0];
+        return view('invoice-view',['doctor'=> $doctor,'paciente'=>$paciente ]);
+       
     }
 }

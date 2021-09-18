@@ -52,7 +52,7 @@
 							
 							<div class="col-md-3" >
 								<div class="footer-logo">
-											<img src="assets/img/footer-logo.png" alt="logo">
+											<img src="assets/img/footer-logo.png" width="100%" alt="logo">
 										</div>
 								</div>
 							
@@ -79,8 +79,8 @@
 								<div class="copyright-menu">
 									<ul class="policy-menu">
 										<li><a href="term-condition.html">Terminos y Condiciones  </a></li>
-										<li style="color:white; font-size:20px;" ><i class="fab fa-facebook"></i></li>
-										<li style="color:white; font-size:20px;"><i class="fab fa-instagram"></i></li>
+										<li style="color:white; font-size:20px;" > <a href="https://www.facebook.com/Especialistas.Confiables" target="_blanck" > <i class="fab fa-facebook"></i></a></li>
+										<li style="color:white; font-size:20px;"> <a href="https://www.instagram.com/docbook.mx/" target="_black" > <i class="fab fa-instagram"></i></a></li>
 									</ul>
 								</div>
 								<div class="social-icon">

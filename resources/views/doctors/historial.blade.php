@@ -1421,7 +1421,7 @@
 												<label class="text-sm text-warning" for=""><i class="fas fa-weight" ></i></label>
 											</div>
 											<div class="col-sm-8 text-warning">
-												<label class="text-lg " for="">45  
+												<label class="text-lg " for="">{{ $paciente->pluck('historial')[0][0]->masa_corporal }}  
 												</label><small> kg/m2</small>
 											</div>
 										</div>

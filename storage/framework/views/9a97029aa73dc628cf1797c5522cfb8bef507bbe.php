@@ -23,78 +23,23 @@
                             <span>Inicio</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="appointments">
-                            <i class="fas fa-calendar-check"></i>
-                            <span>Citas</span>
-                        </a>
-                    </li>
+                    
                     <li  class="<?php if($page == "mis-pacientes"): ?> active <?php endif; ?>" >
                         <a href="<?php echo e(route('mis-pacientes')); ?>">
                             <i class="fas fa-user-injured"></i>
                             <span>Mis Pacientes</span>
                         </a>
                     </li>
+                    
                     <li>
-                        <a href="schedule-timings">
-                            <i class="fas fa-hourglass-start"></i>
-                            <span>Programar horarios</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="available-timings">
-                            <i class="fas fa-clock"></i>
-                            <span>Horarios Disponibles</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="invoices">
-                            <i class="fas fa-file-invoice"></i>
-                            <span>Facturas</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="accounts">
-                            <i class="fas fa-file-invoice-dollar"></i>
-                            <span>Cuentas</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="reviews">
-                            <i class="fas fa-star"></i>
-                            <span>Comentarios</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="chat-doctor">
-                            <i class="fas fa-comments"></i>
-                            <span>Mensajes</span>
-                            <small class="unread-msg">23</small>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="config-perfil-doctor">
-                            <i class="fas fa-user-cog"></i>
-                            <span>Configuración de Perfil</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="social-media">
-                            <i class="fas fa-share-alt"></i>
-                            <span>Redes Sociales</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="doctor-change-password">
-                            <i class="fas fa-lock"></i>
-                            <span>Cambiar Contraseña</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="index">
+                        <a href="<?php echo e(route('logout')); ?>" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Cerrar Sesión</span>
                         </a>
+                        <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" style="display: none;">
+                            <?php echo csrf_field(); ?>
+                        </form>
                     </li>
                 </ul>
             </nav>

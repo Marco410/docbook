@@ -23,19 +23,19 @@
                             <span>Inicio</span>
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="appointments">
                             <i class="fas fa-calendar-check"></i>
                             <span>Citas</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li  class="@if($page == "mis-pacientes") active @endif" >
                         <a href="{{ route('mis-pacientes') }}">
                             <i class="fas fa-user-injured"></i>
                             <span>Mis Pacientes</span>
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="schedule-timings">
                             <i class="fas fa-hourglass-start"></i>
                             <span>Programar horarios</span>
@@ -89,12 +89,16 @@
                             <i class="fas fa-lock"></i>
                             <span>Cambiar Contraseña</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li>
-                        <a href="index">
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Cerrar Sesión</span>
                         </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     </li>
                 </ul>
             </nav>

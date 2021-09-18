@@ -40,7 +40,7 @@
 												</div>
 											</div>
 											<div class="col-md-12">
-												<a href="search" class="btn banner-btn mt-3"><i class="fa fa-search"></i> BUSCAR</a>
+												<a  class="btn banner-btn mt-3"><i class="fa fa-search"></i> BUSCAR</a>
 											</div>
 										</div>
 									</form>
@@ -118,8 +118,8 @@
 											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-01.png">
 											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-01.png"/>
 										</a>
-										<h4>Orthopedic</h4>
-										<p>124 <span>Doctors</span></p>
+										<h4>Ortopedia</h4>
+										
 										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
@@ -129,8 +129,7 @@
 											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-02.png">
 											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-02.png"/>
 										</a>
-										<h4>Urology</h4>
-										<p>124 <span>Doctors</span></p>
+										<h4>Urología</h4>
 										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
@@ -140,8 +139,7 @@
 											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-03.png">
 											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-03.png"/>
 										</a>
-										<h4>Cardiologist</h4>
-										<p>124 <span>Doctors</span></p>
+										<h4>Cardióloga</h4>
 										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
@@ -151,8 +149,7 @@
 											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-04.png">
 											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-04.png"/>
 										</a>
-										<h4>Neurology</h4>
-										<p>124 <span>Doctors</span></p>
+										<h4>Neurología</h4>
 										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
@@ -162,8 +159,7 @@
 											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-05.png">
 											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-05.png"/>
 										</a>
-										<h4>Dentist</h4>
-										<p>124 <span>Doctors</span></p>
+										<h4>Dentista</h4>
 										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
@@ -173,8 +169,7 @@
 											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-06.png">
 											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-06.png"/>
 										</a>
-										<h4>Laboratry</h4>
-										<p>124 <span>Doctors</span></p>
+										<h4>Laboratorio</h4>
 										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
@@ -184,8 +179,7 @@
 											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-07.png">
 											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-07.png"/>
 										</a>
-										<h4>MRI Scans</h4>
-										<p>124 <span>Doctors</span></p>
+										<h4>Resonancias magnéticas</h4>
 										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
@@ -195,8 +189,7 @@
 											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-08.png">
 											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-08.png"/>
 										</a>
-										<h4>Primary Checkup</h4>
-										<p>124 <span>Doctors</span></p>
+										<h4>Chequeo primario</h4>
 										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
@@ -206,8 +199,7 @@
 											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-09.png">
 											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-09.png"/>
 										</a>
-										<h4>Testing</h4>
-										<p>124 <span>Doctors</span></p>
+										<h4>Pruebas</h4>
 										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
@@ -217,30 +209,7 @@
 											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-10.png">
 											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-10.png"/>
 										</a>
-										<h4>Pediatrics</h4>
-										<p>124 <span>Doctors</span></p>
-										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
-									</div>
-								</div>
-								<div class="profile-widget">
-									<div class="brower-box">
-										<a href="javascript:void(0);">
-											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-01.png">
-											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-01.png"/>
-										</a>
-										<h4>Orthopedic</h4>
-										<p>124 <span>Doctors</span></p>
-										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
-									</div>
-								</div>
-								<div class="profile-widget">
-									<div class="brower-box">
-										<a href="javascript:void(0);">
-											<img class="img-fluid" alt="User Image" src="assets/img/icons/clinic-02.png">
-											<img class="img-fluid hover" alt="" src="assets/img/icons/clinic-hover-02.png"/>
-										</a>
-										<h4>Urology</h4>
-										<p>124 <span>Doctors</span></p>
+										<h4>Pediatría</h4>
 										<a href="doctor-profile" class="arrow"><i class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
@@ -323,7 +292,7 @@
 												<i class="fas fa-map-marker-alt mr-2" ></i>
 												<a href="javascript:void(0);">
 													<span class="available-info">Ubicación</span>
-													<span class="data-info"><?php echo e($doctor->estado); ?>, México</span>
+													<span class="data-info"><?php echo e($doctor->clinicas()->get()[0]->ciudad_consultorio); ?> <?php echo e($doctor->clinicas()->get()[0]->colonia_consultorio); ?> <?php echo e($doctor->clinicas()->get()[0]->estado_consultorio); ?>, México</span>
 												</a>
 											</div>
 										</div>
