@@ -97,5 +97,6 @@
 			} );
 			</script>
 		<script  src="/assets/js/view_controllers/historial_vs.js"></script>
+		<script  src="/assets/js/view_controllers/historial/historial_tables_vs.js"></script>
 		<?php endif; ?>
 <?php /**PATH D:\xampp\htdocs\pixelar_doc\laravel-files\template\resources\views/layout/partials/footer-scripts.blade.php ENDPATH**/ ?>

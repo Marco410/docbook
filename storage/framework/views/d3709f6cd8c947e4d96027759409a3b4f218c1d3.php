@@ -255,7 +255,7 @@
 								</div>
 								<div class="col-sm-6 mb-4">
 									<div class="">
-										<a href="<?php echo e(route('registro-paciente')); ?>" class="btn btn-primary btn-md float-right"><i class="fas fa-play"></i> Iniciar Consulta</a>
+										<a href="#" class="btn btn-primary btn-md float-right"><i class="fas fa-play"></i> Iniciar Consulta</a>
 									</div>
 								</div>
 							</div>
@@ -1445,35 +1445,61 @@
 								</div>
 								<div class="col-sm-12">
 									<h5 class="text-secondary text-sm" >CONSULTAS INICIADAS</h5>
-
-									<div class="card boder-primary">
-										<div class="card-header text-center" >
-											<label class="text-info text-lg" for=""><i class="fas fa-laptop-medical" ></i></label>
-										</div>
-										<div class="row">
-											<div class="col-sm-4 text-center p-2">
-												<label class="text-secondary text-sm mb-1" >19</label><br>
-												<label class="text-secondary text-lg mb-1" >AGO</label><br>
-												<label class="text-secondary text-md mb-1">2021</label>
-											</div>
-											<div class="col-sm-8 p-2">
-												<div class="row">												
-													<div class="col-sm-8">
-														<label class="text-secondary text-sm mb-3 font-italic" for="">Dr. Juan Peréz </label> 
+									<?php if(!empty($consultas)): ?>
+										<?php $__currentLoopData = $consultas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $consulta): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+											<i style="display: none;" ><?php echo e($fechaInt = strtotime($consulta->created_at)); ?></i>
+											<div class="card boder-primary">
+												<div class="card-header text-center" >
+													<label class="text-info text-lg" for=""><i class="fas fa-laptop-medical" ></i><?php echo e($consulta->id); ?></label>
+												</div>
+												<div class="row card-body">
+													<div class="col-sm-4 text-center p-2">
+														<label class="text-secondary text-sm mb-1" ><?php echo e(date("d", $fechaInt)); ?></label><br>
+														<label class="text-secondary text-lg mb-1" ><?php echo e(date("M", $fechaInt)); ?></label><br>
+														<label class="text-secondary text-md mb-1"><?php echo e(date("Y", $fechaInt)); ?></label>
 													</div>
-													<div class="col-sm-4">
-														<label class="text-secondary  text-sm mb-3 " >3:51 PM</label>
-													</div>
-													<div class="col-sm-12">
-														<label class="text-primary text-sm font-weight-bold mb-1 " for="">Dolor de Garganta</label>
+													<div class="col-sm-8 p-2">
+														<div class="row">											<div class="col-sm-8">
+																<label class="text-secondary text-sm mb-3 font-italic" for="">Dr. <?php echo e($consulta->doctor()->get()[0]->nombre); ?> <?php echo e($consulta->doctor()->get()[0]->apellido_p); ?></label> 
+															</div>
+															<div class="col-sm-4">
+																<label class="text-secondary  text-sm mb-3 " ><?php echo e(date("h:i A", $fechaInt)); ?></label>
+															</div>
+															<div class="col-sm-12">
+																<label class="text-primary text-sm font-weight-bold mb-1 " for=""><?php echo e($consulta->motivo()->get()[0]->motivo); ?></label><br>
+																<label class="text-secondary text-sm font-weight-bold mb-1 " for=""> <small><?php echo e($consulta->diagnostico()->get()[0]->descripcion_4); ?></small></label>
+															</div>
+														</div>
+														
+														
 													</div>
 												</div>
-												
+												<div class="card-footer" >
+													<div class="row">
+
+														<div class="col-sm-4">
+															<a class="btn btn-sm bg-info-light" href="<?php echo e($consulta->receta); ?>" target="_blank" >Ver Receta</a>
+														</div>
+			
+														<div class="col-sm-5" >
+															<?php if($consulta->pagado == 0): ?>
+																<button class="btn btn-sm bg-danger-light" onclick="pagar_atrasado('<?php echo e($consulta->id); ?>','<?php echo e($consulta->diagnostico()->get()[0]->descripcion_4); ?>','<?php echo e($consulta->motivo()->get()[0]->motivo); ?>')"> Pagar</button>
+															<?php elseif($consulta->pagado == 1): ?>
+															<a class="btn btn-sm bg-success-light" href="<?php echo e($consulta->recibo); ?>" target="_blank" >Recibo de Pago</a>
+															
+															<?php endif; ?>
+	
+														</div>
+													</div>
+
+												</div>
 												
 											</div>
+										<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+									<?php endif; ?>
+									<div class="col-sm-12 text-center" >
+										<?php echo e($consultas->links()); ?>
 
-										</div>
-										
 									</div>
 								</div>
 							</div>
@@ -1651,27 +1677,16 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12 mb-2 text-center">
-						<table class="datatable table table-hover table-center mb-0" id="table-articulos">
+						<table class=" table table-hover table-center mb-0" id="table_articulos">
 							<thead>
 								<tr>
 									<th>Identificador</th>
 									<th>Nombre del Medicamento</th>
+									<th>Descripción</th>
 									<th>Acciones</th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php $__currentLoopData = $articulos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $a): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-								<tr>
-									<td>M-<?php echo e($a->id); ?></td>
-									<td><?php echo e($a->articulo); ?></td>
-									<td class="text-right">
-										<div class="actions btn-group">
-											<button type="button" title="Consulta" class="btn btn-sm bg-primary-light btn-editar btn-add-articulo" data-id="<?php echo e($a->id); ?>" data-value="<?php echo e($a->articulo); ?>" data-cant="<?php echo e($a->cantidad); ?>" data-des="<?php echo e($a->descripcion); ?>"  href="">
-												<i class="fas fa-plus"></i></button>
-										</div>
-									</td>
-								</tr>
-								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 							
 							</tbody>
 						</table>
@@ -1720,28 +1735,15 @@
 				<div class="row">
 					
 					<div class="col-sm-12 mb-2 text-center">
-						<table class="datatable table table-hover table-center mb-0">
+						<table id="table_estudios" class="table table-hover table-center mb-0">
 							<thead>
 								<tr>
 									<th>Identificador</th>
-									<th>Nombre del Estudio</th>
+									<th>Estudio</th>
 									<th>Acciones</th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php $__currentLoopData = $estudios; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $e): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-								<tr>
-									<td>E-<?php echo e($e->id); ?></td>
-									<td><?php echo e($e->estudio); ?></td>
-									<td class="text-right">
-										<div class="actions btn-group">
-											<button type="button" title="Consulta" class="btn btn-sm bg-primary-light btn-editar btn-add-estudio" data-id="<?php echo e($e->id); ?>" data-value="<?php echo e($e->estudio); ?>"  href="">
-												<i class="fas fa-plus"></i></button>
-										</div>
-									</td>
-								</tr>
-								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-							
 							</tbody>
 						</table>
 						
@@ -1780,9 +1782,10 @@
 				<div class="row">
 					
 					<div class="col-sm-12 mb-2 text-center">
-						<table class="datatable table table-hover table-center mb-0">
+						<table id="table_diagnosticos" class="table table-hover table-center mb-0">
 							<thead>
 								<tr>
+									<th>#</th>
 									<th>COD_3</th>
 									<th>Descripción 3</th>
 									<th>COD_4</th>
@@ -1791,21 +1794,6 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php $__currentLoopData = $diagnosticos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-								<tr>
-									<td><?php echo e($d->cod_3); ?></td>
-									<td><?php echo e($d->descripcion_3); ?></td>
-									<td><?php echo e($d->cod_4); ?></td>
-									<td><?php echo e($d->descripcion_4); ?></td>
-									<td class="text-right">
-										<div class="actions btn-group">
-											<button type="button" title="Consulta" class="btn btn-sm bg-primary-light btn-editar btn-add-diagnostico" data-id="<?php echo e($d->id); ?>" data-value="<?php echo e($d->descripcion_4); ?>"  href="">
-												<i class="fas fa-plus"></i></button>
-										</div>
-									</td>
-								</tr>
-								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-							
 							</tbody>
 						</table>
 						
@@ -1824,5 +1812,67 @@
 	</div>
 </div>
 <!-- / Cierra agregar diagnóstico Modal -->
+<button id="btn-pagar" > Pagar</button>
+<!-- / Agregar pago Modal -->
+<div class="modal fade" id="pagar_consulta" aria-hidden="true" role="dialog" >
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
+		<div class="modal-content sombra" >
+			<div class="modal-header back-prim" >
+				<h5 class="modal-title text-white">
+					Recibir Pago Consulta Rápida<br>
+					<small  ></small>
+				</h5>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12 text-center" >
+						<h4><i class="fas fa-money-check"></i> Cobrar:</h4>
+					</div>
+				</div>
+				<div class="select-gender-col text-center">
+					<div class="row">
+						<div class="col-sm-6 pr-2">
+							<input type="hidden" id="id_consulta_rapida" name="id_consulta_rapida" >
+							<input type="radio" id="cobro1" name="cobro" checked="" value="<?php echo e(auth()->user("doctors")->seguimiento); ?>">
+							<label for="cobro1">
+								<span>$<?php echo e(auth()->user("doctors")->seguimiento); ?></span>
+							</label>
+						</div>
+						<div class="col-sm-6 pl-2">
+							<input type="radio" id="cobro2" name="cobro" value="<?php echo e(auth()->user("doctors")->primera); ?>">
+							<label for="cobro2">
+								<span>$<?php echo e(auth()->user("doctors")->primera); ?></span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 text-center"><h4><i class="fas fa-info-circle"></i> Detalles:</h4></div>
+					<div class="col-sm-6 p-3 offset-3">
+						<p>
+							<strong>Diagnóstico: </strong><span id="diagnostico-consulta-cobro" ></span><br>
+							<strong>Motivo: </strong><span id="motivo-consulta-cobro" ></span>
+						</p>
+					</div>
+					<div class="col-sm-6 text-center offset-3" >
+						<h4>Cobro extra:</h4>
+						<input type="number" min="0"  id="cobro_extra" class="form-control" placeholder="$" >
+						<input type="text" id="motivo_extra" name="motivo_extra"  class="form-control" placeholder="Motivo cobro extra"   >
+						<p> <strong>Total $: </strong><span id="total_consulta_rapida" ><?php echo e(auth()->user("doctors")->seguimiento); ?></span> </p>
+					</div>
+					<div class="col-sm-12" >	</div>
+				</div>
+				
+			</div>
+			<div class="modal-footer">
+				<div class="col-sm-12" >
+					<button class="btn btn-sm btn-block btn-primary" id="btn-hacer-pago" >Realizar cobro</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<!-- / Cierra agregar pago Modal -->
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layout.mainlayout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\pixelar_doc\laravel-files\template\resources\views/doctors/historial.blade.php ENDPATH**/ ?>

@@ -253,7 +253,7 @@
 								</div>
 								<div class="col-sm-6 mb-4">
 									<div class="">
-										<a href="{{ route('registro-paciente') }}" class="btn btn-primary btn-md float-right"><i class="fas fa-play"></i> Iniciar Consulta</a>
+										<a href="#{{-- {{ route('registro-paciente') }} --}}" class="btn btn-primary btn-md float-right"><i class="fas fa-play"></i> Iniciar Consulta</a>
 									</div>
 								</div>
 							</div>
@@ -1440,35 +1440,61 @@
 								</div>
 								<div class="col-sm-12">
 									<h5 class="text-secondary text-sm" >CONSULTAS INICIADAS</h5>
-
-									<div class="card boder-primary">
-										<div class="card-header text-center" >
-											<label class="text-info text-lg" for=""><i class="fas fa-laptop-medical" ></i></label>
-										</div>
-										<div class="row">
-											<div class="col-sm-4 text-center p-2">
-												<label class="text-secondary text-sm mb-1" >19</label><br>
-												<label class="text-secondary text-lg mb-1" >AGO</label><br>
-												<label class="text-secondary text-md mb-1">2021</label>
-											</div>
-											<div class="col-sm-8 p-2">
-												<div class="row">												
-													<div class="col-sm-8">
-														<label class="text-secondary text-sm mb-3 font-italic" for="">Dr. Juan Peréz </label> 
+									@if(!empty($consultas))
+										@foreach ($consultas as $consulta)
+											<i style="display: none;" >{{ $fechaInt = strtotime($consulta->created_at)
+												}}</i>
+											<div class="card boder-primary">
+												<div class="card-header text-center" >
+													<label class="text-info text-lg" for=""><i class="fas fa-laptop-medical" ></i>{{ $consulta->id }}</label>
+												</div>
+												<div class="row card-body">
+													<div class="col-sm-4 text-center p-2">
+														<label class="text-secondary text-sm mb-1" >{{ date("d", $fechaInt) }}</label><br>
+														<label class="text-secondary text-lg mb-1" >{{ date("M", $fechaInt) }}</label><br>
+														<label class="text-secondary text-md mb-1">{{ date("Y", $fechaInt) }}</label>
 													</div>
-													<div class="col-sm-4">
-														<label class="text-secondary  text-sm mb-3 " >3:51 PM</label>
-													</div>
-													<div class="col-sm-12">
-														<label class="text-primary text-sm font-weight-bold mb-1 " for="">Dolor de Garganta</label>
+													<div class="col-sm-8 p-2">
+														<div class="row">											<div class="col-sm-8">
+																<label class="text-secondary text-sm mb-3 font-italic" for="">Dr. {{ $consulta->doctor()->get()[0]->nombre }} {{ $consulta->doctor()->get()[0]->apellido_p }}</label> 
+															</div>
+															<div class="col-sm-4">
+																<label class="text-secondary  text-sm mb-3 " >{{ date("h:i A", $fechaInt) }}</label>
+															</div>
+															<div class="col-sm-12">
+																<label class="text-primary text-sm font-weight-bold mb-1 " for="">{{ $consulta->motivo()->get()[0]->motivo }}</label><br>
+																<label class="text-secondary text-sm font-weight-bold mb-1 " for=""> <small>{{ $consulta->diagnostico()->get()[0]->descripcion_4 }}</small></label>
+															</div>
+														</div>
+														
+														
 													</div>
 												</div>
-												
+												<div class="card-footer" >
+													<div class="row">
+
+														<div class="col-sm-4">
+															<a class="btn btn-sm bg-info-light" href="{{ $consulta->receta }}" target="_blank" >Ver Receta</a>
+														</div>
+			
+														<div class="col-sm-5" >
+															@if($consulta->pagado == 0)
+																<button class="btn btn-sm bg-danger-light" onclick="pagar_atrasado('{{ $consulta->id }}','{{ $consulta->diagnostico()->get()[0]->descripcion_4 }}','{{ $consulta->motivo()->get()[0]->motivo }}')"> Pagar</button>
+															@elseif($consulta->pagado == 1)
+															<a class="btn btn-sm bg-success-light" href="{{ $consulta->recibo }}" target="_blank" >Recibo de Pago</a>
+															
+															@endif
+	
+														</div>
+													</div>
+
+												</div>
 												
 											</div>
-
-										</div>
-										
+										@endforeach
+									@endif
+									<div class="col-sm-12 text-center" >
+										{{ $consultas->links() }}
 									</div>
 								</div>
 							</div>
@@ -1646,27 +1672,16 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12 mb-2 text-center">
-						<table class="datatable table table-hover table-center mb-0" id="table-articulos">
+						<table class=" table table-hover table-center mb-0" id="table_articulos">
 							<thead>
 								<tr>
 									<th>Identificador</th>
 									<th>Nombre del Medicamento</th>
+									<th>Descripción</th>
 									<th>Acciones</th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($articulos as $a)
-								<tr>
-									<td>M-{{ $a->id }}</td>
-									<td>{{ $a->articulo }}</td>
-									<td class="text-right">
-										<div class="actions btn-group">
-											<button type="button" title="Consulta" class="btn btn-sm bg-primary-light btn-editar btn-add-articulo" data-id="{{ $a->id }}" data-value="{{ $a->articulo }}" data-cant="{{$a->cantidad  }}" data-des="{{ $a->descripcion }}"  href="">
-												<i class="fas fa-plus"></i></button>
-										</div>
-									</td>
-								</tr>
-								@endforeach
 							
 							</tbody>
 						</table>
@@ -1715,28 +1730,15 @@
 				<div class="row">
 					
 					<div class="col-sm-12 mb-2 text-center">
-						<table class="datatable table table-hover table-center mb-0">
+						<table id="table_estudios" class="table table-hover table-center mb-0">
 							<thead>
 								<tr>
 									<th>Identificador</th>
-									<th>Nombre del Estudio</th>
+									<th>Estudio</th>
 									<th>Acciones</th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($estudios as $e)
-								<tr>
-									<td>E-{{ $e->id }}</td>
-									<td>{{ $e->estudio }}</td>
-									<td class="text-right">
-										<div class="actions btn-group">
-											<button type="button" title="Consulta" class="btn btn-sm bg-primary-light btn-editar btn-add-estudio" data-id="{{ $e->id }}" data-value="{{ $e->estudio }}"  href="">
-												<i class="fas fa-plus"></i></button>
-										</div>
-									</td>
-								</tr>
-								@endforeach
-							
 							</tbody>
 						</table>
 						
@@ -1775,9 +1777,10 @@
 				<div class="row">
 					
 					<div class="col-sm-12 mb-2 text-center">
-						<table class="datatable table table-hover table-center mb-0">
+						<table id="table_diagnosticos" class="table table-hover table-center mb-0">
 							<thead>
 								<tr>
+									<th>#</th>
 									<th>COD_3</th>
 									<th>Descripción 3</th>
 									<th>COD_4</th>
@@ -1786,21 +1789,6 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($diagnosticos as $d)
-								<tr>
-									<td>{{ $d->cod_3 }}</td>
-									<td>{{ $d->descripcion_3 }}</td>
-									<td>{{ $d->cod_4 }}</td>
-									<td>{{ $d->descripcion_4 }}</td>
-									<td class="text-right">
-										<div class="actions btn-group">
-											<button type="button" title="Consulta" class="btn btn-sm bg-primary-light btn-editar btn-add-diagnostico" data-id="{{ $d->id }}" data-value="{{ $d->descripcion_4 }}"  href="">
-												<i class="fas fa-plus"></i></button>
-										</div>
-									</td>
-								</tr>
-								@endforeach
-							
 							</tbody>
 						</table>
 						
@@ -1819,4 +1807,68 @@
 	</div>
 </div>
 <!-- / Cierra agregar diagnóstico Modal -->
+<button id="btn-pagar" > Pagar</button>
+<!-- / Agregar pago Modal -->
+<div class="modal fade" id="pagar_consulta" aria-hidden="true" role="dialog" >
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
+		<div class="modal-content sombra" >
+			<div class="modal-header back-prim" >
+				<h5 class="modal-title text-white">
+					Recibir Pago Consulta Rápida<br>
+					<small  ></small>
+				</h5>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12 text-center" >
+						<h4><i class="fas fa-money-check"></i> Cobrar:</h4>
+					</div>
+				</div>
+				<div class="select-gender-col text-center">
+					<div class="row">
+						<div class="col-sm-6 pr-2">
+							<input type="hidden" id="id_consulta_rapida" name="id_consulta_rapida" >
+							<input type="radio" id="cobro1" name="cobro" checked="" value="{{ auth()->user("doctors")->seguimiento }}">
+							<label for="cobro1">{{-- 
+								<span class="gender-icon"><img src="assets/img/icons/male.png" alt=""></span> --}}
+								<span>${{ auth()->user("doctors")->seguimiento }}</span>
+							</label>
+						</div>
+						<div class="col-sm-6 pl-2">
+							<input type="radio" id="cobro2" name="cobro" value="{{ auth()->user("doctors")->primera }}">
+							<label for="cobro2">{{-- 
+								<span class="gender-icon"><img src="assets/img/icons/female.png" alt=""></span> --}}
+								<span>${{ auth()->user("doctors")->primera }}</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 text-center"><h4><i class="fas fa-info-circle"></i> Detalles:</h4></div>
+					<div class="col-sm-6 p-3 offset-3">
+						<p>
+							<strong>Diagnóstico: </strong><span id="diagnostico-consulta-cobro" ></span><br>
+							<strong>Motivo: </strong><span id="motivo-consulta-cobro" ></span>
+						</p>
+					</div>
+					<div class="col-sm-6 text-center offset-3" >
+						<h4>Cobro extra:</h4>
+						<input type="number" min="0"  id="cobro_extra" class="form-control" placeholder="$" >
+						<input type="text" id="motivo_extra" name="motivo_extra"  class="form-control" placeholder="Motivo cobro extra"   >
+						<p> <strong>Total $: </strong><span id="total_consulta_rapida" >{{ auth()->user("doctors")->seguimiento }}</span> </p>
+					</div>
+					<div class="col-sm-12" >	</div>
+				</div>
+				
+			</div>
+			<div class="modal-footer">
+				<div class="col-sm-12" >
+					<button class="btn btn-sm btn-block btn-primary" id="btn-hacer-pago" >Realizar cobro</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<!-- / Cierra agregar pago Modal -->
 @endsection

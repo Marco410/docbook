@@ -19,7 +19,7 @@ class HistorialController extends Controller
         $datosSignos = request()->except("_token");
         $id = $datosSignos['paciente_id'];
         
-        Historial::where('id','=',$id)->update($datosSignos);
+        Historial::where('paciente_id','=',$id)->update($datosSignos);
         
         $paciente = Paciente::findOrFail($id);
 
@@ -30,7 +30,7 @@ class HistorialController extends Controller
         $datosNotas = request()->except("_token");
         $id = $datosNotas['paciente_id'];
         
-        Historial::where('id','=',$id)->update($datosNotas);
+        Historial::where('paciente_id','=',$id)->update($datosNotas);
         
         $paciente = Paciente::findOrFail($id);
 
@@ -40,7 +40,7 @@ class HistorialController extends Controller
     public function store_alergias_option(){
         $id = request()->paciente_id;
 
-        Historial::where('id','=',$id)->update([
+        Historial::where('paciente_id','=',$id)->update([
             'alergias_option' => request()->alergias_option
         ]);
 

@@ -61,7 +61,7 @@
 								<i class="fas fa-phone-alt"></i>					
 							</div>
 							<div class="header-contact-detail">
-								<p class="contact-info-header">Contacto: +1 315 369 5943</p>
+								<p class="contact-info-header">Contacto: 993 345 2719</p>
 							</div>
 						</li>
 						<li class="nav-item">

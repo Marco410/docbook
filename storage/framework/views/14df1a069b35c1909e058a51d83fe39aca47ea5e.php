@@ -9,7 +9,7 @@
 						<div class="col-lg-6">
 							<div class="doctor-search">
 								<div class="banner-header">
-									<h2><b>ENCUENTRA A TU ESPECIALISTA,</b> <br> Y PUDE TU CITA</h2>
+									<h2><b>ENCUENTRA A TU ESPECIALISTA,</b> <br> Y PIDE TU CITA</h2>
                                     <h4>100,000 profesionales listos para ayudarte.</h4>
 								</div>
 								<div class="doctor-form">
@@ -40,7 +40,7 @@
 												</div>
 											</div>
 											<div class="col-md-12">
-												<a  class="btn banner-btn mt-3"><i class="fa fa-search"></i> BUSCAR</a>
+												<a  href="#" class="btn banner-btn mt-3"><i class="fa fa-search"></i> BUSCAR</a>
 											</div>
 										</div>
 									</form>

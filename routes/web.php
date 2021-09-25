@@ -126,7 +126,9 @@ Route::post('/paciente/registro','DoctorController@patient_registro')->name('doc
 
 Route::get('/get_patient/{paciente}','DoctorController@get_patient')->name('get_patient');
 
-Route::post('/store-motivo-consulta-rapida','DoctorController@new_consulta_rapida')->name('store-motivo-consulta-rapida');
+Route::post('/store-consulta-rapida','DoctorController@new_consulta_rapida')->name('store-consulta-rapida');
+
+Route::post('/make-pay','DoctorController@make_pay')->name('make-pay');
 
 Route::get('/receta','IndexController@receta')->name('receta');
 
@@ -191,6 +193,13 @@ Route::get('/get-motivo-consulta','DataController@get_motivo_consulta')->name('g
 Route::post('/save-new-motivo','DataController@save_new_motivo')->name('save-new-motivo');
 
 Route::post('/save-new-articulo','DataController@save_new_articulo')->name('save-new-articulo');
+
+Route::get('/get-diagnostics','DataController@get_diagnostics')->name('get-diagnostics');
+
+Route::get('/get-articulos','DataController@get_articulos')->name('get-articulos');
+
+Route::get('/get-estudios','DataController@get_estudios')->name('get-estudios');
+
 
 
 

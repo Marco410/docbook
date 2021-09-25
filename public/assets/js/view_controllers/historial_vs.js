@@ -302,32 +302,6 @@ $('#btn-save-notas-his').on("click", function(){
     });  
 });
 
-$(".btn-add-diagnostico").on("click",function(){
-    $("#diagnostico_principal").val($(this).attr("data-value"));
-
-    $("#diagnostico_principal").attr("data-id",$(this).attr("data-id"));
-
-    $("#agregar_diagnostico").modal("hide");
-
-    $("#agregar_diagnostico").on("hidden.bs.modal",function(){
-        $(".body-historial").addClass("modal-open");
-    });
-    
-});
-
-
-$(".btn-add-estudio").on("click",function(){
-
-    $("#panel-estudios-rapida-estudio").append("<div class='card estudio"+$(this).attr("data-id")+"' ><div class='card-header'><div class='card-title'><h5 class='text-info'  > <i class='fas fa-file' ></i> "+$(this).attr("data-value")+" <i onclick='removeEstudio(this)' data-id='"+$(this).attr("data-id")+"' class='fas fa-times-circle text-danger' ></i></h5></div></div> <div class='card-body'><textarea class='form-control' name='observaciones' placeholder='Escribe las observaciones' ></textarea><input type='hidden' name='id_estudio' value='"+$(this).attr("data-id")+"' /> </div></div>");
-
-    $("#agregar_estudio").modal("hide");
-    
-    $("#agregar_estudio").on("hidden.bs.modal",function(){
-        $(".body-historial").addClass("modal-open");
-    });
-
-});
-
 function removeEstudio(elemento){
     $(".estudio"+elemento.getAttribute("data-id")).remove();
 }
@@ -432,14 +406,29 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
     fd.append("obsEstudios",JSON.stringify(check_obsEstudios()));
     fd.append("id_articulos",JSON.stringify(check_idarticulos()));
     fd.append("indiArticulos",JSON.stringify(check_indiArticulos()));
+
                 
-    const response =  axios.post('/store-motivo-consulta-rapida',fd,{
+    const response =  axios.post('/store-consulta-rapida',fd,{
     }).then(res =>  {
+
+        window.open(res['data']['pdf']);
+
         iziToast.success({
             timeout: 6000,
             title: 'Éxito',
             position: 'topRight',
             message: 'Consulta rápida creada.',
+        });
+        console.log(res['data']);
+        //window.location.reload();
+        $("#id_consulta_rapida").val(res['data']['consulta'].id);
+        $("#diagnostico-consulta-cobro").html(res['data']['diagnostico']);
+        $("#motivo-consulta-cobro").html(res['data']['motivo']);
+
+        $("#consulta_rapida").modal("hide");
+        $("#pagar_consulta").modal({
+            backdrop: 'static',
+            show: true
         });
     }).catch((err) => {
         iziToast.error({
@@ -449,6 +438,128 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
             message: 'Algo salio mal, intentelo de nuevo y recargue.',
         });
     }); 
+
+}
+
+
+
+$('#cobro1').change(function() {
+
+    var extra = $("#cobro_extra").val();
+   
+    if (extra == ""){
+        extra = 0;
+    }else{
+        extra = $("#cobro_extra").val();
+    }
+
+    if($(this).is(":checked")) {
+        var total = parseFloat($(this).val()) + parseFloat(extra);
+       $("#total_consulta_rapida").html(total); 
+    }else if ($("#cobro2").is(":checked")){
+        var total = parseFloat($("#cobro2").val()) + parseFloat(extra);
+
+        $("#total_consulta_rapida").html(total); 
+    }    
+});
+
+$('#cobro2').change(function() {
+    var extra = $("#cobro_extra").val();
+   
+    if (extra == ""){
+        extra = 0;
+    }else{
+        extra = $("#cobro_extra").val();
+    }
+    
+    if($(this).is(":checked")) {
+        var total = parseFloat($(this).val()) + parseFloat(extra);
+        $("#total_consulta_rapida").html(total); 
+    }else if ($("#cobro1").is(":checked")){
+        var total = parseFloat($("#cobro1").val()) + parseFloat(extra);
+        $("#total_consulta_rapida").html($("#cobro1").val()); 
+    }    
+});
+
+$("#cobro_extra").keyup(function(){
+    var costo_consulta = 0;
+    if($("#cobro1").is(":checked")){
+        costo_consulta = $("#cobro1").val();
+    }else if($("#cobro2").is(":checked")) {
+        costo_consulta = $("#cobro2").val();
+    }
+    var total = parseFloat($(this).val()) + parseFloat(costo_consulta);
+    if($(this).val() == ""){
+        $("#total_consulta_rapida").html(costo_consulta);
+    }else{
+        $("#total_consulta_rapida").html(total);
+    }
+
+    
+});
+
+$("#btn-pagar").on("click",function(){
+    $("#pagar_consulta").modal("show");
+});
+
+$("#btn-hacer-pago").on("click",function(){
+    $("#id_consulta_rapida").val();
+
+    if($("#cobro1").is(":checked")){
+        costo_consulta = $("#cobro1").val();
+    }else if($("#cobro2").is(":checked")) {
+        costo_consulta = $("#cobro2").val();
+    }
+    
+    var totalF = $("#total_consulta_rapida").html();
+    var id_consulta = $("#id_consulta_rapida").val();
+    var motivo_extra = $("#motivo_extra").val();
+    var extra =  $("#cobro_extra").val();
+
+
+    var fd = new FormData();
+    fd.append("paciente_id",$("#paciente_id").val());
+    fd.append("id_consulta_rapida",id_consulta);
+    fd.append("total",totalF);
+    fd.append("motivo_extra",motivo_extra);
+    fd.append("extra",extra);
+    fd.append("costo_consulta",costo_consulta);
+
+    const response =  axios.post('/make-pay',fd,{
+    }).then(res =>  {
+
+        iziToast.success({
+            timeout: 3000,
+            title: 'Éxito',
+            position: 'center',
+            message: 'Realizando Cobro. Guardando... (Espere)',
+        });
+        
+        setTimeout(function(){
+            window.open(res['data']['pdf']);
+            window.location.reload();
+        },3000);
+        
+
+    }).catch((err) => {
+        iziToast.error({
+            timeout: 6000,
+            title: 'Error',
+            position: 'topRight',
+            message: 'Algo salio mal, intentelo de nuevo y recargue.',
+        });
+    }); 
+
+});
+
+
+function pagar_atrasado(id_consulta, diagnostico, motivo){
+
+    $("#id_consulta_rapida").val(id_consulta);
+    $("#diagnostico-consulta-cobro").html(diagnostico);
+    $("#motivo-consulta-cobro").html(motivo);
+
+    $("#pagar_consulta").modal("show");
 
 }
 

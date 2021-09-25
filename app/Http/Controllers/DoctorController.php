@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\PDF;
 use Illuminate\Validation\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response as FacadeResponse;
+
 use App\Doctor;
 use App\Paciente;
 use App\Historial;
@@ -15,6 +18,8 @@ use App\Especialidad;
 use App\Diagnostic;
 use App\Estudios;
 use App\Articulos;
+use App\ConsultaRapida;
+use App\MotivoConsulta;
 use Auth;
 
 use Spatie\Permission\Models\Role;
@@ -57,21 +62,24 @@ class DoctorController extends Controller
 
     public function historial($paciente){
 
-        $pa =  Paciente::where('id',$paciente)->with(['historial','alergias'])->get();
 
+        $pa =  Paciente::where('id',$paciente)->with(['historial','alergias'])->get();
         //return $paciente[0]->get_edad();
 
-        if(!Historial::where('paciente_id',$pa->pluck('id')[0])->exists()){
+        if(!Historial::where('paciente_id',$paciente)->exists()){
             $historial = Historial::create([
-                'paciente_id' => $pa->pluck('id')[0]
+                'paciente_id' => $paciente
             ]);
+
+            $pacientes = Auth::user()->pacientes()->get();
+            return view('doctors.my-patients',['pacientes' => $pacientes]);
+
+        }else{
+
+           $consultas =  ConsultaRapida::query()->where("paciente_id",$paciente)->with(['diagnostico'])->orderBy("created_at","DESC")->paginate(5);
+            
+            return view('doctors.historial', ['paciente' => $pa,'consultas' => $consultas]);
         }
-
-        $d = Diagnostic::all();
-        $e = Estudios::all();
-        $a = Articulos::where('clinica_id', Auth::user()->clinicas()->get()[0]->id)->get();
-
-        return view('doctors.historial', ['paciente' => $pa,'diagnosticos'=> $d,'estudios'=> $e,'articulos'=> $a]);
      }
 
      
@@ -150,38 +158,108 @@ class DoctorController extends Controller
 
          $data = "Paciente: " . request()->paciente_id . "Motivo: " . request()->motivo . "Diagnostico: " . request()->diagnostico . "Notas: " . request()->notas . "Estatura: " . request()->estatura . "Peso: " . request()->peso . "Masa: " . request()->masa_corporal . "Temp: " . request()->temperatura . "Signos: " . request()->frec_signos . "Sis: " . request()->sistolica . "Dias: " . request()->diastolica . "IdEstudios: " . request()->id_estudios . "ObsEstudios: " . request()->obsEstudios . "IdArticulos: " . request()->id_articulos . "IndiArticulo: " . request()->indiArticulos;
 
-        $doctor = Doctor::where('id',1)->with(['clinicas'])->get()[0];
+        
+        Historial::where('paciente_id','=',request()->paciente_id)->update([
+            'estatura' => request()->estatura,
+            'peso' => request()->peso,
+            'masa_corporal' => request()->masa_corporal,
+            'temperatura' => request()->temperatura,
+            'frec_respiratoria' => request()->frec_signos,
+            'sistolica' => request()->sistolica,
+            'diastolica' => request()->diastolica
+        ]);
+
+        $doctor = Doctor::where('id',auth()->user("doctors")->get()[0]->id)->with(['clinicas'])->get()[0];
         $paciente = Paciente::where('id',request()->paciente_id)->get()[0];
+        $diagnostico = Diagnostic::where('id',request()->diagnostico)->get()[0]->descripcion_4  ;
+        $temp = request()->temperatura;
+        $motivo = MotivoConsulta::where('id', request()->motivo)->get()[0]->motivo;
 
         $arrayIdArt = json_decode(request()->id_articulos);
         $arrayIndi = json_decode(request()->indiArticulos);
         $i = 0;
 
-       /*  for ($i = 1; $i <= count($arrayIdArt); $i++) {
-            echo $i;
-        } */
         foreach ($arrayIdArt as $idArticulo){
             $articulo = Articulos::where('id', $idArticulo)->get()[0];
-            $articulos[$i] = array(
+            $articulosF[$i] = array(
                 "articulo" =>$articulo->articulo,
                 "indicaciones" => $arrayIndi[$i]
             );  
             $i++;
         }
 
+        $arrayIdEst = json_decode(request()->id_estudios);
+        $arrayObs = json_decode(request()->obsEstudios);
+        $j = 0;
+
+        foreach ($arrayIdEst as $idEstudio){
+            $estudio = Estudios::where('id', $idEstudio)->get()[0];
+            $estudiosF[$j] = array(
+                "estudio" => $estudio->estudio,
+                "observaciones" => $arrayObs[$j]
+            );  
+            $j++;
+        }
         
+        $pdf = \PDF::loadView('invoice-view',['doctor'=> $doctor,'paciente'=>$paciente,'indicaciones' => $articulosF,'estudios' => $estudiosF,'diagnostico' => $diagnostico,'temp'=>$temp]);
+        $pdf->setPaper(array(0,0,595.28,420.94), 'portrait');
+        $date = Date("dmys");
+        $path = 'public/recetas/p'.request()->paciente_id.'/r-'.$date.'.pdf';
+        $pathSave = Storage::put($path, $pdf->output());
+        
+        $consulta_rapida = ConsultaRapida::create([
+            'paciente_id' => request()->paciente_id, 
+            'doctor_id' => auth()->user("doctors")->get()[0]->id, 
+            'motivo_consulta_id' => request()->motivo, 
+            'diagnostico_id' => request()->diagnostico, 
+            'notas_consulta_rapida' => request()->notas,
+            'receta' => "/storage/recetas/p".request()->paciente_id."/r-".$date.".pdf",
+            'motivo_extra' => "-",
+            'pagado' => "0" 
+        ]);
+        $request = [
+            'consulta' => $consulta_rapida,
+            'motivo' => $motivo,
+            'diagnostico' => $diagnostico,
+            'pdf' => "/storage/recetas/p".request()->paciente_id."/r-".$date.".pdf"
+        ];
 
-        //$arrayIndi = explode(",",request()->indiArticulos);
+        return $request;
+    }
 
-        //return view('invoice-view',['doctor'=> $doctor,'paciente'=>$paciente ]);
+    public function make_pay(){
+        $paciente_id = request()->paciente_id;
+        $id_consulta = request()->id_consulta_rapida;
+        $cobro = request()->total;
+        $costo_consulta = request()->costo_consulta;
+        $extra = request()->extra;
+        $motivo_extra = request()->motivo_extra;
 
-        //$pdf = App::make('dompdf.wrapper');
-        $pdf = \PDF::loadView('invoice-view',['doctor'=> $doctor,'paciente'=>$paciente,'indicaciones' => $articulos]);
-        $pdf->save("storage/receta.pdf");
-        //$pdf->download("receta.pdf");
-        return  "Se guardo";
+        
+        $paciente = Paciente::where('id',$paciente_id)->get()[0];
+        $doctor = Doctor::where('id',auth()->user("doctors")->get()[0]->id)->with(['clinicas'])->get()[0];
+        $consulta = ConsultaRapida::where('id',$id_consulta)->get();
+        
+        
+        $pdf = \PDF::loadView('ticket-view',['doctor'=> $doctor,'paciente'=>$paciente,'cobro'=>$cobro,'extra' => $extra,'motivo_extra'=> $motivo_extra,'costo_consulta'=> $costo_consulta,'id_consulta' => $id_consulta]);
+        $pdf->setPaper("A4", 'portrait');
+        $date = Date("dmys");
+        $path = 'public/recibos/p'.$paciente_id.'/r-'.$date.'.pdf';
+        $pathSave = Storage::put($path, $pdf->output());
 
-       /*  return "Paciente: " . request()->paciente_id . "Motivo: " . request()->motivo . "Diagnostico: " . request()->diagnostico . "Notas: " . request()->notas . "Estatura: " . request()->estatura . "Peso: " . request()->peso . "Masa: " . request()->masa_corporal . "Temp: " . request()->temperatura . "Signos: " . request()->frec_signos . "Sis: " . request()->sistolica . "Dias: " . request()->diastolica . "IdEstudios: " . request()->id_estudios . "ObsEstudios: " . request()->obsEstudios . "IdArticulos: " . request()->id_articulos . "IndiArticulo: " . request()->indiArticulos ; */
+        ConsultaRapida::where('id',$id_consulta)->update([
+            'cobro' => $cobro,
+            'motivo_extra' => $motivo_extra,
+            'recibo' => "/storage/recibos/p".$paciente_id."/r-".$date.".pdf",
+            'pagado' => "1"
+        ]);
+        
+        $request = [
+            'pdf' => "/storage/recibos/p".$paciente_id."/r-".$date.".pdf"
+        ];
+        return $request;
+
+    
     }
 
     

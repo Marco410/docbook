@@ -97,4 +97,5 @@
 			} );
 			</script>
 		<script  src="/assets/js/view_controllers/historial_vs.js"></script>
+		<script  src="/assets/js/view_controllers/historial/historial_tables_vs.js"></script>
 		@endif

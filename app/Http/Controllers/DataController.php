@@ -9,6 +9,10 @@ use App\Vacuna;
 use App\Medicamento;
 use App\MotivoConsulta;
 use App\Articulos;
+use App\Diagnostic;
+use App\Estudios;
+use Auth;
+
 
 class DataController extends Controller
 {
@@ -91,4 +95,26 @@ class DataController extends Controller
 
         return $articulo;
     }
+
+    public function get_diagnostics(){
+        $d = Diagnostic::all();
+
+        $array["data"]=$d;
+                
+         echo json_encode($array);
+    }
+
+    public function get_articulos(){
+        $a = Articulos::where('clinica_id', $_GET['user'])->get();
+        $array["data"]=$a;     
+        echo json_encode($array);
+    }
+
+    public function get_estudios(){
+        $e = Estudios::all();
+        $array["data"]=$e;     
+        echo json_encode($array);
+    }
+
+
 }
