@@ -52,7 +52,7 @@
 							
 							<div class="col-md-3" >
 								<div class="footer-logo">
-											<img src="assets/img/footer-logo.png" width="100%" alt="logo">
+											<img src="<?php echo e(asset("assets/img/footer-logo.png")); ?>" width="100%" alt="logo">
 										</div>
 								</div>
 							

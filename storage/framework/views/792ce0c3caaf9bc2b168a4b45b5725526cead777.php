@@ -33,7 +33,7 @@
 		font-size: 20px;
 	}
 	p,span {
-		font-size: 12px;
+		font-size: 11px;
 	}
 
 	table td.v  {
@@ -147,7 +147,7 @@
 											<tbody  >
 												<td style="width: 25%; text-align: left;" ><img src="assets/img/logo.png" height="70px" width="150px"  alt="logo" /></td>
 												<td style="width: 50%; text-align: center;"  >
-													<h2>CONSULTORIO EDUARDO</h2>
+													<h2><?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion); ?></h2>
 													<p>
 														<strong>Dr. <?php echo e($doctor->nombre); ?> <?php echo e($doctor->apellido_p); ?> <?php echo e($doctor->apellido_m); ?></strong>
 														<br>
@@ -193,8 +193,8 @@
 											<tbody>
 												<?php $__currentLoopData = $indicaciones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $indi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 												<tr>
-													<td style="Word-break:break-all; Word-wrap:break-Word;" ><?php echo e($indi['articulo']); ?></td>
-													<td style="Word-break:break-all; Word-wrap:break-Word;"><?php echo e($indi['indicaciones']); ?></td>
+													<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($indi['articulo']); ?></span></td>
+													<td style="Word-break:break-all; Word-wrap:break-Word;"> <span> <?php echo e($indi['indicaciones']); ?></span></td>
 												</tr>
 												<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 													
@@ -216,8 +216,8 @@
 											<tbody>
 												<?php $__currentLoopData = $estudios; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $estu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 												<tr>
-													<td style="Word-break:break-all; Word-wrap:break-Word;" ><?php echo e($estu['estudio']); ?></td>
-													<td style="Word-break:break-all; Word-wrap:break-Word;"><?php echo e($estu['observaciones']); ?></td>
+													<td style="Word-break:break-all; Word-wrap:break-Word;" ><span><?php echo e($estu['estudio']); ?></span></td>
+													<td style="Word-break:break-all; Word-wrap:break-Word;"> <span> <?php echo e($estu['observaciones']); ?></span></td>
 												</tr>
 												<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 													
@@ -247,8 +247,8 @@
 												<td style="width: 50%; text-align: left;"">
 													<p>
 														<br>
-														<?php echo e($doctor->clinicas[0]->calle_consultorio); ?>, <?php echo e($doctor->clinicas[0]->colonia_consultorio); ?>, <?php echo e($doctor->clinicas[0]->ciudad_consultorio); ?><br>
-														<?php echo e($doctor->clinicas[0]->estado_consultorio); ?>, <?php echo e($doctor->clinicas[0]->pais_consultorio); ?>, <?php echo e($doctor->clinicas[0]->cp_consultorio); ?>				
+														<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->calle_consultorio); ?>, <?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->colonia_consultorio); ?>, <?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->ciudad_consultorio); ?><br>
+														<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->estado_consultorio); ?>, <?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->pais_consultorio); ?>, <?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->cp_consultorio); ?>				
 													</p>
 													<p><strong>Tel:  <?php echo e($doctor->clinicas[0]->tel_consultorio); ?> | Correo: <?php echo e($doctor->email); ?></strong> </p>
 												</td>

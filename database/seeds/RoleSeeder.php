@@ -11,7 +11,11 @@ use App\Alergia;
 use App\Vacuna;
 use App\Medicamento;
 use App\Paciente;
+use App\Clinica;
 use App\Especialidad;
+use App\Diagnostic;
+use App\Articulos;
+use App\Estudios;
 
 
 class RoleSeeder extends Seeder
@@ -115,8 +119,6 @@ class RoleSeeder extends Seeder
             'medicamento' => 'Aspirina'
         ]);
 
-        
-
         DB::table('doctor_has_especialidad')->insert([
             'especialidad_id' => 1,
             'doctor_id' => 1
@@ -125,6 +127,65 @@ class RoleSeeder extends Seeder
         DB::table('pacientes_has_doctors')->insert([
             'paciente_id' => 1,
             'doctor_id' => 1
+        ]);
+
+        Clinica::create([
+            'activa' => '1',
+            'nombre_organizacion' => 'Clinicas Luz',
+            'tipo_organizacion' => 'clinicas',
+            'no_medicos' => '8',
+            'tel_organizacion' => '4434012693',
+            'nombre_consultorio' => 'Luz',
+            'pais_consultorio' => 'México',
+            'estado_consultorio' => 'Tabasco',
+            'ciudad_consultorio' => 'Villahermosa',
+            'colonia_consultorio' => 'Flores',
+            'calle_consultorio' => 'Azul',
+            'cp_consultorio' => '58088',
+            'tel_consultorio' => '98358088',
+        ]);
+
+        Clinica::create([
+            'activa' => '0',
+            'nombre_organizacion' => 'Clinicas Angeles',
+            'tipo_organizacion' => 'clinicas',
+            'no_medicos' => '8',
+            'tel_organizacion' => '4434012693',
+            'nombre_consultorio' => 'Angeles',
+            'pais_consultorio' => 'México',
+            'estado_consultorio' => 'México',
+            'ciudad_consultorio' => 'Tlalta',
+            'colonia_consultorio' => 'Villas',
+            'calle_consultorio' => 'Felicitas',
+            'cp_consultorio' => '58088',
+            'tel_consultorio' => '98358088',
+        ]);
+
+        DB::table('doctors_has_clinicas')->insert([
+            'clinica_id' => 1,
+            'doctor_id' => 1
+        ]);
+
+        DB::table('doctors_has_clinicas')->insert([
+            'clinica_id' => 2,
+            'doctor_id' => 1
+        ]);
+
+        Diagnostic::create([
+            'cod_3' => '01',
+            'descripcion_3' => 'Colera',
+            'cod_4' => '002',
+            'descripcion_4' => 'OTRAS INFECCIONES ESPECIFICADAS COMO DEBIDAS A SALMONELLA'
+        ]);
+
+        Articulos::create([
+            'articulo' => 'Paracetamol',
+            'descripcion' => '300gr',
+            'clinica_id' => 1
+        ]);
+
+        Estudios::create([
+            'estudio' => 'Sangre'
         ]);
         
 

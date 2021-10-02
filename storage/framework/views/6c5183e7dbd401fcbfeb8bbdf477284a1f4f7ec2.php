@@ -46,7 +46,7 @@
 				</div>
 				<div class="header-contact-detail">
 					<p class="contact-header">Contacto</p>
-					<p class="contact-info-header"> 4434012693</p>
+					<p class="contact-info-header"> <a href="tel:993 345 2719"> <i class="fas fa-phone-alt text-info" ></i> 993 345 2719</a></p>
 				</div>
 				<?php if(Route::is(['index-slide','page','cart','blank-page','term-condition','privacy-policy','blog-details','blog-grid','blog-list','forgot-password','register','login','invoice-view','doctor-register','components','calendar','map-grid','map-list','search','doctor-profile','booking','checkout','booking-success','payment-success','pharmacy-details','pharmacy-index','pharmacy-search','product-all','product-checkout','product-description','product-healthcare','pharmacy-register','index-5'])): ?>
 				<li class="nav-item">

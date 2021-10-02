@@ -132,6 +132,16 @@ Route::post('/make-pay','DoctorController@make_pay')->name('make-pay');
 
 Route::get('/receta','IndexController@receta')->name('receta');
 
+Route::get('/pagos','DoctorController@pagos')->name('pagos');
+
+Route::post('/save-pago',"DoctorController@save_pago" )->name('save-pago');
+
+Route::get('/caja','DoctorController@caja')->name('caja');
+
+
+Route::post('/open-caja','DoctorController@open_caja')->name('open-caja');
+
+Route::post('/caja-save','DoctorController@caja_save')->name('caja-save');
 
 ###### RUTAS HISTORIAL ######
 

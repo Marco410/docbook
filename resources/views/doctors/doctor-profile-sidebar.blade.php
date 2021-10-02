@@ -35,6 +35,18 @@
                             <span>Mis Pacientes</span>
                         </a>
                     </li>
+                    <li  class="@if($page == "pagos") active @endif" >
+                        <a href="{{ route('pagos') }}">
+                            <i class="fas fa-money-check"></i>
+                            <span>Movimientos (Pagos)</span>
+                        </a>
+                    </li>
+                    <li  class="@if($page == "caja") active @endif" >
+                        <a href="{{ route('caja') }}">
+                            <i class="fas fa-cash-register"></i>
+                            <span>Caja</span>
+                        </a>
+                    </li>
                     {{-- <li>
                         <a href="schedule-timings">
                             <i class="fas fa-hourglass-start"></i>

@@ -19,7 +19,7 @@
 		</div>
 	</div>
 	
-	<input type="hidden" id="clinic_id" value="<?php echo e(Auth::user()->clinicas()->get()[0]->id); ?>" >
+	<input type="hidden" id="clinic_id" value="<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->id); ?>" >
 			<!-- /Breadcrumb -->
 			
 			<!-- Page Content -->
@@ -1450,7 +1450,7 @@
 											<i style="display: none;" ><?php echo e($fechaInt = strtotime($consulta->created_at)); ?></i>
 											<div class="card boder-primary">
 												<div class="card-header text-center" >
-													<label class="text-info text-lg" for=""><i class="fas fa-laptop-medical" ></i><?php echo e($consulta->id); ?></label>
+													<label class="text-info text-lg" for=""><i class="fas fa-laptop-medical" ></i></label>
 												</div>
 												<div class="row card-body">
 													<div class="col-sm-4 text-center p-2">
@@ -1636,13 +1636,16 @@
 						<div id="panel-articulos-rapida-articulo" class="col-sm-12" ></div>
 
 					</div>
-					<div class="col-sm-12 mb-2 text-center" st>
-						<div  class="">
+					<div class="col-sm-6 mb-2 text-center">
+						<div>
 							<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#agregar_estudio" > <i class="fas fa-plus" ></i> Agregar Estudio</button>
-							<button class="btn btn-sm btn-info"  data-toggle="modal" data-target="#agregar_articulo" > <i class="fas fa-plus" ></i> Agregar Artículo</button>
-							<button class="btn btn-sm btn-info" id="sol_error"  >Habilitar Scroll de la página</button>
+							
+							
 							
 						</div>
+					</div>
+					<div class="col-sm-6 mb-2 text-center">
+						<button class="btn btn-sm btn-info"  data-toggle="modal" data-target="#agregar_articulo" > <i class="fas fa-plus" ></i> Agregar Artículo</button>
 					</div>
 					
 				</div>
@@ -1812,7 +1815,7 @@
 	</div>
 </div>
 <!-- / Cierra agregar diagnóstico Modal -->
-<button id="btn-pagar" > Pagar</button>
+
 <!-- / Agregar pago Modal -->
 <div class="modal fade" id="pagar_consulta" aria-hidden="true" role="dialog" >
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document" >

@@ -13,7 +13,7 @@
 								<div class="inner-right-login">
 									<div class="login-header">
 										<div class="logo-icon">
-											<img src="assets/img/logo.png" alt="">
+											<img width="250px" src="assets/img/logo.png" alt="">
 										</div>
 										<div class="step-list">
 											<ul>

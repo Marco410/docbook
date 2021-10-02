@@ -12,7 +12,6 @@ $("#btn-add-new-articulo").on("click", function(){
     fd.append("descripcion",descripcion);
     fd.append("clinica_id",clinic_id);
 
-    console.log(clinic_id);
     
     const response =  axios.post('/save-new-articulo',fd,{
        

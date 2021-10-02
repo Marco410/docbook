@@ -500,6 +500,7 @@ class ComposerStaticInit1e354e8f0731dfcc4daae65c71753945
     public static $classMap = array (
         'App\\Alergia' => __DIR__ . '/../..' . '/app/Alergia.php',
         'App\\Articulos' => __DIR__ . '/../..' . '/app/Articulos.php',
+        'App\\Caja' => __DIR__ . '/../..' . '/app/Caja.php',
         'App\\Citas' => __DIR__ . '/../..' . '/app/Citas.php',
         'App\\Clinica' => __DIR__ . '/../..' . '/app/Clinica.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
@@ -541,6 +542,7 @@ class ComposerStaticInit1e354e8f0731dfcc4daae65c71753945
         'App\\Medicamento' => __DIR__ . '/../..' . '/app/Medicamento.php',
         'App\\MotivoConsulta' => __DIR__ . '/../..' . '/app/MotivoConsulta.php',
         'App\\Paciente' => __DIR__ . '/../..' . '/app/Paciente.php',
+        'App\\Pagos' => __DIR__ . '/../..' . '/app/Pagos.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',

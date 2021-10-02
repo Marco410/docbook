@@ -192,6 +192,7 @@ class RegisterController extends Controller
             } 
             unset($datosClinicastep2['clinica']);
             unset($datosClinicastep2['clinic_is']);
+            $datosClinicastep2['activa'] = 1;
             //se crea la clinica
             $clinica = Clinica::create($datosClinicastep2);
 

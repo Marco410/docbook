@@ -36,7 +36,7 @@
 		font-size: 20px;
 	}
 	p,span {
-		font-size: 12px;
+		font-size: 11px;
 	}
 
 	table td.v  {
@@ -150,7 +150,7 @@
 											<tbody  >
 												<td style="width: 25%; text-align: left;" ><img src="assets/img/logo.png" height="70px" width="150px"  alt="logo" /></td>
 												<td style="width: 50%; text-align: center;"  >
-													<h2>CONSULTORIO EDUARDO</h2>
+													<h2>{{ auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion }}</h2>
 													<p>
 														<strong>Dr. {{ $doctor->nombre }} {{ $doctor->apellido_p }} {{ $doctor->apellido_m }}</strong>
 														<br>
@@ -196,8 +196,8 @@
 											<tbody>
 												@foreach ($indicaciones as $indi)
 												<tr>
-													<td style="Word-break:break-all; Word-wrap:break-Word;" >{{ $indi['articulo'] }}</td>
-													<td style="Word-break:break-all; Word-wrap:break-Word;">{{ $indi['indicaciones'] }}</td>
+													<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $indi['articulo'] }}</span></td>
+													<td style="Word-break:break-all; Word-wrap:break-Word;"> <span> {{ $indi['indicaciones'] }}</span></td>
 												</tr>
 												@endforeach
 													
@@ -219,8 +219,8 @@
 											<tbody>
 												@foreach ($estudios as $estu)
 												<tr>
-													<td style="Word-break:break-all; Word-wrap:break-Word;" >{{ $estu['estudio'] }}</td>
-													<td style="Word-break:break-all; Word-wrap:break-Word;">{{ $estu['observaciones'] }}</td>
+													<td style="Word-break:break-all; Word-wrap:break-Word;" ><span>{{ $estu['estudio'] }}</span></td>
+													<td style="Word-break:break-all; Word-wrap:break-Word;"> <span> {{ $estu['observaciones'] }}</span></td>
 												</tr>
 												@endforeach
 													
@@ -250,8 +250,8 @@
 												<td style="width: 50%; text-align: left;"">
 													<p>
 														<br>
-														{{ $doctor->clinicas[0]->calle_consultorio }}, {{ $doctor->clinicas[0]->colonia_consultorio }}, {{ $doctor->clinicas[0]->ciudad_consultorio }}<br>
-														{{ $doctor->clinicas[0]->estado_consultorio }}, {{ $doctor->clinicas[0]->pais_consultorio }}, {{ $doctor->clinicas[0]->cp_consultorio }}				
+														{{ auth()->user("doctors")->clinicas->where('activa',1)->first()->calle_consultorio }}, {{ auth()->user("doctors")->clinicas->where('activa',1)->first()->colonia_consultorio }}, {{ auth()->user("doctors")->clinicas->where('activa',1)->first()->ciudad_consultorio }}<br>
+														{{ auth()->user("doctors")->clinicas->where('activa',1)->first()->estado_consultorio }}, {{ auth()->user("doctors")->clinicas->where('activa',1)->first()->pais_consultorio  }}, {{ auth()->user("doctors")->clinicas->where('activa',1)->first()->cp_consultorio  }}				
 													</p>
 													<p><strong>Tel:  {{ $doctor->clinicas[0]->tel_consultorio }} | Correo: {{ $doctor->email }}</strong> </p>
 												</td>

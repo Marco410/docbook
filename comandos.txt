@@ -1,4 +1,4 @@
-php artisan migrate:fresh
+php artisan migrate:fresh --seed
 php artisan migrate:refresh
 php artisan migrate
 php artisan make:model Doctor -mcr

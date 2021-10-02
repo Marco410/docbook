@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response as FacadeResponse;
 
+use App\Caja;
+use App\Pagos;
 use App\Doctor;
 use App\Paciente;
 use App\Historial;
@@ -84,7 +86,6 @@ class DoctorController extends Controller
 
      
      public function new_patient(){
- 
          return view('doctors.doctor-patient-register');
      }
 
@@ -179,27 +180,39 @@ class DoctorController extends Controller
         $arrayIndi = json_decode(request()->indiArticulos);
         $i = 0;
 
-        foreach ($arrayIdArt as $idArticulo){
-            $articulo = Articulos::where('id', $idArticulo)->get()[0];
-            $articulosF[$i] = array(
-                "articulo" =>$articulo->articulo,
-                "indicaciones" => $arrayIndi[$i]
-            );  
-            $i++;
-        }
-
+        
         $arrayIdEst = json_decode(request()->id_estudios);
         $arrayObs = json_decode(request()->obsEstudios);
         $j = 0;
-
-        foreach ($arrayIdEst as $idEstudio){
-            $estudio = Estudios::where('id', $idEstudio)->get()[0];
-            $estudiosF[$j] = array(
-                "estudio" => $estudio->estudio,
-                "observaciones" => $arrayObs[$j]
-            );  
-            $j++;
+        
+        
+        if (!empty($arrayIdArt)) {
+            foreach ($arrayIdArt as $idArticulo){
+                $articulo = Articulos::where('id', $idArticulo)->get()[0];
+                $articulosF[$i] = array(
+                    "articulo" =>$articulo->articulo,
+                    "indicaciones" => $arrayIndi[$i]
+                );  
+                $i++;
+            }
+            
+        }else{
+            $articulosF = [];
         }
+
+        if (!empty($arrayIdEst)) {
+            foreach ($arrayIdEst as $idEstudio){
+                $estudio = Estudios::where('id', $idEstudio)->get()[0];
+                $estudiosF[$j] = array(
+                    "estudio" => $estudio->estudio,
+                    "observaciones" => $arrayObs[$j]
+                );  
+                $j++;
+            }
+        }else{
+           $estudiosF = [];
+        }
+
         
         $pdf = \PDF::loadView('invoice-view',['doctor'=> $doctor,'paciente'=>$paciente,'indicaciones' => $articulosF,'estudios' => $estudiosF,'diagnostico' => $diagnostico,'temp'=>$temp]);
         $pdf->setPaper(array(0,0,595.28,420.94), 'portrait');
@@ -260,6 +273,60 @@ class DoctorController extends Controller
         return $request;
 
     
+    }
+
+    public function pagos(){
+        $pagos = Pagos::all();
+        return view('doctors.pago')->with(['pagos' => $pagos]);
+    }
+
+    public function save_pago(){
+        request()->validate([
+            'tipo_movimiento' => 'required',
+            'descripcion' => 'required',
+            'importe' => 'required'
+        ],[
+            'tipo_movimiento.required' => 'Debes seleccionar un tipo de movimiento.',
+            'descripcion.required' => 'Añade la descripción.',
+            'importe.required' => 'Añade un importe.'
+        ]);
+
+        $pago = Pagos::create([
+            'clinica_id' => request()->clinica_id,
+            'doctor_id' => auth()->user("doctors")->get()[0]->id,
+            'tipo_movimiento' => request()->tipo_movimiento,
+            'descripcion' => request()->descripcion,
+            'importe' => request()->importe,
+            'observaciones' => request()->observaciones
+        ]);
+
+        return redirect()->route('pagos');
+    }
+
+    public function caja(){
+
+        $openCaja = Caja::where("doctor_id",auth()->user("doctors")->get()[0]->id)->where("clinica_id",auth()->user("doctors")->clinicas->where('activa',1)->first()->id)->where("abierta","1")->get();
+        /* dd($openCaja); */
+
+
+        return view('doctors.caja')->with(['openCaja' => $openCaja]);
+    }
+
+    public function open_caja(){
+        request()->validate([
+            'caja_apertura' => 'required'
+        ],[
+            'caja_apertura.required' => 'Añade un monto para abrir la caja.'
+        ]);
+
+        $pago = Caja::create([
+            'clinica_id' => auth()->user("doctors")->clinicas->where('activa',1)->first()->id,
+            'doctor_id' => auth()->user("doctors")->get()[0]->id,
+            'apertura' => request()->caja_apertura,
+            'abierta' => 1
+        ]);
+
+        return redirect()->route('caja');
     }
 
     

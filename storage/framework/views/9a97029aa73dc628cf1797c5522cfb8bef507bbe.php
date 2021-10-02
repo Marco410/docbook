@@ -30,6 +30,18 @@
                             <span>Mis Pacientes</span>
                         </a>
                     </li>
+                    <li  class="<?php if($page == "pagos"): ?> active <?php endif; ?>" >
+                        <a href="<?php echo e(route('pagos')); ?>">
+                            <i class="fas fa-money-check"></i>
+                            <span>Movimientos (Pagos)</span>
+                        </a>
+                    </li>
+                    <li  class="<?php if($page == "caja"): ?> active <?php endif; ?>" >
+                        <a href="<?php echo e(route('caja')); ?>">
+                            <i class="fas fa-cash-register"></i>
+                            <span>Caja</span>
+                        </a>
+                    </li>
                     
                     <li>
                         <a href="<?php echo e(route('logout')); ?>" onclick="event.preventDefault();

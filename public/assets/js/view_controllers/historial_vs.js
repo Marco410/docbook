@@ -147,7 +147,6 @@ function remove(elemento){
 }
 
 $('#btn-save-pato').on("click", function(){
-
     var fd = new FormData($("#formPato")[0]);
     
     fd.append("paciente_id",$("#paciente_id").val());
@@ -313,7 +312,7 @@ $("#sol_error").on("click",function(){
 
 $("#btn-add-consulta-rapida").on("click", function(){
 
-   /*  if($("#input_buscar_motivo_rapida").is(":hidden")){
+   if($("#input_buscar_motivo_rapida").is(":hidden")){
         if($("#diagnostico_principal").val() != "" ){
             if(txtConsulta.getData() != "" ){
                 if($("#estatura-signos2").val() != ""){
@@ -323,18 +322,20 @@ $("#btn-add-consulta-rapida").on("click", function(){
                                 if($("#sistolica2").val() != ""){
                                     if($("#diastolica2").val() != ""){
 
-                                        var motivo = $("#motivo_consulta_rapida").val();
-                                        var diagnostico = $("#diagnostico_principal").attr("data-id");
-                                        var notas = txtConsulta.getData();
-                                        var estatura = $("#estatura-signos2").val();
-                                        var peso = $("#peso-signos2").val();
-                                        var masa_corporal = $("#masa_corporal2").val();
-                                        var temperatura = $("#temperatura-signos2").val();
-                                        var frec_signos = $("#frec_respiratoria-signos2").val();
-                                        var sistolica = $("#sistolica2").val();
-                                        var diastolica = $("#diastolica2").val();
+                                        
+                                var motivo = $("#motivo_consulta_rapida").val();
+                                var diagnostico = $("#diagnostico_principal").attr("data-id");
+                                var notas = txtConsulta.getData();
+                                var estatura = $("#estatura-signos2").val();
+                                var peso = $("#peso-signos2").val();
+                                var masa_corporal = $("#masa_corporal2").val();
+                                var temperatura = $("#temperatura-signos2").val();
+                                var frec_signos = $("#frec_respiratoria-signos2").val();
+                                var sistolica = $("#sistolica2").val();
+                                var diastolica = $("#diastolica2").val();
 
-                                        create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_corporal,temperatura,frec_signos,sistolica,diastolica);
+                                create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_corporal,temperatura,frec_signos,sistolica,diastolica);
+
                                     }else{
                                         $("#diastolica2").focus();
                                         warning("Agregue la Diastólica");
@@ -371,21 +372,7 @@ $("#btn-add-consulta-rapida").on("click", function(){
         $("#buscar_motivo_rapida").focus();
         warning("Motivo de Consulta");
         
-    } */
-
-    var motivo = $("#motivo_consulta_rapida").val();
-    var diagnostico = $("#diagnostico_principal").attr("data-id");
-    var notas = txtConsulta.getData();
-    var estatura = $("#estatura-signos2").val();
-    var peso = $("#peso-signos2").val();
-    var masa_corporal = $("#masa_corporal2").val();
-    var temperatura = $("#temperatura-signos2").val();
-    var frec_signos = $("#frec_respiratoria-signos2").val();
-    var sistolica = $("#sistolica2").val();
-    var diastolica = $("#diastolica2").val();
-
-    create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_corporal,temperatura,frec_signos,sistolica,diastolica);
-
+    } 
     
 });
 function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_corporal,temperatura,frec_signos,sistolica,diastolica){
@@ -597,7 +584,7 @@ function check_idestudios(){
         }); 
         
     }else{
-        //console.log("No agrego estudios");
+        idEstudios = [];
     }
     return idEstudios;
 }
