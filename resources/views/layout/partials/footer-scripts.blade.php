@@ -64,16 +64,18 @@
 		@endif
 
 		
+		
 		@if (Route::is(['mis-pacientes','paciente-nuevo']))
 		<script  src="/assets/js/view_controllers/doctors_vs.js"></script>
 		@endif
-
+		
 		@if (Route::is(['historial']))
 		<script  src="/assets/js/view_controllers/historial/alergias_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/vacunas_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/medicamentos_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/motivo_consultarapida_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/articulos_vs.js"></script>
+		<script  src="/assets/js/view_controllers/historial/estudios_vs.js"></script>
 		<script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
 		<script>
 			var txtConsulta;
@@ -98,4 +100,8 @@
 			</script>
 		<script  src="/assets/js/view_controllers/historial_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/historial_tables_vs.js"></script>
+		@endif
+		
+		@if (Route::is(['caja']))
+		<script  src="/assets/js/view_controllers/cajas_vs.js"></script>
 		@endif

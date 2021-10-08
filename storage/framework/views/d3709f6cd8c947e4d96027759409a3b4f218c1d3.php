@@ -13,13 +13,14 @@
 							<li class="breadcrumb-item active" aria-current="page">Historial</li>
 						</ol>
 					</nav>
-					<h2 class="breadcrumb-title">Historial  </h2>
+					<h2 class="breadcrumb-title">Historial</h2>
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<input type="hidden" id="clinic_id" value="<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->id); ?>" >
+	<input type="hidden" id="especialidad_id" value="<?php echo e(auth()->user("doctors")->especialidad[0]->id); ?>" >
 			<!-- /Breadcrumb -->
 			
 			<!-- Page Content -->
@@ -153,7 +154,7 @@
 												</div>
 												<div class="form-group row">
 													<div class="col-sm-9">
-														<label class="col-form-label"> <i class="fas fa-male text-info" ></i> Masa Corporal</label>
+														<label class="col-form-label"> <i class="fas fa-male text-info" ></i> Indice  Masa Corporal</label>
 													</div>
 													<div class="col-sm-3 row" >
 														<input type="hidden" id="masa_corporal" name="masa_corporal" value="<?php echo e($paciente->pluck('historial')[0][0]->masa_corporal ?? ''); ?>" >
@@ -213,7 +214,7 @@
 												</div>
 												<div class="form-group row">
 													<div class="col-sm-9">
-														<label class="col-form-label"> <i class="fas fa-user text-info" ></i> Masa Muscular</label>
+														<label class="col-form-label"> <i class="fas fa-user text-info" ></i>IMC</label>
 													</div>
 													<div class="col-sm-3 row" >
 														<input type="number" value="<?php echo e($paciente->pluck('historial')[0][0]->masa_muscular ?? ''); ?>" class="form-control form-control-sm" placeholder="%" name="masa_muscular"  maxlength="3"  >
@@ -1756,8 +1757,13 @@
 				
 			</div>
 			<div class="modal-footer">
-				<div class="col-sm-12" >
-					
+				<div class="row ">
+					<div clas="col-sm-4" >
+						<input type="text"  class="form-control form-control-sm" name="new_estudio_rapida" id="new_estudio_rapida" placeholder="Ingrese el nombre del nuevo estudio" >
+					</div>
+					<div class="col-sm-6" >
+						<button id="btn-add-new-estudio" class="btn btn-sm btn-warning text-white" > <small> <i class="fas fa-plus" ></i> Añadir nuevo estudio inexistente</small> </button>
+					</div>
 				</div>
 			</div>
 			
@@ -1861,9 +1867,17 @@
 						<h4>Cobro extra:</h4>
 						<input type="number" min="0"  id="cobro_extra" class="form-control" placeholder="$" >
 						<input type="text" id="motivo_extra" name="motivo_extra"  class="form-control" placeholder="Motivo cobro extra"   >
-						<p> <strong>Total $: </strong><span id="total_consulta_rapida" ><?php echo e(auth()->user("doctors")->seguimiento); ?></span> </p>
+						<p> <strong>Total: $</strong><span id="total_consulta_rapida" ><?php echo e(auth()->user("doctors")->seguimiento); ?></span> </p>
 					</div>
-					<div class="col-sm-12" >	</div>
+					<div class="col-sm-6 offset-3 text-center" >
+						<h4>Metodo de Pago:</h4>
+						<select class="form-control" required name="metodo_pago" id="metodo_pago">
+							<option value="">Seleccione:</option>
+							<option value="Efectivo">Efectivo</option>
+							<option value="Tarjeta">Tarjeta</option>
+							<option value="Transferencia">Transferencia</option>
+						</select>
+					</div>
 				</div>
 				
 			</div>

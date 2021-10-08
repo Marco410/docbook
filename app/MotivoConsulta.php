@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class MotivoConsulta extends Model
 {
     protected $fillable = [
-        'motivo'
+        'motivo','especialidad_id'
     ];
 }

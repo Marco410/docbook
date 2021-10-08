@@ -80,6 +80,15 @@
 									<label><i class="fas fa-dollar-sign text-info" ></i> Importe <span class="text-danger">*</span></label>
 									<input required type="text" name="importe" class="form-control" id="importe" value="<?php echo e(old('importe')); ?>" >
 								</div>
+								<div class="form-group" >
+									<label><i class="fas fa-wallet text-info" ></i> Metodo de Pago:</label>
+									<select class="form-control select" required name="metodo_pago" id="metodo_pago">
+										<option value="">Seleccione:</option>
+										<option value="Efectivo">Efectivo</option>
+										<option value="Tarjeta">Tarjeta</option>
+										<option value="Transferencia">Transferencia</option>
+									</select>
+								</div>
 
 								<div class="form-group">
 									<label><i class="fas fa-eye text-info" ></i> Observaciones</label>
@@ -96,7 +105,7 @@
 					</div>
 					<div class="col-sm-8">
 						<div class="card">
-							<div class="card-header" >Lista de Lineas de Producto</div>
+							<div class="card-header" >Lista de Lineas de Producto (Hoy) <?php echo e(Date("d/m/Y")); ?> </div>
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="datatable table table-hover table-center mb-0">
@@ -106,16 +115,18 @@
 												<th>Observaciones</th>
 												<th>Importe</th>
 												<th>Tipo</th>
+												<th>Fecha</th>
 											</tr>
 										</thead>
 										<tbody>
-											<?php if(!empty($pagos)): ?>
-											<?php $__currentLoopData = $pagos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pago): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+											<?php if(!empty($pagosH)): ?>
+											<?php $__currentLoopData = $pagosH; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pagoh): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 											<tr>
-												<td><?php echo e($pago->descripcion); ?></td>		
-												<td><?php echo e($pago->observaciones); ?></td>		
-												<td>$ <?php echo e($pago->importe); ?></td>		
-												<td><?php echo e($pago->tipo_movimiento); ?></td>			
+												<td><?php echo e($pagoh->descripcion); ?></td>		
+												<td><?php echo e($pagoh->observaciones); ?></td>		
+												<td>$ <?php echo e($pagoh->importe); ?></td>		
+												<td><?php echo e($pagoh->tipo_movimiento); ?></td>			
+												<td><?php echo e($pagoh->created_at->diffForHumans()); ?></td>			
 											</tr>
 											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 											<?php endif; ?>
@@ -125,6 +136,41 @@
 								</div>
 								
 							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="card">
+						<div class="card-header" >Lista de Lineas de Producto (Linea del tiempo)</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="datatable table table-hover table-center mb-0">
+									<thead>
+										<tr>
+											<th>Descripción</th>
+											<th>Observaciones</th>
+											<th>Importe</th>
+											<th>Tipo</th>
+											<th>Fecha</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php if(!empty($pagos)): ?>
+										<?php $__currentLoopData = $pagos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pago): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+										<tr>
+											<td><?php echo e($pago->descripcion); ?></td>		
+											<td><?php echo e($pago->observaciones); ?></td>		
+											<td>$ <?php echo e($pago->importe); ?></td>		
+											<td><?php echo e($pago->tipo_movimiento); ?></td>
+											<td><?php echo e($pago->created_at); ?></td>
+										</tr>
+										<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+										<?php endif; ?>
+										
+									</tbody>
+								</table>
+							</div>
+							
 						</div>
 					</div>
 				</div>

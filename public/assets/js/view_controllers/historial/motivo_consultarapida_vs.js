@@ -7,7 +7,8 @@ $("#buscar_motivo_rapida").autocomplete({
             type:  'get',
             dataType:"json",
             data:{
-                term: request.term
+                term: request.term,
+                espe_id: $("#especialidad_id").val()
             },
             success:function(data){
 
@@ -51,14 +52,14 @@ function removeMotivo(){
 
 function addNewMotivo(elemento){
     var motivo = elemento.getAttribute("data-value");
-
+    var espe = $("#especialidad_id").val();
     var fd = new FormData();
     csrftoken = getCookie('csrftoken');
     fd.append("csrfmiddlewaretoken",csrftoken);
     fd.append("motivo",motivo);
-    
+    fd.append("especialidad",espe);
+    console.log(fd);
     const response =  axios.post('/save-new-motivo',fd,{
-       
     }).then(res =>  {
 
         $("#input_buscar_motivo_rapida").hide();

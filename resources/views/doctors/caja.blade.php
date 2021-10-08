@@ -24,6 +24,7 @@
 	</div>
 </div>
 <!-- /Breadcrumb -->
+<input type="hidden" id="clinic_id" value="{{ auth()->user("doctors")->clinicas->where('activa',1)->first()->id }}" >
 			
 <!-- Page Content -->
 <div class="content">
@@ -56,9 +57,7 @@
 					</div>
 				</div>
 				@endif
-
-			 @if (empty($openCaja))
-				 
+			 @if ($countCaja === 0)
 			 <div class="row">
 				 <div class="col-sm-12">
 					 <div class="card">
@@ -80,66 +79,132 @@
 				 </div>
 			 </div>
 			 @else
-			 
-			 <div class="row">
-				 <div class="col-sm-12">
-					 <div class="card">
-						 <form method="post" enctype="multipart/form-data" action="{{ route('caja-save') }}" novalidate >
-							 {{ csrf_field() }}
-							 <input name="clinica_id" type="hidden" value="{{ auth()->user("doctors")->clinicas[0]->id }}" />
-							 <div class="card-body">
-								 <div class="row">
-							 <div class="form-group col-sm-4">
-								 <label> <i class="fas fa-money-bill-alt text-info" ></i> Monto de Apertura <span class="text-danger">*</span></label>
-								 <input readonly type="text" name="apertura" class="form-control"{{--   value="{{ $openCaja->apertura }}" --}} >
-							 </div>
-
-							 <div class="form-group col-sm-4">
-								 <label> <i class="text-info fas fa-sign-in-alt"></i> Entradas <span class="text-danger">*</span></label>
-								 <input required type="text" name="entradas" class="form-control" id="entradas" value="{{ old('entradas') }}" >
-							 </div>
-
-							 <div class="form-group col-sm-4">
-								 <label> <i class="text-info fas fa-sign-out-alt"></i> Salidas <span class="text-danger">*</span></label>
-								 <input required type="text" name="salidas" class="form-control" id="salidas" value="{{ old('salidas') }}" >
-							 </div>
-						 </div>
-						 <div class="row">
-							 <div class="col-sm-12 ">
-								 <h3 class="text-info" > <i class="fas fa-chart-bar " ></i> Ventas de Contado</h3>
-							 </div>
-							 <div class="form-group col-sm-4">
-								 <label><i class="fas fa-money-bill-wave text-info" ></i> Efectivo <span class="text-danger">*</span></label>
-								 <input required type="text" name="ventas_efectivo" class="form-control" id="ventas_efectivo" value="{{ old('ventas_efectivo') }}" >
-							 </div>
-							 <div class="form-group col-sm-4">
-								 <label><i class="fas fa-credit-card text-info" ></i> Tarjeta <span class="text-danger">*</span></label>
-								 <input required type="text" name="ventas_tarjeta" class="form-control" id="ventas_tarjeta" value="{{ old('ventas_tarjeta') }}" >
-							 </div>
-							 <div class="form-group col-sm-4">
-								 <label><i class="fas fa-exchange-alt text-info" ></i> Transferencia <span class="text-danger">*</span></label>
-								 <input required type="text" name="ventas_transferencia" class="form-control" id="ventas_transferencia" value="{{ old('ventas_transferencia') }}" >
-							 </div>
-						 </div>
-						 <div class="row">
-							 <div class="form-group col-sm-6 pull-right">
-								 
-								 <label><i class="fas fa-hand-holding-usd text-info" ></i> Total <span class="text-danger">*</span></label>
-								 <input required type="text" name="ventas_transferencia" class="form-control" id="ventas_transferencia" value="{{ old('ventas_transferencia') }}" >
-								 
-							 </div>
-							 <div class="form-group col-sm-12" >
-								 <button class="btn btn-sm btn-block btn-primary" > <i class="fas fa-save" ></i> Guardar</button>
-							 </div>
-						 </div>
-
-
-						 </div>
-						 </form>
-					 </div>
-				 </div>
-			 </div>
+				@if ($openCaja->abierta == "1")
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-sm-12 text-center mb-4" >
+											<h3 class="text-primary" >Todos los montos corresponden al día de hoy {{ Date("d-M-Y") }} </h3>
+										</div>
+										<input type="hidden" value="{{ $openCaja->id }}" id="caja_id" >
+								<div class="form-group col-sm-4">
+									<label> <i class="fas fa-money-bill-alt text-info" ></i> Monto de Apertura <span class="text-danger">*</span></label>
+									<input readonly type="text" name="apertura" id="apertura" class="form-control" value="{{ $openCaja->apertura }}" >
+								</div>
+   
+								<div class="form-group col-sm-4">
+									<label> <i class="text-info fas fa-sign-in-alt"></i> Entradas <span class="text-danger">*</span></label>
+									<input readonly type="text" name="entradas" class="form-control" id="entradas" value="{{ $entradas }}" >
+								</div>
+   
+								<div class="form-group col-sm-4">
+									<label> <i class="text-info fas fa-sign-out-alt"></i> Salidas <span class="text-danger">*</span></label>
+									<input  readonly type="text" name="salidas" class="form-control" id="salidas" value="{{ $salidas }}" >
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 ">
+									<h3 class="text-info" > <i class="fas fa-chart-bar " ></i> Ventas de Contado</h3>
+								</div>
+								<div class="form-group col-sm-4">
+									<label><i class="fas fa-money-bill-wave text-info" ></i> Efectivo <span class="text-danger">*</span></label>
+									<input readonly type="text" name="ventas_efectivo" class="form-control" id="ventas_efectivo" value="{{ $efectivo }}" >
+								</div>
+								<div class="form-group col-sm-4">
+									<label><i class="fas fa-credit-card text-info" ></i> Tarjeta <span class="text-danger">*</span></label>
+									<input  readonly type="text" name="ventas_tarjeta" class="form-control" id="ventas_tarjeta" value="{{ $tarjeta }}" >
+								</div>
+								<div class="form-group col-sm-4">
+									<label><i class="fas fa-exchange-alt text-info" ></i> Transferencia <span class="text-danger">*</span></label>
+									<input readonly type="text" name="ventas_transferencia" class="form-control" id="ventas_transferencia" value="{{ $transferencia }}">
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6 pull-right">
+									
+									<label><i class="fas fa-hand-holding-usd text-info" ></i> Total <span class="text-danger">*</span></label>
+									<input  readonly type="text" name="ventas_total" class="form-control" id="ventas_total" value="{{ $total }}" >
+									
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6" >
+									<button type="button" class="btn btn-sm btn-block btn-primary" id="close_caja" > <i class="fas fa-save" ></i> Guardar y cerrar caja</button>
+								</div>
+								<div class="form-group col-sm-6" >
+									<button type="button" class="btn btn-sm btn-block btn-secondary" id="make_report" > <i class="fas fa-archive" ></i> Reporte</button>
+								</div>
+							</div>
+   
+   
+							</div>
+						</div>
+					</div>
+				</div>
+				@endif
 			 @endif
+
+			 <div class="col-sm-12">
+				<div class="card">
+					<div class="card-header" >Cajas (Linea del tiempo)</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Abierta</th>
+										<th>Apertura</th>
+										<th>Entradas</th>
+										<th>Salidas</th>
+										<th>Efectivo</th>
+										<th>Tarjeta</th>
+										<th>Transferencias</th>
+										<th>Total</th>
+										<th>Fecha Abierta</th>
+										<th>Fecha Cerrada</th>
+									</tr>
+								</thead>
+								<tbody>
+									@if (!empty($cajas))
+									<?php $i = 1 ?>
+									@foreach ($cajas as $caja)
+									<i style="display: none;" >{{ $fechaInt = strtotime($caja->created_at)
+									}}{{ $fechaIntU = strtotime($caja->updated_at)
+									}}</i>
+									<tr>
+										<td>{{ $i }}</td>	
+										<td>@if ($caja->abierta == "1")
+											<span class="text-success" >Abierta</span>
+											@else
+											<span class="text-danger" >Cerrada</span>
+										@endif</td>		
+										<td>${{ $caja->apertura ?? "-" }}</td>		
+										<td>${{ $caja->entradas ?? "-" }}</td>		
+										<td>${{ $caja->salidas ?? "-" }}</td>		
+										<td>${{ $caja->ventas_efectivo ?? "-" }}</td>		
+										<td>${{ $caja->ventas_tarjeta ?? "-" }}</td>		
+										<td>${{ $caja->ventas_transferencia ?? "-" }}</td>		
+										<td>${{ $caja->total ?? "-" }}</td>	
+										<td>{{ date("d-M-Y h:i A", $fechaInt) }}</td>	
+										<td>{{ date("d-M-Y h:i A", $fechaIntU) }}</td>	
+										
+										
+									</tr>
+									<?php $i++ ?>
+									@endforeach
+									@endif
+									
+								</tbody>
+							</table>
+						</div>
+						
+					</div>
+				</div>
+			</div>
 
 					
 			</div>

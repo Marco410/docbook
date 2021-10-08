@@ -20,6 +20,7 @@ class CreatePagosTable extends Migration
             $table->string('tipo_movimiento')->nullable();
             $table->string('descripcion')->nullable();
             $table->string('importe')->nullable();
+            $table->string('metodo_pago')->nullable();
             $table->string('observaciones')->nullable();
             $table->timestamps();
 

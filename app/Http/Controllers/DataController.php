@@ -70,8 +70,9 @@ class DataController extends Controller
 
     public function get_motivo_consulta(Request $request){
         $term = $request->get('term');
+        $espe_id = $request->get('espe_id');
 
-        $querys = MotivoConsulta::where('motivo', 'LIKE' ,'%' . $term . '%' )->get();
+        $querys = MotivoConsulta::where('motivo', 'LIKE' ,'%' . $term . '%' )->where('especialidad_id',$espe_id)->get();
 
         return $querys;
     }
@@ -79,6 +80,7 @@ class DataController extends Controller
     public function save_new_motivo(Request $request){
         
         $motivo = MotivoConsulta::create([
+            'especialidad_id' => request()->especialidad,
             'motivo' => request()->motivo
         ]);
 
@@ -94,6 +96,14 @@ class DataController extends Controller
         ]);
 
         return $articulo;
+    }
+    public function save_new_estudio(Request $request){
+        
+        $estudio = Estudios::create([
+            'estudio' => request()->estudio
+        ]);
+
+        return $estudio;
     }
 
     public function get_diagnostics(){

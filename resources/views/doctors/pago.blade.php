@@ -79,6 +79,15 @@
 									<label><i class="fas fa-dollar-sign text-info" ></i> Importe <span class="text-danger">*</span></label>
 									<input required type="text" name="importe" class="form-control" id="importe" value="{{ old('importe') }}" >
 								</div>
+								<div class="form-group" >
+									<label><i class="fas fa-wallet text-info" ></i> Metodo de Pago:</label>
+									<select class="form-control select" required name="metodo_pago" id="metodo_pago">
+										<option value="">Seleccione:</option>
+										<option value="Efectivo">Efectivo</option>
+										<option value="Tarjeta">Tarjeta</option>
+										<option value="Transferencia">Transferencia</option>
+									</select>
+								</div>
 
 								<div class="form-group">
 									<label><i class="fas fa-eye text-info" ></i> Observaciones</label>
@@ -95,7 +104,7 @@
 					</div>
 					<div class="col-sm-8">
 						<div class="card">
-							<div class="card-header" >Lista de Lineas de Producto</div>
+							<div class="card-header" >Lista de Lineas de Producto (Hoy) {{ Date("d/m/Y") }} </div>
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="datatable table table-hover table-center mb-0">
@@ -105,16 +114,18 @@
 												<th>Observaciones</th>
 												<th>Importe</th>
 												<th>Tipo</th>
+												<th>Fecha</th>
 											</tr>
 										</thead>
 										<tbody>
-											@if (!empty($pagos))
-											@foreach ($pagos as $pago)
+											@if (!empty($pagosH))
+											@foreach ($pagosH as $pagoh)
 											<tr>
-												<td>{{ $pago->descripcion }}</td>		
-												<td>{{ $pago->observaciones }}</td>		
-												<td>$ {{ $pago->importe }}</td>		
-												<td>{{ $pago->tipo_movimiento }}</td>			
+												<td>{{ $pagoh->descripcion }}</td>		
+												<td>{{ $pagoh->observaciones }}</td>		
+												<td>$ {{ $pagoh->importe }}</td>		
+												<td>{{ $pagoh->tipo_movimiento }}</td>			
+												<td>{{ $pagoh->created_at->diffForHumans() }}</td>			
 											</tr>
 											@endforeach
 											@endif
@@ -124,6 +135,41 @@
 								</div>
 								
 							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="card">
+						<div class="card-header" >Lista de Lineas de Producto (Linea del tiempo)</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="datatable table table-hover table-center mb-0">
+									<thead>
+										<tr>
+											<th>Descripción</th>
+											<th>Observaciones</th>
+											<th>Importe</th>
+											<th>Tipo</th>
+											<th>Fecha</th>
+										</tr>
+									</thead>
+									<tbody>
+										@if (!empty($pagos))
+										@foreach ($pagos as $pago)
+										<tr>
+											<td>{{ $pago->descripcion }}</td>		
+											<td>{{ $pago->observaciones }}</td>		
+											<td>$ {{ $pago->importe }}</td>		
+											<td>{{ $pago->tipo_movimiento }}</td>
+											<td>{{ $pago->created_at }}</td>
+										</tr>
+										@endforeach
+										@endif
+										
+									</tbody>
+								</table>
+							</div>
+							
 						</div>
 					</div>
 				</div>

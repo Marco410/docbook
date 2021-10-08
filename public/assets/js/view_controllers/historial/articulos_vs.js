@@ -34,7 +34,6 @@ $("#btn-add-new-articulo").on("click", function(){
             position: 'topRight',
             message: 'Algo salio mal, intentelo de nuevo y recargue.',
         });
-        console.log(err);
     }); 
 
     

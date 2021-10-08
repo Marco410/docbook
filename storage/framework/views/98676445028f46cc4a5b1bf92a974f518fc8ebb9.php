@@ -24,6 +24,7 @@
 	</div>
 </div>
 <!-- /Breadcrumb -->
+<input type="hidden" id="clinic_id" value="<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->id); ?>" >
 			
 <!-- Page Content -->
 <div class="content">
@@ -56,9 +57,7 @@
 					</div>
 				</div>
 				<?php endif; ?>
-
-			 <?php if(empty($openCaja)): ?>
-				 
+			 <?php if($countCaja === 0): ?>
 			 <div class="row">
 				 <div class="col-sm-12">
 					 <div class="card">
@@ -81,67 +80,130 @@
 				 </div>
 			 </div>
 			 <?php else: ?>
-			 
-			 <div class="row">
-				 <div class="col-sm-12">
-					 <div class="card">
-						 <form method="post" enctype="multipart/form-data" action="<?php echo e(route('caja-save')); ?>" novalidate >
-							 <?php echo e(csrf_field()); ?>
-
-							 <input name="clinica_id" type="hidden" value="<?php echo e(auth()->user("doctors")->clinicas[0]->id); ?>" />
-							 <div class="card-body">
-								 <div class="row">
-							 <div class="form-group col-sm-4">
-								 <label> <i class="fas fa-money-bill-alt text-info" ></i> Monto de Apertura <span class="text-danger">*</span></label>
-								 <input readonly type="text" name="apertura" class="form-control" >
-							 </div>
-
-							 <div class="form-group col-sm-4">
-								 <label> <i class="text-info fas fa-sign-in-alt"></i> Entradas <span class="text-danger">*</span></label>
-								 <input required type="text" name="entradas" class="form-control" id="entradas" value="<?php echo e(old('entradas')); ?>" >
-							 </div>
-
-							 <div class="form-group col-sm-4">
-								 <label> <i class="text-info fas fa-sign-out-alt"></i> Salidas <span class="text-danger">*</span></label>
-								 <input required type="text" name="salidas" class="form-control" id="salidas" value="<?php echo e(old('salidas')); ?>" >
-							 </div>
-						 </div>
-						 <div class="row">
-							 <div class="col-sm-12 ">
-								 <h3 class="text-info" > <i class="fas fa-chart-bar " ></i> Ventas de Contado</h3>
-							 </div>
-							 <div class="form-group col-sm-4">
-								 <label><i class="fas fa-money-bill-wave text-info" ></i> Efectivo <span class="text-danger">*</span></label>
-								 <input required type="text" name="ventas_efectivo" class="form-control" id="ventas_efectivo" value="<?php echo e(old('ventas_efectivo')); ?>" >
-							 </div>
-							 <div class="form-group col-sm-4">
-								 <label><i class="fas fa-credit-card text-info" ></i> Tarjeta <span class="text-danger">*</span></label>
-								 <input required type="text" name="ventas_tarjeta" class="form-control" id="ventas_tarjeta" value="<?php echo e(old('ventas_tarjeta')); ?>" >
-							 </div>
-							 <div class="form-group col-sm-4">
-								 <label><i class="fas fa-exchange-alt text-info" ></i> Transferencia <span class="text-danger">*</span></label>
-								 <input required type="text" name="ventas_transferencia" class="form-control" id="ventas_transferencia" value="<?php echo e(old('ventas_transferencia')); ?>" >
-							 </div>
-						 </div>
-						 <div class="row">
-							 <div class="form-group col-sm-6 pull-right">
-								 
-								 <label><i class="fas fa-hand-holding-usd text-info" ></i> Total <span class="text-danger">*</span></label>
-								 <input required type="text" name="ventas_transferencia" class="form-control" id="ventas_transferencia" value="<?php echo e(old('ventas_transferencia')); ?>" >
-								 
-							 </div>
-							 <div class="form-group col-sm-12" >
-								 <button class="btn btn-sm btn-block btn-primary" > <i class="fas fa-save" ></i> Guardar</button>
-							 </div>
-						 </div>
-
-
-						 </div>
-						 </form>
-					 </div>
-				 </div>
-			 </div>
+				<?php if($openCaja->abierta == "1"): ?>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-sm-12 text-center mb-4" >
+											<h3 class="text-primary" >Todos los montos corresponden al día de hoy <?php echo e(Date("d-M-Y")); ?> </h3>
+										</div>
+										<input type="hidden" value="<?php echo e($openCaja->id); ?>" id="caja_id" >
+								<div class="form-group col-sm-4">
+									<label> <i class="fas fa-money-bill-alt text-info" ></i> Monto de Apertura <span class="text-danger">*</span></label>
+									<input readonly type="text" name="apertura" id="apertura" class="form-control" value="<?php echo e($openCaja->apertura); ?>" >
+								</div>
+   
+								<div class="form-group col-sm-4">
+									<label> <i class="text-info fas fa-sign-in-alt"></i> Entradas <span class="text-danger">*</span></label>
+									<input readonly type="text" name="entradas" class="form-control" id="entradas" value="<?php echo e($entradas); ?>" >
+								</div>
+   
+								<div class="form-group col-sm-4">
+									<label> <i class="text-info fas fa-sign-out-alt"></i> Salidas <span class="text-danger">*</span></label>
+									<input  readonly type="text" name="salidas" class="form-control" id="salidas" value="<?php echo e($salidas); ?>" >
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 ">
+									<h3 class="text-info" > <i class="fas fa-chart-bar " ></i> Ventas de Contado</h3>
+								</div>
+								<div class="form-group col-sm-4">
+									<label><i class="fas fa-money-bill-wave text-info" ></i> Efectivo <span class="text-danger">*</span></label>
+									<input readonly type="text" name="ventas_efectivo" class="form-control" id="ventas_efectivo" value="<?php echo e($efectivo); ?>" >
+								</div>
+								<div class="form-group col-sm-4">
+									<label><i class="fas fa-credit-card text-info" ></i> Tarjeta <span class="text-danger">*</span></label>
+									<input  readonly type="text" name="ventas_tarjeta" class="form-control" id="ventas_tarjeta" value="<?php echo e($tarjeta); ?>" >
+								</div>
+								<div class="form-group col-sm-4">
+									<label><i class="fas fa-exchange-alt text-info" ></i> Transferencia <span class="text-danger">*</span></label>
+									<input readonly type="text" name="ventas_transferencia" class="form-control" id="ventas_transferencia" value="<?php echo e($transferencia); ?>">
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6 pull-right">
+									
+									<label><i class="fas fa-hand-holding-usd text-info" ></i> Total <span class="text-danger">*</span></label>
+									<input  readonly type="text" name="ventas_total" class="form-control" id="ventas_total" value="<?php echo e($total); ?>" >
+									
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6" >
+									<button type="button" class="btn btn-sm btn-block btn-primary" id="close_caja" > <i class="fas fa-save" ></i> Guardar y cerrar caja</button>
+								</div>
+								<div class="form-group col-sm-6" >
+									<button type="button" class="btn btn-sm btn-block btn-secondary" id="make_report" > <i class="fas fa-archive" ></i> Reporte</button>
+								</div>
+							</div>
+   
+   
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php endif; ?>
 			 <?php endif; ?>
+
+			 <div class="col-sm-12">
+				<div class="card">
+					<div class="card-header" >Cajas (Linea del tiempo)</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Abierta</th>
+										<th>Apertura</th>
+										<th>Entradas</th>
+										<th>Salidas</th>
+										<th>Efectivo</th>
+										<th>Tarjeta</th>
+										<th>Transferencias</th>
+										<th>Total</th>
+										<th>Fecha Abierta</th>
+										<th>Fecha Cerrada</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php if(!empty($cajas)): ?>
+									<?php $i = 1 ?>
+									<?php $__currentLoopData = $cajas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $caja): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+									<i style="display: none;" ><?php echo e($fechaInt = strtotime($caja->created_at)); ?><?php echo e($fechaIntU = strtotime($caja->updated_at)); ?></i>
+									<tr>
+										<td><?php echo e($i); ?></td>	
+										<td><?php if($caja->abierta == "1"): ?>
+											<span class="text-success" >Abierta</span>
+											<?php else: ?>
+											<span class="text-danger" >Cerrada</span>
+										<?php endif; ?></td>		
+										<td>$<?php echo e($caja->apertura ?? "-"); ?></td>		
+										<td>$<?php echo e($caja->entradas ?? "-"); ?></td>		
+										<td>$<?php echo e($caja->salidas ?? "-"); ?></td>		
+										<td>$<?php echo e($caja->ventas_efectivo ?? "-"); ?></td>		
+										<td>$<?php echo e($caja->ventas_tarjeta ?? "-"); ?></td>		
+										<td>$<?php echo e($caja->ventas_transferencia ?? "-"); ?></td>		
+										<td>$<?php echo e($caja->total ?? "-"); ?></td>	
+										<td><?php echo e(date("d-M-Y h:i A", $fechaInt)); ?></td>	
+										<td><?php echo e(date("d-M-Y h:i A", $fechaIntU)); ?></td>	
+										
+										
+									</tr>
+									<?php $i++ ?>
+									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+									<?php endif; ?>
+									
+								</tbody>
+							</table>
+						</div>
+						
+					</div>
+				</div>
+			</div>
 
 					
 			</div>

@@ -23,6 +23,7 @@ class CreateConsultaRapidasTable extends Migration
             $table->string('cobro')->nullable();
             $table->string('motivo_extra')->nullable();
             $table->string('receta')->nullable();
+            $table->string('recibo')->nullable();
             $table->string('pagado')->nullable();
 
 

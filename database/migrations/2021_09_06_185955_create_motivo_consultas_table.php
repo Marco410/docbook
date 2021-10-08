@@ -16,7 +16,11 @@ class CreateMotivoConsultasTable extends Migration
         Schema::create('motivo_consultas', function (Blueprint $table) {
             $table->id();
             $table->string("motivo")->nullable();
+            $table->unsignedBigInteger('especialidad_id');
             $table->timestamps();
+
+            $table->foreign('especialidad_id')->references('id')->on('especialidads')->onDelete('restrict')->onUpdate('cascade');
+
         });
     }
 

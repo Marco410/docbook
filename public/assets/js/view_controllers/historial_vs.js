@@ -301,10 +301,6 @@ $('#btn-save-notas-his').on("click", function(){
     });  
 });
 
-function removeEstudio(elemento){
-    $(".estudio"+elemento.getAttribute("data-id")).remove();
-}
-
 $("#sol_error").on("click",function(){
     var body = document.body;
     body.classList.add("modal-open"); 
@@ -502,40 +498,51 @@ $("#btn-hacer-pago").on("click",function(){
     var id_consulta = $("#id_consulta_rapida").val();
     var motivo_extra = $("#motivo_extra").val();
     var extra =  $("#cobro_extra").val();
+    var metodo =  $("#metodo_pago").val();
+    if(metodo.length > 0){
 
-
-    var fd = new FormData();
-    fd.append("paciente_id",$("#paciente_id").val());
-    fd.append("id_consulta_rapida",id_consulta);
-    fd.append("total",totalF);
-    fd.append("motivo_extra",motivo_extra);
-    fd.append("extra",extra);
-    fd.append("costo_consulta",costo_consulta);
-
-    const response =  axios.post('/make-pay',fd,{
-    }).then(res =>  {
-
-        iziToast.success({
-            timeout: 3000,
-            title: 'Éxito',
-            position: 'center',
-            message: 'Realizando Cobro. Guardando... (Espere)',
-        });
-        
-        setTimeout(function(){
-            window.open(res['data']['pdf']);
-            window.location.reload();
-        },3000);
-        
-
-    }).catch((err) => {
-        iziToast.error({
+        var fd = new FormData();    
+        fd.append("paciente_id",$("#paciente_id").val());
+        fd.append("id_consulta_rapida",id_consulta);
+        fd.append("total",totalF);
+        fd.append("motivo_extra",motivo_extra);
+        fd.append("extra",extra);
+        fd.append("costo_consulta",costo_consulta);
+        fd.append("metodo",metodo);
+    
+        const response =  axios.post('/make-pay',fd,{
+        }).then(res =>  {
+    
+            iziToast.success({
+                timeout: 3000,
+                title: 'Éxito',
+                position: 'center',
+                message: 'Realizando Cobro. Guardando... (Espere)',
+            });
+            
+            setTimeout(function(){
+                window.open(res['data']['pdf']);
+                window.location.reload();
+            },3000);
+            
+    
+        }).catch((err) => {
+            iziToast.error({
+                timeout: 6000,
+                title: 'Error',
+                position: 'topRight',
+                message: 'Algo salio mal, intentelo de nuevo y recargue.',
+            });
+        }); 
+    }else{
+        $("#metodo_pago").focus();
+        iziToast.warning({
             timeout: 6000,
-            title: 'Error',
-            position: 'topRight',
-            message: 'Algo salio mal, intentelo de nuevo y recargue.',
+            title: 'Cuidado',
+            position: 'center',
+            message: 'Seleccione el metodo de pago',
         });
-    }); 
+    }
 
 });
 

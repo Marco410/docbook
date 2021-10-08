@@ -4,7 +4,7 @@
     <div class="breadcrumb-bar">
         <div class="container-fluid">
             <div class="row align-items-center">
-                <div class="col-md-12 col-12">
+                <div class="col-md-10 col-10">
                     <nav aria-label="breadcrumb" class="page-breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index">Inicio</a></li>
@@ -12,6 +12,12 @@
                         </ol>
                     </nav>
                     <h2 class="breadcrumb-title">Doctor Inicio. Bienvenido </h2>
+                </div>
+                <div class="col-md-2 col-2">
+                    <p class="text-white" >
+                        Clinica: <strong>{{ auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion }}</strong><br>
+                        Fecha: <strong>{{ date("d-M-Y") }}</strong>
+                    </p>
                 </div>
             </div>
         </div>
@@ -28,10 +34,35 @@
                 </div>
                 
                 <div class="col-md-7 col-lg-8 col-xl-9">
+                    @if (Session::has('storeN'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Correcto</strong> Se cambio la clinica activa
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                        
+                    @endif
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="mb-4">Bienvenido a  <strong class="text-info" >Docbook</strong></h3>
                         </div>
+                    </div>
+                    <div class="row">
+                        <form method="post" action="{{ route('cambiar-clinica') }}" novalidate >
+                            {{ csrf_field() }}
+                        <div class="col-sm-9">
+                            <div class="form-group">
+								<label for="" class="text-secondary"> <i class="fas fa-clinic-medical" ></i> Selecciona la clinica en la que te encuentres: </label>
+								<select class="form-control select" name="change_clinica" id="">
+                                    @foreach ($clinicas as $clinica)
+									<option value="{{ $clinica->id }}">{{$clinica->nombre_consultorio}} <small class="text-secondary" > ({{$clinica->nombre_organizacion}})</small> {{ ($clinica->activa == "1") ? "-Activa-" : "" }} </option>
+                                    @endforeach
+								</select>
+								</div>
+                                <button class="btn btn-sm btn-block btn-primary" > <i class="fas fa-exchange-alt" ></i> Cambiar Sucursal</button>
+                        </div>
+                    </form>
                     </div>
                 </div>
 

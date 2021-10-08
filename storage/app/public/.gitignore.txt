@@ -1,2 +1,9 @@
-*
+clinica_logos
+doctor_docs
+doctor_perfil
+especialidades
+paciente_perfil
+recetas
+recibos
+reportes
 !.gitignore

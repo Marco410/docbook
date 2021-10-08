@@ -112,6 +112,8 @@ Route::post('/registro-paso3',"Auth\RegisterController@store_step_three" )->name
 
 Route::get('/doctor-inicio', 'DoctorController@doctor_dashboard')->name('doctor-inicio');
 
+Route::post('/cambiar-clinica', 'DoctorController@change_clinic')->name('cambiar-clinica');
+
 Route::get('/mis-pacientes', 'DoctorController@my_patients')->name('mis-pacientes');
 
 Route::get('/historial/{paciente}', 'DoctorController@historial')->name('historial');
@@ -138,10 +140,19 @@ Route::post('/save-pago',"DoctorController@save_pago" )->name('save-pago');
 
 Route::get('/caja','DoctorController@caja')->name('caja');
 
-
 Route::post('/open-caja','DoctorController@open_caja')->name('open-caja');
 
-Route::post('/caja-save','DoctorController@caja_save')->name('caja-save');
+Route::post('/close-caja','DoctorController@close_caja')->name('close-caja');
+
+Route::post('/make-report','DoctorController@make_report')->name('make-report');
+
+
+Route::get('/clinicas','DoctorController@clinics')->name('clinicas');
+
+Route::get('/clinica-nueva','DoctorController@new_clinic')->name('clinica-nueva');
+
+Route::post('/guardar-clinica-nueva',"DoctorController@store_new_clinic" )->name('guardar-clinica-nueva');
+
 
 ###### RUTAS HISTORIAL ######
 
@@ -203,6 +214,8 @@ Route::get('/get-motivo-consulta','DataController@get_motivo_consulta')->name('g
 Route::post('/save-new-motivo','DataController@save_new_motivo')->name('save-new-motivo');
 
 Route::post('/save-new-articulo','DataController@save_new_articulo')->name('save-new-articulo');
+
+Route::post('/save-new-estudio','DataController@save_new_estudio')->name('save-new-estudio');
 
 Route::get('/get-diagnostics','DataController@get_diagnostics')->name('get-diagnostics');
 

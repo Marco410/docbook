@@ -42,6 +42,12 @@
                             <span>Caja</span>
                         </a>
                     </li>
+                    <li  class="<?php if($page == "clinicas"): ?> active <?php endif; ?>" >
+                        <a href="<?php echo e(route('clinicas')); ?>">
+                            <i class="fas fa-clinic-medical"></i>
+                            <span>Clinicas</span>
+                        </a>
+                    </li>
                     
                     <li>
                         <a href="<?php echo e(route('logout')); ?>" onclick="event.preventDefault();

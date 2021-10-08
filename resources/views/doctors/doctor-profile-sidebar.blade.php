@@ -47,6 +47,12 @@
                             <span>Caja</span>
                         </a>
                     </li>
+                    <li  class="@if($page == "clinicas") active @endif" >
+                        <a href="{{ route('clinicas') }}">
+                            <i class="fas fa-clinic-medical"></i>
+                            <span>Clinicas</span>
+                        </a>
+                    </li>
                     {{-- <li>
                         <a href="schedule-timings">
                             <i class="fas fa-hourglass-start"></i>
