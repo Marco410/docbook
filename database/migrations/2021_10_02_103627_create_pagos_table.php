@@ -17,15 +17,18 @@ class CreatePagosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('doctor_id');
             $table->unsignedBigInteger('clinica_id');
+            $table->unsignedBigInteger('caja_id');
             $table->string('tipo_movimiento')->nullable();
             $table->string('descripcion')->nullable();
             $table->string('importe')->nullable();
             $table->string('metodo_pago')->nullable();
             $table->string('observaciones')->nullable();
+            $table->string('cerrado')->nullable();
             $table->timestamps();
 
             $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('clinica_id')->references('id')->on('clinicas')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('caja_id')->references('id')->on('cajas')->onDelete('restrict')->onUpdate('cascade')->nullable();
         });
     }
 

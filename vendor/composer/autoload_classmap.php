@@ -13,6 +13,7 @@ return array(
     'App\\Clinica' => $baseDir . '/app/Clinica.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\ConsultaRapida' => $baseDir . '/app/ConsultaRapida.php',
+    'App\\Consultas' => $baseDir . '/app/Consultas.php',
     'App\\Diagnostic' => $baseDir . '/app/Diagnostic.php',
     'App\\Doctor' => $baseDir . '/app/Doctor.php',
     'App\\Especialidad' => $baseDir . '/app/Especialidad.php',

@@ -28,7 +28,14 @@
 			</div>
 
 			<div class="col-md-8 col-lg-9 col-xl-9">
-
+				@if ($countCaja === 0)
+                    <div class="alert alert-warning fade show" role="alert">
+                        <strong>Recuerda</strong> ¡Tienes que abrir tu caja para empezar a trabajar! <a href="{{ route("caja") }}">Clic aquí para abrirla</a>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						  </button>
+                      </div>
+                @else
 				<div class="row">
 					<div class="col-sm-12 mb-4">
 						<div class="">
@@ -110,6 +117,18 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="alert alert-warning fade show" role="alert">
+							<strong>Recuerda</strong> cerrar tu caja cuando finalices tu jornada de trabajo
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							  </button>
+						  </div>
+					</div>
+				</div>
+				@endif
 			</div>
 		</div>
 	</div>

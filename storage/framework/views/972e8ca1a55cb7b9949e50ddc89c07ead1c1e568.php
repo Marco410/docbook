@@ -111,10 +111,11 @@
 									<table class="datatable table table-hover table-center mb-0">
 										<thead>
 											<tr>
-												<th>Descripción</th>
-												<th>Observaciones</th>
+												<th>Des.</th>
+												<th>Obs.</th>
 												<th>Importe</th>
 												<th>Tipo</th>
+												<th>Método</th>
 												<th>Fecha</th>
 											</tr>
 										</thead>
@@ -126,6 +127,7 @@
 												<td><?php echo e($pagoh->observaciones); ?></td>		
 												<td>$ <?php echo e($pagoh->importe); ?></td>		
 												<td><?php echo e($pagoh->tipo_movimiento); ?></td>			
+												<td><?php echo e($pagoh->metodo_pago); ?></td>			
 												<td><?php echo e($pagoh->created_at->diffForHumans()); ?></td>			
 											</tr>
 											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

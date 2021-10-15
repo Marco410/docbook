@@ -110,10 +110,11 @@
 									<table class="datatable table table-hover table-center mb-0">
 										<thead>
 											<tr>
-												<th>Descripción</th>
-												<th>Observaciones</th>
+												<th>Des.</th>
+												<th>Obs.</th>
 												<th>Importe</th>
 												<th>Tipo</th>
+												<th>Método</th>
 												<th>Fecha</th>
 											</tr>
 										</thead>
@@ -125,6 +126,7 @@
 												<td>{{ $pagoh->observaciones }}</td>		
 												<td>$ {{ $pagoh->importe }}</td>		
 												<td>{{ $pagoh->tipo_movimiento }}</td>			
+												<td>{{ $pagoh->metodo_pago }}</td>			
 												<td>{{ $pagoh->created_at->diffForHumans() }}</td>			
 											</tr>
 											@endforeach

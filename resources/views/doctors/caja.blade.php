@@ -156,7 +156,7 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Abierta</th>
+										<th>Estatus</th>
 										<th>Apertura</th>
 										<th>Entradas</th>
 										<th>Salidas</th>
@@ -164,8 +164,9 @@
 										<th>Tarjeta</th>
 										<th>Transferencias</th>
 										<th>Total</th>
-										<th>Fecha Abierta</th>
-										<th>Fecha Cerrada</th>
+										<th>Abierta</th>
+										<th>Cerrada</th>
+										<th>Reportes</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -191,8 +192,12 @@
 										<td>${{ $caja->total ?? "-" }}</td>	
 										<td>{{ date("d-M-Y h:i A", $fechaInt) }}</td>	
 										<td>{{ date("d-M-Y h:i A", $fechaIntU) }}</td>	
-										
-										
+										<td>
+											@if ($caja->abierta == 0)
+											<button type="button" class="btn bg-info-light btn-sm make_report_close" title="Reporte Sencillo"  data-id="{{ $caja->id }}" data-type="Sencillo"  > <i class="fas fa-file "></i> </button>
+											<button type="button" class="btn bg-primary-light btn-sm make_report_close" title="Reporte Global Detallado" data-id="{{ $caja->id }}" data-day="{{ date("d", $fechaInt) }}" data-type="Detallado"   > <i class="fas fa-globe "   ></i> </button>
+											@endif
+										</td>	
 									</tr>
 									<?php $i++ ?>
 									@endforeach
@@ -204,6 +209,37 @@
 						
 					</div>
 				</div>
+			</div>
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-header" >Reporte entre fechas</div>
+					<div class="card-body row">
+						<div class="col-sm-6">
+							<label for="">Fecha Inicial</label>
+							<div class="input-group mb-3">
+							<input type="datetime" id="fecha_ini" class="form-control datetimepicker" name="fecha">
+							<div class="input-group-append ">
+								<span class="input-group-text btn-primary text-white" id="basic-addon2"><i class="fas fa-calendar"></i></span>
+							  </div>
+							
+						  </div>
+						</div>
+						<div class="col-sm-6">
+							<label for="">Fecha Final</label>
+							<div class="input-group mb-3">
+								<input type="datetime" id="fecha_fin" class="form-control datetimepicker" name="fecha">
+								<div class="input-group-append ">
+									<span class="input-group-text btn-primary text-white" id="basic-addon2"><i class="fas fa-calendar"></i></span>
+								  </div>
+								
+							  </div>
+						</div>
+						<div class="col-sm-6 offset-3">
+							<button id="make_report_date" class="btn btn-sm btn-block btn-info" >Hacer Reporte</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			</div>
 
 					

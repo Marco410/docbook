@@ -145,7 +145,7 @@
 									<div style="width: 100%;">
 										<table style="border-bottom:3px solid #3399ff!important;width: 100%;">
 											<tbody  >
-												<td style="width: 25%; text-align: left;" ><img src="<?php echo e(asset("storage/".auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo)); ?>" height="70px" width="150px"  alt="logo" /></td>
+												<td style="width: 25%; text-align: left;" ><img src="assets/img/logo.png" height="70px" width="150px"  alt="logo" /></td>
 												<td style="width: 50%; text-align: center;"  >
 													<h2><?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion); ?></h2>
 													<p>

@@ -78,6 +78,7 @@ class CreateHistorialsTable extends Migration
             $table->string("colacion")->nullable();
             $table->string("comida")->nullable();
             $table->string("colacion_tarde")->nullable();
+            $table->string("cena")->nullable();
             $table->string("alimentos_casa")->nullable();
             $table->string("apetito")->nullable();
             $table->string("hambre")->nullable();

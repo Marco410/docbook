@@ -146,6 +146,10 @@ Route::post('/close-caja','DoctorController@close_caja')->name('close-caja');
 
 Route::post('/make-report','DoctorController@make_report')->name('make-report');
 
+Route::post('/make-report-close','DoctorController@make_report_close')->name('make-report-close');
+
+Route::post('/make-report-date','DoctorController@make_report_date')->name('make-report-date');
+
 
 Route::get('/clinicas','DoctorController@clinics')->name('clinicas');
 

@@ -320,7 +320,12 @@ $("#btn-add-consulta-rapida").on("click", function(){
 
                                         
                                 var motivo = $("#motivo_consulta_rapida").val();
-                                var diagnostico = $("#diagnostico_principal").attr("data-id");
+                                //si es 0, el Dr escribo el diagnostico
+                                if($("#diagnostico_principal").attr("data-id") == "0"){
+                                    var diagnostico = $("#diagnostico_principal").val();
+                                }else{
+                                    var diagnostico = $("#diagnostico_principal").attr("data-id");
+                                }
                                 var notas = txtConsulta.getData();
                                 var estatura = $("#estatura-signos2").val();
                                 var peso = $("#peso-signos2").val();
@@ -402,7 +407,6 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
             position: 'topRight',
             message: 'Consulta rápida creada.',
         });
-        console.log(res['data']);
         //window.location.reload();
         $("#id_consulta_rapida").val(res['data']['consulta'].id);
         $("#diagnostico-consulta-cobro").html(res['data']['diagnostico']);

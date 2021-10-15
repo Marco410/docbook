@@ -229,8 +229,8 @@
 									<p>
 										<strong>Dr. <?php echo e($doctor->nombre); ?> <?php echo e($doctor->apellido_p); ?> <?php echo e($doctor->apellido_m); ?></strong>
 										<br>
-										<?php echo e($doctor->especialidad[0]->nombre); ?><br>
-										<strong>Cédula Profesional:</strong> <?php echo e($doctor->cedula); ?><br>
+										<?php echo e($doctor->especialidad[0]->nombre); ?>
+
 									</p>
 								</td>
 							</tbody>

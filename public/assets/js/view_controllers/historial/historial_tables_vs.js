@@ -59,6 +59,25 @@ $("#table_diagnosticos").on("click", "#btn-add-diagnostic", function(){
     });
     
 });
+$("#btn_diagnostico_no_encontrado").on("click",function(){
+
+    diagnostico = $("#diagnostico_no_encontrado").val();
+    if(diagnostico.length < 5){
+        alert("Agrega un diagnóstico con más caracteres");
+    }else{
+        $("#diagnostico_principal").val(diagnostico);
+
+        $("#diagnostico_principal").attr("data-id",0);
+    
+        $("#agregar_diagnostico").modal("hide");
+    
+        $("#agregar_diagnostico").on("hidden.bs.modal",function(){
+            $(".body-historial").addClass("modal-open");
+        });
+    }
+    
+
+});
 
 
 var table_art = $('#table_articulos').DataTable({

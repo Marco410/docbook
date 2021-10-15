@@ -21,6 +21,8 @@ class CreateConsultaRapidasTable extends Migration
             $table->unsignedBigInteger('diagnostico_id');
             $table->text('notas_consulta_rapida')->nullable();
             $table->string('cobro')->nullable();
+            $table->string('costo_consulta')->nullable();
+            $table->string('costo_extra')->nullable();
             $table->string('motivo_extra')->nullable();
             $table->string('receta')->nullable();
             $table->string('recibo')->nullable();

@@ -235,8 +235,7 @@
 									<p>
 										<strong>Dr. {{ $doctor->nombre }} {{ $doctor->apellido_p }} {{ $doctor->apellido_m }}</strong>
 										<br>
-										{{ $doctor->especialidad[0]->nombre }}<br>
-										<strong>Cédula Profesional:</strong> {{ $doctor->cedula }}<br>
+										{{ $doctor->especialidad[0]->nombre }}
 									</p>
 								</td>
 							</tbody>

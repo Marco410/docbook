@@ -505,6 +505,7 @@ class ComposerStaticInit1e354e8f0731dfcc4daae65c71753945
         'App\\Clinica' => __DIR__ . '/../..' . '/app/Clinica.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\ConsultaRapida' => __DIR__ . '/../..' . '/app/ConsultaRapida.php',
+        'App\\Consultas' => __DIR__ . '/../..' . '/app/Consultas.php',
         'App\\Diagnostic' => __DIR__ . '/../..' . '/app/Diagnostic.php',
         'App\\Doctor' => __DIR__ . '/../..' . '/app/Doctor.php',
         'App\\Especialidad' => __DIR__ . '/../..' . '/app/Especialidad.php',

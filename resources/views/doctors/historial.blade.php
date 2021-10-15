@@ -253,9 +253,9 @@
 									<h3 >ANTECEDENTES</h3>
 								</div>
 								<div class="col-sm-6 mb-4">
-									<div class="">
-										<a href="#{{-- {{ route('registro-paciente') }} --}}" class="btn btn-primary btn-md float-right"><i class="fas fa-play"></i> Iniciar Consulta</a>
-									</div>
+									{{-- <div class="">
+										<a href="#{{ route('registro-paciente') }}" class="btn btn-primary btn-md float-right"><i class="fas fa-play"></i> Iniciar Consulta</a>
+									</div> --}}
 								</div>
 							</div>
 
@@ -904,7 +904,7 @@
 								<div class="card col-sm-12 border-left">
 									<div class="card-header " data-toggle="collapse" href="#dieta">
 										<div class="card-title">
-											<h5 class="text-info" > <i class="fas fa-utensils"></i> DIETA NUTRIOLOGICA</h5>
+											<h5 class="text-info" > <i class="fas fa-utensils"></i> DIETA NUTRIOLÓGICA</h5>
 										</div>
 									</div>
 									<div class="card-body collapse multi-collapse" id="dieta">
@@ -1205,7 +1205,7 @@
 													</div>
 												</div>
 												<div class="col-sm-8 mb-2">
-													<label >Educación Nitriológica</label>
+													<label >Educación Nutriológica</label>
 												</div>
 												<div class="col-sm-4">
 													<div class="form-check form-check-inline">
@@ -1298,7 +1298,7 @@
 								<div class="card col-sm-12">
 									<div class="card-header">
 										<div class="card-title">
-											<h5 class="text-info" > <i class="fas fa-tablets" ></i> MEDICAMENTOS</h5>
+											<h5 class="text-info" > <i class="fas fa-tablets" ></i> MEDICAMENTOS ACTIVOS</h5>
 										</div>
 									</div>
 									<div class="card-body">
@@ -1310,7 +1310,7 @@
 													@endforeach
 												</div>
 												<div id="panel-medis"  >
-													<label for="buscar_medi" class="text-secondary text-sm">Buscar medi</label>
+													<label for="buscar_medi" class="text-secondary text-sm">Buscar medicamento</label>
 			
 													<div class="input-group mb-2" >
 															<input type="text" placeholder="Comienza a escribir algo para buscar" class="form-control" name="buscar_medi" id="buscar_medi"  >
@@ -1464,7 +1464,7 @@
 															</div>
 															<div class="col-sm-12">
 																<label class="text-primary text-sm font-weight-bold mb-1 " for="">{{ $consulta->motivo()->get()[0]->motivo }}</label><br>
-																<label class="text-secondary text-sm font-weight-bold mb-1 " for=""> <small>{{ $consulta->diagnostico()->get()[0]->descripcion_4 }}</small></label>
+																<label class="text-secondary text-sm font-weight-bold mb-1 " for=""> <small>{{ ($consulta->diagnostico_id) ?  $consulta->diagnostico()->first()->descripcion_4 : $consulta->diagnostico_str }}</small></label>
 															</div>
 														</div>
 														
@@ -1477,10 +1477,14 @@
 														<div class="col-sm-4">
 															<a class="btn btn-sm bg-info-light" href="{{ $consulta->receta }}" target="_blank" >Ver Receta</a>
 														</div>
+														<div class="col-sm-3" >
+															<a class="btn bg-warning-light btn-sm" data-toggle="collapse" href="#notas{{ $consulta->id }}" role="button" aria-expanded="false" aria-controls="notas{{ $consulta->id }}">Notas
+															</a>
+														</div>
 			
 														<div class="col-sm-5" >
 															@if($consulta->pagado == 0)
-																<button class="btn btn-sm bg-danger-light" onclick="pagar_atrasado('{{ $consulta->id }}','{{ $consulta->diagnostico()->get()[0]->descripcion_4 }}','{{ $consulta->motivo()->get()[0]->motivo }}')"> Pagar</button>
+																<button class="btn btn-sm bg-danger-light" onclick="pagar_atrasado('{{ $consulta->id }}','{{ ($consulta->diagnostico_id) ?  $consulta->diagnostico()->first()->descripcion_4 : $consulta->diagnostico_str }}','{{ $consulta->motivo()->get()[0]->motivo }}')"> Pagar</button>
 															@elseif($consulta->pagado == 1)
 															<a class="btn btn-sm bg-success-light" href="{{ $consulta->recibo }}" target="_blank" >Recibo de Pago</a>
 															
@@ -1490,6 +1494,12 @@
 													</div>
 
 												</div>
+												
+												<div class="collapse" id="notas{{ $consulta->id }}">
+													<div class="card card-body">
+													 {!! $consulta->notas_consulta_rapida !!}
+													</div>
+												  </div>
 												
 											</div>
 										@endforeach
@@ -1807,8 +1817,16 @@
 				
 			</div>
 			<div class="modal-footer">
-				<div class="col-sm-12" >
-					
+				<div class="row">
+					<div class="col-sm-12 text-center">
+						<h5 class="text-secondary" >Agregar diagnóstico no encontrado</h5>
+					</div>
+					<div class="col-sm-6" >
+						<input type="text" value="" class="form-control" id="diagnostico_no_encontrado" minlength="4" >
+					</div>
+					<div class="col-sm-6">
+						<button class="btn btn-sm bg-info-light" id="btn_diagnostico_no_encontrado"  >Agregar</button>
+					</div>
 				</div>
 			</div>
 			

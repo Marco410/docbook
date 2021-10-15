@@ -15,7 +15,13 @@
                 </div>
                 <div class="col-md-2 col-2">
                     <p class="text-white" >
-                        Clinica: <strong>{{ auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion }}</strong><br>
+                        Clinica: @if ((isset(auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion)))
+                        <strong>{{auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion}}</strong>
+                            <i style="display: none" > {{ $sActiva = 0 }}</i>
+                            @else
+                            <i style="display: none" > {{ $sActiva = 1 }}</i>
+                         <strong class="text-danger"> No seleccionada</strong>
+                        @endif<br>
                         Fecha: <strong>{{ date("d-M-Y") }}</strong>
                     </p>
                 </div>
@@ -34,6 +40,11 @@
                 </div>
                 
                 <div class="col-md-7 col-lg-8 col-xl-9">
+                    @if ($sActiva == 1)
+                    <div class="alert alert-danger fade show" role="alert">
+                        <strong>Cuidado</strong> Debes de seleccionar la sucursal en la que te encuentres.
+                      </div>
+                    @endif
                     @if (Session::has('storeN'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong>Correcto</strong> Se cambio la clinica activa
@@ -42,6 +53,11 @@
                         </button>
                       </div>
                         
+                    @endif
+                    @if ($countCaja === 0)
+                    <div class="alert alert-warning fade show" role="alert">
+                        <strong>Recuerda</strong> ¡Tienes que abrir tu caja para empezar a trabajar! <a href="{{ route("caja") }}">Clic aquí para abrirla</a>
+                      </div>
                     @endif
                     <div class="row">
                         <div class="col-md-12">
