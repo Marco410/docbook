@@ -12,6 +12,10 @@ class ConsultaRapida extends Model
         return $this->hasOne(Doctor::class,"id","doctor_id");
     }
 
+    public function paciente(){
+        return $this->hasOne(Paciente::class,"id","paciente_id");
+    }
+
     public function diagnostico(){
         return $this->hasOne(Diagnostic::class,"id","diagnostico_id");
     }

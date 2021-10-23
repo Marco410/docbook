@@ -8,7 +8,7 @@
 			<div class="col-md-10 col-10">
 				<nav aria-label="breadcrumb" class="page-breadcrumb">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="index">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="doctor-inicio">Inicio</a></li>
 						<li class="breadcrumb-item active" aria-current="page">Caja</li>
 					</ol>
 				</nav>
@@ -25,6 +25,7 @@
 </div>
 <!-- /Breadcrumb -->
 <input type="hidden" id="clinic_id" value="{{ auth()->user("doctors")->clinicas->where('activa',1)->first()->id }}" >
+<input type="hidden" id="doctor_id" value="{{ auth()->user("doctors")->id }}" >
 			
 <!-- Page Content -->
 <div class="content">
@@ -152,10 +153,10 @@
 					<div class="card-header" >Cajas (Linea del tiempo)</div>
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="datatable table table-hover table-center mb-0">
+							<table id="table_cajas" class="table table-hover table-center mb-0">
 								<thead>
 									<tr>
-										<th>#</th>
+										<th>ID</th>
 										<th>Estatus</th>
 										<th>Apertura</th>
 										<th>Entradas</th>
@@ -170,14 +171,13 @@
 									</tr>
 								</thead>
 								<tbody>
-									@if (!empty($cajas))
-									<?php $i = 1 ?>
+									{{-- @if (!empty($cajas))
 									@foreach ($cajas as $caja)
 									<i style="display: none;" >{{ $fechaInt = strtotime($caja->created_at)
 									}}{{ $fechaIntU = strtotime($caja->updated_at)
 									}}</i>
 									<tr>
-										<td>{{ $i }}</td>	
+										<td>{{ $caja->id }}</td>	
 										<td>@if ($caja->abierta == "1")
 											<span class="text-success" >Abierta</span>
 											@else
@@ -194,14 +194,13 @@
 										<td>{{ date("d-M-Y h:i A", $fechaIntU) }}</td>	
 										<td>
 											@if ($caja->abierta == 0)
-											<button type="button" class="btn bg-info-light btn-sm make_report_close" title="Reporte Sencillo"  data-id="{{ $caja->id }}" data-type="Sencillo"  > <i class="fas fa-file "></i> </button>
-											<button type="button" class="btn bg-primary-light btn-sm make_report_close" title="Reporte Global Detallado" data-id="{{ $caja->id }}" data-day="{{ date("d", $fechaInt) }}" data-type="Detallado"   > <i class="fas fa-globe "   ></i> </button>
+											<button type="button" class="btn bg-info-light btn-sm make_report_close" title="Reporte Sencillo"  data-id="{{ $caja->id }}" data-type="Sencillo"  > <i class="fas fa-file"></i> </button>
+											<button type="button" class="btn bg-primary-light btn-sm make_report_close" title="Reporte Global Detallado" data-id="{{ $caja->id }}" data-day="{{ date("d", $fechaInt) }}" data-type="Detallado"   > <i class="fas fa-globe"></i> </button>
 											@endif
 										</td>	
 									</tr>
-									<?php $i++ ?>
 									@endforeach
-									@endif
+									@endif --}}
 									
 								</tbody>
 							</table>

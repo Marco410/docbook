@@ -58,22 +58,27 @@ class LoginController extends Controller
         ]);
 
         $doctor = DB::table('doctors')->where('email',$datosDoctor['email'])->first();
+        
 
         if($doctor){
+            if($doctor->status == "1"){
 
-            if(Hash::check($datosDoctor['password'], $doctor->password))
-            {
-                Auth::guard('doctors')->loginUsingId($doctor->id);
+                if(Hash::check($datosDoctor['password'], $doctor->password))
+                {
+                    Auth::guard('doctors')->loginUsingId($doctor->id);
+        
+                    //return Auth::guard('doctors')->user();
+                    return redirect()->route('doctor-inicio');
     
-                //return Auth::guard('doctors')->user();
-                return redirect()->route('doctor-inicio');
-
+                }else{
+                    return view('login')->with(['errorL'=>'La contraseña es incorrecta'])->with(['route'=>'login-dr','tipo' => 'Doctor']);
+                }
             }else{
-                return view('login')->with(['errorL'=>'La contraseña es incorrecta'])->with(['route'=>'login-dr','tipo' => 'Doctor']);
+                return view('login')->with(['errorL'=>'Esta cuenta no esta activa'])->with(['route'=>'login-dr','tipo' => 'Doctor']);
             }
 
         }else{
-            return view('login')->with(['errorL'=>'Esta cuenta de correo no esta registrada'])->with(['route'=>'login-dr','tipo' => 'Doctor']);
+            return view('login')->with(['errorL'=>'Esta cuenta de correo no esta registrada.'])->with(['route'=>'login-dr','tipo' => 'Doctor']);
         }
 
       

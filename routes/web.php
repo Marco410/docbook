@@ -158,6 +158,13 @@ Route::get('/clinica-nueva','DoctorController@new_clinic')->name('clinica-nueva'
 Route::post('/guardar-clinica-nueva',"DoctorController@store_new_clinic" )->name('guardar-clinica-nueva');
 
 
+Route::get('/reportes','DoctorController@reports')->name('reportes');
+
+Route::post('/make-report-diario','DoctorController@make_report_diario')->name('make-report-diario');
+
+Route::post('/make-report-resumen','DoctorController@make_report_resumen')->name('make-report-resumen');
+
+
 ###### RUTAS HISTORIAL ######
 
 Route::post('/store-notas-internas','HistorialController@store_notas_internas')->name('store-notas-internas');
@@ -226,6 +233,8 @@ Route::get('/get-diagnostics','DataController@get_diagnostics')->name('get-diagn
 Route::get('/get-articulos','DataController@get_articulos')->name('get-articulos');
 
 Route::get('/get-estudios','DataController@get_estudios')->name('get-estudios');
+
+Route::get('/get-cajas','DataController@get_cajas')->name('get-cajas');
 
 
 

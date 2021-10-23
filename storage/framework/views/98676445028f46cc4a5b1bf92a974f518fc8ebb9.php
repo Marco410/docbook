@@ -8,7 +8,7 @@
 			<div class="col-md-10 col-10">
 				<nav aria-label="breadcrumb" class="page-breadcrumb">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="index">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="doctor-inicio">Inicio</a></li>
 						<li class="breadcrumb-item active" aria-current="page">Caja</li>
 					</ol>
 				</nav>
@@ -25,6 +25,7 @@
 </div>
 <!-- /Breadcrumb -->
 <input type="hidden" id="clinic_id" value="<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->id); ?>" >
+<input type="hidden" id="doctor_id" value="<?php echo e(auth()->user("doctors")->id); ?>" >
 			
 <!-- Page Content -->
 <div class="content">
@@ -153,10 +154,10 @@
 					<div class="card-header" >Cajas (Linea del tiempo)</div>
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="datatable table table-hover table-center mb-0">
+							<table id="table_cajas" class="table table-hover table-center mb-0">
 								<thead>
 									<tr>
-										<th>#</th>
+										<th>ID</th>
 										<th>Estatus</th>
 										<th>Apertura</th>
 										<th>Entradas</th>
@@ -171,36 +172,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<?php if(!empty($cajas)): ?>
-									<?php $i = 1 ?>
-									<?php $__currentLoopData = $cajas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $caja): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-									<i style="display: none;" ><?php echo e($fechaInt = strtotime($caja->created_at)); ?><?php echo e($fechaIntU = strtotime($caja->updated_at)); ?></i>
-									<tr>
-										<td><?php echo e($i); ?></td>	
-										<td><?php if($caja->abierta == "1"): ?>
-											<span class="text-success" >Abierta</span>
-											<?php else: ?>
-											<span class="text-danger" >Cerrada</span>
-										<?php endif; ?></td>		
-										<td>$<?php echo e($caja->apertura ?? "-"); ?></td>		
-										<td>$<?php echo e($caja->entradas ?? "-"); ?></td>		
-										<td>$<?php echo e($caja->salidas ?? "-"); ?></td>		
-										<td>$<?php echo e($caja->ventas_efectivo ?? "-"); ?></td>		
-										<td>$<?php echo e($caja->ventas_tarjeta ?? "-"); ?></td>		
-										<td>$<?php echo e($caja->ventas_transferencia ?? "-"); ?></td>		
-										<td>$<?php echo e($caja->total ?? "-"); ?></td>	
-										<td><?php echo e(date("d-M-Y h:i A", $fechaInt)); ?></td>	
-										<td><?php echo e(date("d-M-Y h:i A", $fechaIntU)); ?></td>	
-										<td>
-											<?php if($caja->abierta == 0): ?>
-											<button type="button" class="btn bg-info-light btn-sm make_report_close" title="Reporte Sencillo"  data-id="<?php echo e($caja->id); ?>" data-type="Sencillo"  > <i class="fas fa-file "></i> </button>
-											<button type="button" class="btn bg-primary-light btn-sm make_report_close" title="Reporte Global Detallado" data-id="<?php echo e($caja->id); ?>" data-day="<?php echo e(date("d", $fechaInt)); ?>" data-type="Detallado"   > <i class="fas fa-globe "   ></i> </button>
-											<?php endif; ?>
-										</td>	
-									</tr>
-									<?php $i++ ?>
-									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-									<?php endif; ?>
+									
 									
 								</tbody>
 							</table>

@@ -104,4 +104,8 @@
 		
 		<?php if(Route::is(['caja'])): ?>
 		<script  src="/assets/js/view_controllers/cajas_vs.js"></script>
+		<?php endif; ?>
+
+		<?php if(Route::is(['reportes'])): ?>
+		<script  src="/assets/js/view_controllers/reportes_vs.js"></script>
 		<?php endif; ?><?php /**PATH D:\xampp\htdocs\pixelar_doc\laravel-files\template\resources\views/layout/partials/footer-scripts.blade.php ENDPATH**/ ?>

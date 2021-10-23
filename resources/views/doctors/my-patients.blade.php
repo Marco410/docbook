@@ -8,7 +8,7 @@
 			<div class="col-md-12 col-12">
 				<nav aria-label="breadcrumb" class="page-breadcrumb">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="index">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="doctor-inicio">Inicio</a></li>
 						<li class="breadcrumb-item active" aria-current="page">Mis Pacientes</li>
 					</ol>
 				</nav>

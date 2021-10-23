@@ -1,5 +1,138 @@
+var espanol = {
+    "sProcessing":     "Procesando...",
+    "sZeroRecords":    "No se encontraron resultados",
+    "sEmptyTable":     "Ningún dato disponible en esta tabla",
+    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+    "sInfoPostFix":    "",
+    "sSearch":         "Buscar:",
+    "sUrl":            "",
+    "sInfoThousands":  ",",
+    "sLoadingRecords": "Cargando...",
+    "oPaginate": {
+        "sFirst":    "Primero",
+        "sLast":     "Último",
+        "sNext":     "Siguiente",
+        "sPrevious": "Anterior"
+    },
+    "oAria": {
+        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+    }
+};
 
-//cambia el estatus de si tiene o no alergias
+var table_caja = $('#table_cajas').DataTable({
+    fixedHeader: true,
+    scrollY: true,
+    order: [ 0, 'desc' ],
+    language: espanol,
+    ajax:{
+        url: "/get-cajas?clinic="+$("#clinic_id").val()+"&user="+$("#doctor_id").val(),
+        type:"get",
+    },
+    columns:[
+        {"data":"id"},
+        {"data":"abierta",
+        "render":function(value){
+            if(value == "1"){
+                return "<span class='text-success' >Abierta</span>"
+            }else{
+                return "<span class='text-danger' >Cerrada</span>"
+            }
+        }},
+        {"data":"apertura",
+        "render": function(value){
+            if(value == null){
+                return "$";
+            }else{
+                return "$"+value;
+            }
+        }},
+        {"data":"entradas",
+        "render": function(value){
+            if(value == null){
+                return "$";
+            }else{
+                return "$"+value;
+            }
+        }},
+        {"data":"salidas",
+        "render": function(value){
+            if(value == null){
+                return "$";
+            }else{
+                return "$"+value;
+            }
+        }},
+        {"data":"ventas_efectivo",
+        "render": function(value){
+            if(value == null){
+                return "$";
+            }else{
+                return "$"+value;
+            }
+        }},
+        {"data":"ventas_tarjeta",
+        "render": function(value){
+            if(value == null){
+                return "$";
+            }else{
+                return "$"+value;
+            }
+        }},
+        {"data":"ventas_transferencia",
+        "render": function(value){
+            if(value == null){
+                return "$";
+            }else{
+                return "$"+value;
+            }
+        }},
+        {"data":"total",
+        "render": function(value){
+            if(value == null){
+                return "$";
+            }else{
+                return "$"+value;
+            }
+        }},
+        {"data":"created_at",
+        "render":function(value){
+            return moment(value).format('DD-MMM-YYYY HH:mm a');
+        }},
+        {"data":"updated_at",
+        "render":function(value){
+            return moment(value).format('DD-MMM-YYYY HH:mm a');
+        }},
+        {"defaultContent":"<button title='Reporte Sencillo' id='make_report_close' class='btn bg-info-light btn-sm'><i class='fas fa-file'></i></button><button id='make_report_close_global' class='btn bg-primary-light btn-sm'><i class='fas fa-globe'></i></button>"}
+    ],
+});
+
+$('#table_cajas tbody').on('click', '#make_report_close', function () {
+    var data = table_caja.row( $(this).parents("tr") ).data();
+    var date = moment(data.created_at).format('YY-M-DD');
+
+    //var date = data.created_at;
+    var type = "Sencillo";
+    make_report_close(data.id,type,date);
+    
+} );
+
+$('#table_cajas tbody').on('click', '#make_report_close_global', function () {
+    var data = table_caja.row( $(this).parents("tr") ).data();
+    var date = moment(data.created_at).format('YY-M-DD');
+    
+    var type = "Detallado";
+    
+    console.log(date);
+    make_report_close(data.id,type,date);
+
+
+} );
+
+
+
 $('#close_caja').on("click", function(){
 
     iziToast.question({
@@ -91,42 +224,6 @@ $('#make_report').on("click", function(){
     }); 
 });
 
-$('.make_report_close').on("click", function(){
-
-    var fd = new FormData();
-    csrftoken = getCookie('csrftoken');
-    fd.append("csrfmiddlewaretoken",csrftoken);
-    fd.append("caja_id",$(this).attr("data-id"));
-    fd.append("clinic_id",$("#clinic_id").val());
-    fd.append("report_type",$(this).attr("data-type"));
-    fd.append("day",$(this).attr("data-day"));
-
-
-    const response =  axios.post('/make-report-close',fd,{
-    }).then(res =>  {
-
-        iziToast.success({
-            timeout: 3000,
-            title: 'Éxito',
-            position: 'center',
-            message: 'Mostrando Reporte (Espere)',
-        });
-
-        console.log(res);
-
-        setTimeout(function(){
-            window.open(res['data']['pdf']);
-        },3000);
-
-    }).catch((err) => {
-        iziToast.error({
-            timeout: 6000,
-            title: 'Error',
-            position: 'topRight',
-            message: 'Algo salio mal, intentelo de nuevo y recargue.',
-        });
-    }); 
-});
 
 $('#make_report_date').on("click", function(){
 
@@ -162,6 +259,42 @@ $('#make_report_date').on("click", function(){
         });
     }); 
 });
+
+function make_report_close(caja_id,type_report,date){
+    var fd = new FormData();
+    csrftoken = getCookie('csrftoken');
+    fd.append("csrfmiddlewaretoken",csrftoken);
+    fd.append("caja_id",caja_id);
+    fd.append("clinic_id",$("#clinic_id").val());
+    fd.append("report_type",type_report);
+    fd.append("date",date);
+
+
+    const response =  axios.post('/make-report-close',fd,{
+    }).then(res =>  {
+
+        iziToast.success({
+            timeout: 3000,
+            title: 'Éxito',
+            position: 'center',
+            message: 'Mostrando Reporte (Espere)',
+        });
+
+        console.log(res);
+
+        setTimeout(function(){
+            window.open(res['data']['pdf']);
+        },3000);
+
+    }).catch((err) => {
+        iziToast.error({
+            timeout: 6000,
+            title: 'Error',
+            position: 'topRight',
+            message: 'Algo salio mal, intentelo de nuevo y recargue.',
+        });
+    }); 
+}
 
 function getCookie(name) {
     let cookieValue = null;

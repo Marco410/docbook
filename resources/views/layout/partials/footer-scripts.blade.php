@@ -105,3 +105,7 @@
 		@if (Route::is(['caja']))
 		<script  src="/assets/js/view_controllers/cajas_vs.js"></script>
 		@endif
+
+		@if (Route::is(['reportes']))
+		<script  src="/assets/js/view_controllers/reportes_vs.js"></script>
+		@endif

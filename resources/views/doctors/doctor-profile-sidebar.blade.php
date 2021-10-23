@@ -53,6 +53,12 @@
                             <span>Clinicas</span>
                         </a>
                     </li>
+                    <li  class="@if($page == "reportes") active @endif" >
+                        <a href="{{ route('reportes') }}">
+                            <i class="fas fa-file-medical"></i>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
                     {{-- <li>
                         <a href="schedule-timings">
                             <i class="fas fa-hourglass-start"></i>
