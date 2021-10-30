@@ -8,11 +8,11 @@
 						<div class="col-md-12 col-12">
 							<nav aria-label="breadcrumb" class="page-breadcrumb">
 								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="index">Home</a></li>
-									<li class="breadcrumb-item active" aria-current="page">Profile</li>
+									<li class="breadcrumb-item"><a href="doctor-inicio">Inicio</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Perfil</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Profile</h2>
+							<h2 class="breadcrumb-title">Perfil</h2>
 						</div>
 					</div>
 				</div>
@@ -22,7 +22,7 @@
 			<!-- Page Content -->
 			<div class="content">
 				<div class="container-fluid">
-
+					
 					<div class="row">
 						<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar dct-dashbd-lft">
 						
@@ -32,13 +32,13 @@
 									<div class="pro-widget-content">
 										<div class="profile-info-widget">
 											<a href="#" class="booking-doc-img">
-												<img src="assets/img/patients/patient.jpg" alt="User Image">
+												<img class="avatar-img" src="../storage/{{$paciente->foto }}" alt="{{ $paciente->nombre }}">
 											</a>
 											<div class="profile-det-info">
-												<h3>Richard Wilson</h3>
+												<h3>{{-- {{ $paciente->nombre }} {{ $paciente->apellido_p }} {{ $paciente->apellido_m }} --}}</h3>
 												
 												<div class="patient-details">
-													<h5><b>Patient ID :</b> PT0016</h5>
+													<h5><b>Patient ID :</b> P-{{--  {{ $paciente->id }} --}}</h5>
 													<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Newyork, United States</h5>
 												</div>
 											</div>

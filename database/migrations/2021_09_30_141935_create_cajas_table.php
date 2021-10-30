@@ -23,6 +23,9 @@ class CreateCajasTable extends Migration
             $table->string('ventas_efectivo')->nullable();
             $table->string('ventas_tarjeta')->nullable();
             $table->string('ventas_transferencia')->nullable();
+            $table->string('salidas_efectivo')->nullable();
+            $table->string('salidas_tarjeta')->nullable();
+            $table->string('salidas_transferencia')->nullable();
             $table->string('total')->nullable();
             $table->string('abierta')->nullable();
 

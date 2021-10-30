@@ -251,14 +251,23 @@
 										<strong>Entradas</strong> ${{ $entradas }} <br>
 										<strong>Salidas</strong> ${{ $salidas }} <br>
 									</p>
+									
+									<p>
+										<strong>Saldo en Caja: </strong> ${{ $total }} 
+									</p>
 									<p class="invoice-details" style="text-align: left;" >
+										<strong>-Entradas-</strong>
 										<strong>Efectivo:</strong> ${{ $efectivo}}<br>
 										<strong>Tarjeta:</strong> ${{ $tarjeta}} <br>
 										<strong>Transferencia: </strong> ${{ $transferencia }} <br>
 										
 									</p>
-									<p>
-										<strong>Total en Caja: </strong> ${{ $total }} 
+									<p class="invoice-details" style="text-align: left;" >
+										<strong>-Salidas-</strong>
+										<strong>Efectivo:</strong> ${{ $efectivoS}}<br>
+										<strong>Tarjeta:</strong> ${{ $tarjetaS}} <br>
+										<strong>Transferencia: </strong> ${{ $transferenciaS }} <br>
+										
 									</p>
 								</td>
 							
@@ -266,6 +275,38 @@
 						</table>
 					</div>
 				</div>
+				@if (!empty($pagos))
+
+				<div style="width: 100%;" >
+					<h4>Movimientos</h4>
+						<table style="width: 100%" >
+							<thead>
+								<tr>
+									<th style="text-align: left;" > <span> Movimiento</span></th>
+									<th style="text-align: left;" > <span> Descripción</span></th>
+									<th style="text-align: left;" > <span> Importe</span></th>
+									<th style="text-align: left;" > <span> Método de Pago</span></th>
+									<th style="text-align: left;" > <span> Observaciones</span></th>
+									<th style="text-align: left;" > <span> Fecha</span></th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach ($pagos as $pago)
+								<tr>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $pago->tipo_movimiento }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $pago->descripcion }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ $pago->importe }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $pago->metodo_pago }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $pago->observaciones }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $pago->created_at }}</span></td>
+									
+								</tr>
+								@endforeach
+									
+							</tbody>
+						</table>
+					</div>
+					@endif
 				<div style="width: 100%;">
 					<table style="width: 100%;" >
 						<tbody>

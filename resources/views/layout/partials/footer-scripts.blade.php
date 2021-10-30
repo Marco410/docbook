@@ -62,14 +62,12 @@
 		@if (Route::is(['citas']))
 		<script  src="/assets_admin/js/view_controllers/citas.js"></script>
 		@endif
-
-		
 		
 		@if (Route::is(['mis-pacientes','paciente-nuevo']))
 		<script  src="/assets/js/view_controllers/doctors_vs.js"></script>
 		@endif
 		
-		@if (Route::is(['historial']))
+		@if (Route::is(['historial','perfil-paciente']))
 		<script  src="/assets/js/view_controllers/historial/alergias_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/vacunas_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/medicamentos_vs.js"></script>
@@ -98,12 +96,20 @@
 				console.error( error );
 			} );
 			</script>
+		<script  src="/assets/js/view_controllers/historial/heredo_vs.js"></script>
+		<script  src="/assets/js/view_controllers/historial/gineco_vs.js"></script>
+		<script  src="/assets/js/view_controllers/historial/patologicos_vs.js"></script>
+		<script  src="/assets/js/view_controllers/historial/npatologicos_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/historial_tables_vs.js"></script>
 		@endif
 		
 		@if (Route::is(['caja']))
 		<script  src="/assets/js/view_controllers/cajas_vs.js"></script>
+		@endif
+
+		@if (Route::is(['pagos']))
+		<script  src="/assets/js/view_controllers/pagos_vs.js"></script>
 		@endif
 
 		@if (Route::is(['reportes']))

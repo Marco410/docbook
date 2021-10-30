@@ -196,14 +196,23 @@
 										<strong>Entradas</strong> $<?php echo e($entradas); ?> <br>
 										<strong>Salidas</strong> $<?php echo e($salidas); ?> <br>
 									</p>
+									
+									<p>
+										<strong>Saldo en Caja: </strong> $<?php echo e($total); ?> 
+									</p>
 									<p class="invoice-details" style="text-align: left;" >
+										<strong>-Entradas-</strong><br>
 										<strong>Efectivo:</strong> $<?php echo e($efectivo); ?><br>
 										<strong>Tarjeta:</strong> $<?php echo e($tarjeta); ?> <br>
 										<strong>Transferencia: </strong> $<?php echo e($transferencia); ?> <br>
 										
 									</p>
-									<p>
-										<strong>Total en Caja: </strong> $<?php echo e($total); ?> 
+									<p class="invoice-details" style="text-align: left;" >
+										<strong>-Salidas-</strong> <br>	
+										<strong>Efectivo:</strong> $<?php echo e($efectivoS); ?><br>
+										<strong>Tarjeta:</strong> $<?php echo e($tarjetaS); ?> <br>
+										<strong>Transferencia: </strong> $<?php echo e($transferenciaS); ?> <br>
+										
 									</p>
 								</td>
 							
@@ -212,7 +221,6 @@
 					</div>
 					<div style="width: 100%;" >
 					<h4>Movimientos</h4>
-
 						<table style="width: 100%" >
 							<thead>
 								<tr>

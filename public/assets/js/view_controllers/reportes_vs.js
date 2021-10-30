@@ -40,8 +40,6 @@ $('#btn_report_hoja').on("click", function(){
             csrftoken = getCookie('csrftoken');
             fd.append("csrfmiddlewaretoken",csrftoken);
             fd.append("date_diario",date_diaria);
-        
-            console.log(date_diaria);
      
             const response =  axios.post('/make-report-diario',fd,{
             }).then(res =>  {
@@ -112,6 +110,50 @@ $('#btn_report_resumen').on("click", function(){
         }); 
     }
 
+
+});
+
+$('#btn_report_suive').on("click", function(){
+
+    var date_ini = $("#date_ini").val();
+    var date_fin = $("#date_fin").val();
+
+    if(date_ini == "" || date_fin == ""){
+        iziToast.warning({
+            timeout: 3000,
+            title: 'Cuidado',
+            position: 'center',
+            message: 'Selecciona una rango de fechas.',
+        });
+    }else{
+        var fd = new FormData();
+        csrftoken = getCookie('csrftoken');
+        fd.append("csrfmiddlewaretoken",csrftoken);
+        fd.append("paciente_id",paciente_id);
+        fd.append("date_ini",date_ini);
+        fd.append("date_fin",date_fin);
+
+
+        const response =  axios.post('/make-report-suive',fd,{
+        }).then(res =>  {
+
+            iziToast.success({
+                timeout: 3000,
+                title: 'Éxito',
+                position: 'center',
+                message: 'Realizando Reporte. Descargando... (Espere)',
+            });
+            window.open(res['data']['excel']);
+
+        }).catch((err) => {
+            iziToast.error({
+                timeout: 6000,
+                title: 'Error',
+                position: 'topRight',
+                message: 'Algo salio mal, intentelo de nuevo y recargue.',
+            });
+        }); 
+    }
 
 });
 

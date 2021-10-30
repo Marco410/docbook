@@ -43,7 +43,7 @@
 								<!-- Basic Information -->
 								<div class="card">
 									<div class="card-body">
-										<h4 class="card-title">Información Básica</h4>
+										<h4 class="card-title">Información Básica</h4><br><br>
 										<div class="row form-row">
 											<div class="col-md-3">
 												<div class="form-group">
@@ -52,7 +52,7 @@
 															<div class="cam-col">
 																<img src="/assets/img/icons/camera.svg" id="prof-avatar" alt="" class="img-fluid">
 															</div>
-															<span>Subir Foto de Perfil</span>
+															<span>Actualizar Foto de Perfil</span>
 															<input type="file" id="profile_image" name="foto">
 														</div>
 													</div>

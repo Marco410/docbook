@@ -10,6 +10,7 @@ use Illuminate\Validation\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response as FacadeResponse;
+use Maatwebsite\Excel\Facades\Excel;
 
 use App\Caja;
 use App\Pagos;
@@ -24,6 +25,8 @@ use App\Estudios;
 use App\Articulos;
 use App\ConsultaRapida;
 use App\MotivoConsulta;
+
+use App\Exports\DiagnosticsExport;
 use Auth;
 
 use Spatie\Permission\Models\Role;
@@ -67,12 +70,27 @@ class DoctorController extends Controller
         return view('doctors.doctor-profile');
     }
 
+    public function edit_patient($paciente){
+        $paciente = Paciente::where('id',$paciente)->get()[0];
+
+        return view('doctors.doctor-patient-edit',['paciente'=> $paciente]);
+
+    }
+
+    public function profile_patient($paciente){
+        $paciente = Paciente::where('id',$paciente)->get()[0];
+
+        $consultas = ConsultaRapida::where('paciente_id',$paciente->id)->get();
+        
+        return view('doctors.patient-profile',['paciente'=> $paciente,'consultas'=> $consultas]);
+    }
+
     public function my_patients(){
         $clinica_id = auth()->user("doctors")->clinicas->where('activa',1)->first()->id;
         $doctor_id = auth()->user("doctors")->id;
         //$doctor = Doctor::findOrFail(1);
 
-       $pacientes = Auth::user()->pacientes()->get();
+       $pacientes = Auth::user()->pacientes()->where("status","1")->orderBy("created_at","desc")->get();
        $countCaja = Caja::where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","1")->get()->count();
 
         return view('doctors.my-patients',['pacientes' => $pacientes,'countCaja'=>$countCaja]);
@@ -80,7 +98,13 @@ class DoctorController extends Controller
 
     public function get_patient($paciente){
 
-        $paciente = Paciente::where('id',$paciente)->select('id','nombre','apellido_p','apellido_m','sexo','edad','tipo_sangre','telefono','email','created_at')->get();
+        $paciente = Paciente::where('id',$paciente)->select('id','nombre','apellido_p','apellido_m','sexo','tipo_sangre','telefono','email','created_at')->get();
+        return $paciente;
+    }
+
+    public function delete_patient($paciente){
+
+        $paciente = Paciente::where('id',$paciente)->update(["status"=>"0"]);
         return $paciente;
 
     }
@@ -107,14 +131,14 @@ class DoctorController extends Controller
             
             return view('doctors.historial', ['paciente' => $pa,'consultas' => $consultas]);
         }
-     }
+    }
 
      
-     public function new_patient(){
+    public function new_patient(){
          return view('doctors.doctor-patient-register');
-     }
-
-     public function patient_registro(){
+    }
+     
+    public function patient_registro(){
 
         $datosPaciente = request()->except("_token");
         
@@ -174,6 +198,57 @@ class DoctorController extends Controller
             request()->file("foto")->storeAs('public','paciente_perfil/p-'.$paciente['id'].".png");
             $datosPacienteU['foto'] = 'paciente_perfil/p-'.$paciente['id'].".png";
             Paciente::where('id','=',$paciente['id'])->update($datosPacienteU);
+        }
+
+        return redirect()->route('mis-pacientes');
+    
+    }
+
+    public function patient_editar(){
+
+        $datosPaciente = request()->except("_token");
+
+        $paciente_id = request()->paciente_id;
+        
+        $datosPaciente = request()->validate([
+            'nombre' => 'required',
+            'apellido_p' => 'required',
+            'sexo' => 'required',
+            'fecha_nacimiento' => 'required',
+            'telefono' => 'required|min:10'
+        ],[
+            'nombre.required' => 'Ingresa tu nombre',
+            'apellido_p.required' => 'Ingresa tu Apellido Paterno',
+            'telefono.required' => 'Ingresa un número de teléfono con Whatsapp',
+            'telefono.min' => 'Ingresa un número de teléfono válido',
+            'sexo.required' => 'Ingresa el género del paciente',
+            'fecha_nacimiento.required' => 'Ingresa la fecha de nacimiento'
+
+        ]);
+/* 
+        $pass = "P" . date('Y') . substr($datosPaciente['nombre'],0,2) . substr($datosPaciente['apellido_p'],0,2) . "DBk" ; */
+        
+        $datosPaciente['apellido_m'] = request()->apellido_m;
+        $datosPaciente['status'] = "1";
+        /* $datosPaciente['pass'] = $pass; */
+        $datosPaciente['fecha_nacimiento'] = request()->fecha_nacimiento;
+        $datosPaciente['sexo'] = request()->sexo;
+        $datosPaciente['tipo_sangre'] = request()->tipo_sangre;
+        $datosPaciente['curp'] = request()->curp;
+        $datosPaciente['calle'] = request()->calle;
+        $datosPaciente['colonia'] = request()->colonia;
+        $datosPaciente['cp'] = request()->cp;
+        $datosPaciente['ciudad'] = request()->ciudad;
+        $datosPaciente['estado'] = request()->estado;
+        $datosPaciente['recordatorio'] = request()->recordatorio;
+        $datosPaciente['correo_bienvenida'] = request()->correo_bienvenida;
+        
+        
+        $userPa = Paciente::where("id",$paciente_id)->update($datosPaciente);
+         if (request()->hasFile("foto")){
+            request()->file("foto")->storeAs('public','paciente_perfil/p-'.$paciente_id.".png");
+            $datosPacienteU['foto'] = 'paciente_perfil/p-'.$paciente_id.".png";
+            Paciente::where('id','=',$paciente_id)->update($datosPacienteU);
         }
 
         return redirect()->route('mis-pacientes');
@@ -352,11 +427,22 @@ class DoctorController extends Controller
         $doctor_id = auth()->user("doctors")->id;
 
         $pagos = Pagos::where('doctor_id',$doctor_id)->where("clinica_id",$clinica_id)->orderBy('id','desc')->get();
-        $pagosH = Pagos::where('doctor_id',$doctor_id)->where("clinica_id",$clinica_id)->whereDate('created_at',Date("Y-m-d"))->get();
-        return view('doctors.pago')->with(['pagos' => $pagos,'pagosH'=>$pagosH]);
+        $pagosH = Pagos::where('doctor_id',$doctor_id)->where("clinica_id",$clinica_id)->whereDate('created_at',Date("Y-m-d"))->where("cerrado","0")->get();
+        $countCaja = Caja::where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","1")->get()->count();
+
+        //saber total en caja
+        $openCaja = Caja::where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","1")->get()[0];
+        $entradas = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("tipo_movimiento","Entrada")->where("cerrado","0")->sum("importe");
+        $salidas = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("tipo_movimiento","Salida")->where("cerrado","0")->sum("importe");
+
+        $total = ($openCaja->apertura + $entradas) - $salidas;
+        
+
+        return view('doctors.pago')->with(['pagos' => $pagos,'pagosH'=>$pagosH,'countCaja'=>$countCaja,'total'=>$total]);
     }
 
     public function save_pago(){
+
         request()->validate([
             'tipo_movimiento' => 'required',
             'descripcion' => 'required',
@@ -366,21 +452,51 @@ class DoctorController extends Controller
             'tipo_movimiento.required' => 'Debes seleccionar un tipo de movimiento.',
             'descripcion.required' => 'Añade la descripción.',
             'metodo_pago.required' => 'Seleccione el metodo de pago.',
-            'importe.required' => 'Añade un importe.'
+            'importe.required' => 'Añade un importe'
         ]);
 
-        $pago = Pagos::create([
-            'clinica_id' => request()->clinica_id,
-            'doctor_id' => auth()->user("doctors")->id,
-            'tipo_movimiento' => request()->tipo_movimiento,
-            'descripcion' => request()->descripcion,
-            'importe' => request()->importe,
-            'metodo_pago' => request()->metodo_pago,
-            'observaciones' => request()->observaciones,
-            'cerrado' => "0"
-        ]);
+        $total = request()->total;
+        $importe = request()->importe;
+        $tipo_movimiento = request()->tipo_movimiento;
 
-        return redirect()->route('pagos');
+        if($tipo_movimiento == "Salida" && $total < $importe){
+            return redirect()->route('pagos')->with('errorSaldo',"Error de saldo");
+        }else{
+            if (request()->is_factura == "si"){
+                $pago = Pagos::create([
+                    'clinica_id' => request()->clinica_id,
+                    'doctor_id' => auth()->user("doctors")->id,
+                    'tipo_movimiento' => $tipo_movimiento,
+                    'descripcion' => request()->descripcion,
+                    'importe' => $importe,
+                    'metodo_pago' => request()->metodo_pago,
+                    'observaciones' => request()->observaciones,
+                    'cerrado' => "0",
+                    'is_factura' => "si",
+                    'razon_social' => request()->razon_social,
+                    'rfc' => request()->rfc,
+                    'domicilio' => request()->domicilio,
+                    'email' => request()->email
+                ]);
+                
+                return redirect()->route('pagos');
+            }else{
+                $pago = Pagos::create([
+                    'clinica_id' => request()->clinica_id,
+                    'doctor_id' => auth()->user("doctors")->id,
+                    'tipo_movimiento' => $tipo_movimiento,
+                    'descripcion' => request()->descripcion,
+                    'importe' => $importe,
+                    'metodo_pago' => request()->metodo_pago,
+                    'observaciones' => request()->observaciones,
+                    'cerrado' => "0"
+                ]);
+                 return redirect()->route('pagos');
+            }
+    
+            
+        }
+
     }
 
     public function caja(){
@@ -399,11 +515,17 @@ class DoctorController extends Controller
 
             $salidas = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("tipo_movimiento","Salida")->where("cerrado","0")->sum("importe");
 
-            $efectivo = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("metodo_pago","Efectivo")->where("cerrado","0")->sum("importe");
+            $efectivo = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("tipo_movimiento","Entrada")->where("metodo_pago","Efectivo")->where("cerrado","0")->sum("importe");
 
-            $tarjeta = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("metodo_pago","Tarjeta")->where("cerrado","0")->sum("importe");
+            $tarjeta = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("tipo_movimiento","Entrada")->where("metodo_pago","Tarjeta")->where("cerrado","0")->sum("importe");
 
-            $transferencia = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("metodo_pago","Transferencia")->where("cerrado","0")->sum("importe");
+            $transferencia = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("tipo_movimiento","Entrada")->where("metodo_pago","Transferencia")->where("cerrado","0")->sum("importe");
+
+            $efectivoS = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("tipo_movimiento","Salida")->where("metodo_pago","Efectivo")->where("cerrado","0")->sum("importe");
+
+            $tarjetaS = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("tipo_movimiento","Salida")->where("metodo_pago","Tarjeta")->where("cerrado","0")->sum("importe");
+
+            $transferenciaS = Pagos::whereDate('created_at',Date("Y-m-d"))->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("tipo_movimiento","Salida")->where("metodo_pago","Transferencia")->where("cerrado","0")->sum("importe");
 
             $total = ($openCaja->apertura + $entradas) - $salidas;
 
@@ -414,11 +536,14 @@ class DoctorController extends Controller
             $efectivo = "";
             $tarjeta = "";
             $transferencia = "";
+            $efectivoS = "";
+            $tarjetaS = "";
+            $transferenciaS = "";
             $total = "";
         }
         
 
-        return view('doctors.caja',['openCaja' => $openCaja,'countCaja' => $countCaja,'entradas' => $entradas,'salidas' => $salidas,'efectivo'=>$efectivo,'tarjeta'=> $tarjeta,'transferencia'=>$transferencia,'total'=>$total,"cajas"=>$cajas]);
+        return view('doctors.caja',['openCaja' => $openCaja,'countCaja' => $countCaja,'entradas' => $entradas,'salidas' => $salidas,'efectivo'=>$efectivo,'tarjeta'=> $tarjeta,'transferencia'=>$transferencia,'efectivoS' => $efectivoS, 'tarjetaS'=>$tarjetaS,'transferenciaS'=> $transferenciaS,'total'=>$total,"cajas"=>$cajas]);
     }
 
     public function open_caja(){
@@ -448,6 +573,9 @@ class DoctorController extends Controller
         $efectivo = request()->ventas_efectivo;
         $tarjeta = request()->ventas_tarjeta;
         $trans = request()->ventas_transferencia;
+        $efectivoS = request()->salidas_efectivo;
+        $tarjetaS = request()->salidas_tarjeta;
+        $transS = request()->salidas_transferencia;
         $total = request()->ventas_total;
 
         $caja = Caja::where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","1")->update([
@@ -456,6 +584,9 @@ class DoctorController extends Controller
             "ventas_efectivo" => $efectivo,
             "ventas_tarjeta" => $tarjeta,
             "ventas_transferencia" => $trans,
+            "salidas_efectivo" => $efectivoS,
+            "salidas_tarjeta" => $tarjetaS,
+            "salidas_transferencia" => $transS,
             "total" => $total,
             "abierta" => 0
         ]);
@@ -479,11 +610,19 @@ class DoctorController extends Controller
         $efectivo = request()->ventas_efectivo;
         $tarjeta = request()->ventas_tarjeta;
         $trans = request()->ventas_transferencia;
+        $efectivoS = request()->salidas_efectivo;
+        $tarjetaS = request()->salidas_tarjeta;
+        $transS = request()->salidas_transferencia;
         $total = request()->ventas_total;
+        $clinic_id = request()->clinic_id;
 
-        $pdf = \PDF::loadView('report-view',['doctor'=> $doctor,'caja_id'=>$caja_id,'apertura'=>$apertura,'entradas' => $entradas,'salidas'=> $salidas,'efectivo'=> $efectivo,'tarjeta' => $tarjeta,'transferencia' => $trans,'total'=>$total]);
+        $pagos = Pagos::whereDate('created_at',Date('Y-m-d'))->where("clinica_id",$clinic_id)->where("cerrado","0")->get();
+
+        $pdf = \PDF::loadView('report-view',['doctor'=> $doctor,'caja_id'=>$caja_id,'apertura'=>$apertura,'entradas' => $entradas,'salidas'=> $salidas,'efectivo'=> $efectivo,'tarjeta' => $tarjeta,'transferencia' => $trans,'efectivoS' => $efectivoS, 'tarjetaS'=>$tarjetaS,'transferenciaS'=> $transS,'total'=>$total,'pagos'=>$pagos]);
+
+
         //ancho de la página [0,0,1,0]
-        $pdf->setPaper(array(0,0,350.00,380.00), 'portrait');
+        $pdf->setPaper(array(0,0,350.00,430.00), 'portrait');
         $date = Date("dmy");
         $path = 'public/reportes/r'.$caja_id.$date.'.pdf';
         $pathSave = Storage::put($path, $pdf->output());
@@ -507,9 +646,9 @@ class DoctorController extends Controller
         $caja = Caja::where("id",$caja_id)->get()[0];
         if($report_type == "Sencillo"){
     
-            $pdf = \PDF::loadView('report-view',['doctor'=> $doctor,'caja_id'=>$caja_id,'apertura'=>$caja->apertura,'entradas' => $caja->entradas,'salidas'=> $caja->salidas,'efectivo'=> $caja->ventas_efectivo,'tarjeta' => $caja->ventas_tarjeta,'transferencia' => $caja->ventas_transferencia,'total'=>$caja->total]);
+            $pdf = \PDF::loadView('report-view',['doctor'=> $doctor,'caja_id'=>$caja_id,'apertura'=>$caja->apertura,'entradas' => $caja->entradas,'salidas'=> $caja->salidas,'efectivo'=> $caja->ventas_efectivo,'tarjeta' => $caja->ventas_tarjeta,'transferencia' => $caja->ventas_transferencia,'efectivoS'=> $caja->salidas_efectivo,'tarjetaS' => $caja->salidas_tarjeta,'transferenciaS' => $caja->salidas_transferencia,'total'=>$caja->total]);
             //ancho de la página [0,0,1,0]
-            $pdf->setPaper(array(0,0,350.00,380.00), 'portrait');
+            $pdf->setPaper(array(0,0,300.00,430.00), 'portrait');
             $path = 'public/reportes/r'.$caja_id.$date.'.pdf';
             $pathSave = Storage::put($path, $pdf->output());
 
@@ -517,7 +656,7 @@ class DoctorController extends Controller
 
             $pagos = Pagos::whereDate('created_at',Date('Y-m-d', strtotime($dateRequest)))->where("clinica_id",$clinic_id)->where("caja_id",$caja_id)->get();
 
-            $pdf = \PDF::loadView('report-view-global',['doctor'=> $doctor,'caja_id'=>$caja_id,'apertura'=>$caja->apertura,'entradas' => $caja->entradas,'salidas'=> $caja->salidas,'efectivo'=> $caja->ventas_efectivo,'tarjeta' => $caja->ventas_tarjeta,'transferencia' => $caja->ventas_transferencia,'total'=>$caja->total,'pagos'=>$pagos]);
+            $pdf = \PDF::loadView('report-view-global',['doctor'=> $doctor,'caja_id'=>$caja_id,'apertura'=>$caja->apertura,'entradas' => $caja->entradas,'salidas'=> $caja->salidas,'efectivo'=> $caja->ventas_efectivo,'tarjeta' => $caja->ventas_tarjeta,'transferencia' => $caja->ventas_transferencia,'efectivoS'=> $caja->salidas_efectivo,'tarjetaS' => $caja->salidas_tarjeta,'transferenciaS' => $caja->salidas_transferencia,'total'=>$caja->total,'pagos'=>$pagos]);
             //ancho de la página [0,0,1,0]
             $pdf->setPaper("A4", 'portrait');
             $path = 'public/reportes/r'.$caja_id.$date.'.pdf';
@@ -568,11 +707,17 @@ class DoctorController extends Controller
 
         $ventas_transferencia = Caja::whereBetween('created_at',[$fecha_ini,$fecha_fin])->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","0")->sum("ventas_transferencia");
 
+        $salidas_efectivo = Caja::whereBetween('created_at',[$fecha_ini,$fecha_fin])->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","0")->sum("salidas_efectivo");
+
+        $salidas_tarjeta = Caja::whereBetween('created_at',[$fecha_ini,$fecha_fin])->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","0")->sum("salidas_tarjeta");
+
+        $salidas_transferencia = Caja::whereBetween('created_at',[$fecha_ini,$fecha_fin])->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","0")->sum("salidas_transferencia");
+
         $total = Caja::whereBetween('created_at',[$fecha_ini,$fecha_fin])->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","0")->sum("total");
         //se obtienen las cajas que se cerraron entre las fechas
         $cajas = Caja::whereBetween('created_at',[$fecha_ini,$fecha_fin])->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","0")->get();
 
-        $pdf = \PDF::loadView('report-view-global',['doctor'=> $doctor,'caja_id'=>"-",'apertura'=>$apertura,'entradas' => $entradas,'salidas'=> $salidas,'efectivo'=> $ventas_efectivo,'tarjeta' => $ventas_tarjeta,'transferencia' => $ventas_transferencia,'total'=>$total,'pagos'=>$pagos,'cajas'=>$cajas]);
+        $pdf = \PDF::loadView('report-view-global',['doctor'=> $doctor,'caja_id'=>"-",'apertura'=>$apertura,'entradas' => $entradas,'salidas'=> $salidas,'efectivo'=> $ventas_efectivo,'tarjeta' => $ventas_tarjeta,'transferencia' => $ventas_transferencia,'efectivoS'=> $salidas_efectivo,'tarjetaS' => $salidas_tarjeta,'transferenciaS' => $salidas_transferencia,'total'=>$total,'pagos'=>$pagos,'cajas'=>$cajas]);
         //ancho de la página [0,0,1,0]
         $pdf->setPaper("A4", 'portrait');
         $path = 'public/reportesfecha/r'.$doctor_id.$date.'.pdf';
@@ -672,6 +817,38 @@ class DoctorController extends Controller
             'pdf' => "/storage/reportesresumen/d".$doctor_id."/r".$date.".pdf"
         ];
         return $request;
+    }
+
+    public function make_report_suive(){
+
+        /* $doctor_id = auth()->user("doctors")->id;
+        $doctor = Doctor::where('id',$doctor_id)->with(['clinicas'])->get()[0];
+        $paciente_id = request()->paciente_id;
+        $date = Date("dmy");    
+        
+        $paciente = Paciente::where('id',$paciente_id)->with(['historial','vacunas','medis','alergias'])->get()[0];
+
+        $pdf = \PDF::loadView('report-view-resumen',['doctor'=> $doctor,'paciente'=> $paciente]);
+        //ancho de la página [0,0,1,0]
+        $pdf->setPaper("A4", 'portrait');
+        $path = 'public/reportesresumen/d'.$doctor_id.'/r'.$date.'.pdf';
+        $pathSave = Storage::put($path, $pdf->output());
+           
+        $request = [
+            'pdf' => "/storage/reportesresumen/d".$doctor_id."/r".$date.".pdf"
+        ];
+        return $request; */
+
+        $path  = "excel/suive.xlsx";
+        $date_ini = request()->date_ini;
+        $date_fin = request()->date_fin;
+
+        Excel::store(new DiagnosticsExport($date_ini,$date_fin), $path ,'public');
+
+        $request = [
+            'excel' => "storage/".$path
+        ];
+        return $request; 
     }
 
  

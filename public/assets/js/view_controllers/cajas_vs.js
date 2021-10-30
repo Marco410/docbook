@@ -131,8 +131,6 @@ $('#table_cajas tbody').on('click', '#make_report_close_global', function () {
 
 } );
 
-
-
 $('#close_caja').on("click", function(){
 
     iziToast.question({
@@ -159,6 +157,9 @@ $('#close_caja').on("click", function(){
                 fd.append("ventas_efectivo",$("#ventas_efectivo").val());
                 fd.append("ventas_tarjeta",$("#ventas_tarjeta").val());
                 fd.append("ventas_transferencia",$("#ventas_transferencia").val());
+                fd.append("salidas_efectivo",$("#salidas_efectivo").val());
+                fd.append("salidas_tarjeta",$("#salidas_tarjeta").val());
+                fd.append("salidas_transferencia",$("#salidas_transferencia").val());
                 fd.append("ventas_total",$("#ventas_total").val());
                 
                 const response =  axios.post('/close-caja',fd,{
@@ -196,9 +197,13 @@ $('#make_report').on("click", function(){
     fd.append("apertura",$("#apertura").val());
     fd.append("entradas",$("#entradas").val());
     fd.append("salidas",$("#salidas").val());
+    fd.append("clinic_id",$("#clinic_id").val());
     fd.append("ventas_efectivo",$("#ventas_efectivo").val());
     fd.append("ventas_tarjeta",$("#ventas_tarjeta").val());
     fd.append("ventas_transferencia",$("#ventas_transferencia").val());
+    fd.append("salidas_efectivo",$("#salidas_efectivo").val());
+    fd.append("salidas_tarjeta",$("#salidas_tarjeta").val());
+    fd.append("salidas_transferencia",$("#salidas_transferencia").val());
     fd.append("ventas_total",$("#ventas_total").val());
 
     const response =  axios.post('/make-report',fd,{
@@ -223,7 +228,6 @@ $('#make_report').on("click", function(){
         });
     }); 
 });
-
 
 $('#make_report_date').on("click", function(){
 

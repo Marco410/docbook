@@ -26,6 +26,12 @@ class CreatePagosTable extends Migration
             $table->string('cerrado')->nullable();
             $table->timestamps();
 
+            $table->string('is_factura')->nullable();
+            $table->string('razon_social')->nullable();
+            $table->string('rfc')->nullable();
+            $table->string('domicilio')->nullable();
+            $table->string('email')->nullable();
+
             $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('clinica_id')->references('id')->on('clinicas')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('caja_id')->references('id')->on('cajas')->onDelete('restrict')->onUpdate('cascade')->nullable();

@@ -198,14 +198,23 @@
 										<strong>Entradas</strong> ${{ $entradas }} <br>
 										<strong>Salidas</strong> ${{ $salidas }} <br>
 									</p>
+									
+									<p>
+										<strong>Saldo en Caja: </strong> ${{ $total }} 
+									</p>
 									<p class="invoice-details" style="text-align: left;" >
+										<strong>-Entradas-</strong><br>
 										<strong>Efectivo:</strong> ${{ $efectivo}}<br>
 										<strong>Tarjeta:</strong> ${{ $tarjeta}} <br>
 										<strong>Transferencia: </strong> ${{ $transferencia }} <br>
 										
 									</p>
-									<p>
-										<strong>Total en Caja: </strong> ${{ $total }} 
+									<p class="invoice-details" style="text-align: left;" >
+										<strong>-Salidas-</strong> <br>	
+										<strong>Efectivo:</strong> ${{ $efectivoS}}<br>
+										<strong>Tarjeta:</strong> ${{ $tarjetaS}} <br>
+										<strong>Transferencia: </strong> ${{ $transferenciaS }} <br>
+										
 									</p>
 								</td>
 							
@@ -214,7 +223,6 @@
 					</div>
 					<div style="width: 100%;" >
 					<h4>Movimientos</h4>
-
 						<table style="width: 100%" >
 							<thead>
 								<tr>

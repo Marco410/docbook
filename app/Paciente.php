@@ -45,7 +45,6 @@ class Paciente extends Authenticatable
     }
 
     public function historial(){
-        
         return $this->hasMany(Historial::class,'paciente_id');
     }
 

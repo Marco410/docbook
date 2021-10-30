@@ -43,6 +43,7 @@
 													</h3>
 													<div  class="patient-details">
 														<div class="form-group">
+															<label class="text-warning" for="">Fecha a consultar</label>
 															<input id="date_diaria" type="date" class="form-control" value="{{ Date('d/m/Y') }}" />
 														</div>
 														<button class="btn btn-sm bg-primary-light" id="btn_report_hoja" >Hacer Reporte</button>
@@ -64,13 +65,15 @@
 													</h3>
 													<div  class="patient-details row">
 														<div class="form-group col-sm-6">
-															<input type="date" class="form-control" />
+															<label class="text-warning" for="">Fecha de Inicio</label>
+															<input type="date" id="date_ini" class="form-control" />
 														</div>
 														<div class="form-group col-sm-6">
-															<input type="date" class="form-control" />
+															<label class="text-warning" for="">Fecha Final</label>
+															<input type="date" id="date_fin" class="form-control" />
 														</div>
 														<div class="col-sm-12">
-															<button class="btn btn-sm bg-primary-light" id="btn_report_hoja" >Hacer Reporte</button>
+															<button class="btn btn-sm bg-primary-light" id="btn_report_suive" >Hacer Reporte</button>
 														</div>
 													</div>
 												</div>

@@ -45,7 +45,13 @@
 					</div>
 				</div>
 				@endif
-
+				@if (Session::has('errorSaldo'))
+					<div class="row">
+						<div class="col-sm-12">
+						<div role="alert" class="alert alert-danger alert-dismissible fade show"  ><strong>Error: </strong>No hay saldo suficiente en caja. Registra una nueva entrada.</div>
+						</div>
+					</div>
+				@endif
 				@if($errors->any())
 				<div class="row">
 					<div class="col-sm-12">
@@ -55,7 +61,14 @@
 					</div>
 				</div>
 				@endif
-					
+				@if ($countCaja === 0)
+                    <div class="alert alert-warning fade show" role="alert">
+                        <strong>Recuerda</strong> ¡Tienes que abrir tu caja para empezar a trabajar! <a href="{{ route("caja") }}">Clic aquí para abrirla</a>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						  </button>
+                      </div>
+                @else	
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="card">
@@ -74,7 +87,6 @@
 									<label> <i class="fas fa-align-left text-info" ></i> Descripción <span class="text-danger">*</span></label>
 									<input required type="text" name="descripcion" class="form-control" id="descripcion" value="{{ old('descripcion') }}" >
 								</div>
-
 								<div class="form-group">
 									<label><i class="fas fa-dollar-sign text-info" ></i> Importe <span class="text-danger">*</span></label>
 									<input required type="text" name="importe" class="form-control" id="importe" value="{{ old('importe') }}" >
@@ -88,11 +100,39 @@
 										<option value="Transferencia">Transferencia</option>
 									</select>
 								</div>
-
 								<div class="form-group">
 									<label><i class="fas fa-eye text-info" ></i> Observaciones</label>
-									<textarea name="observaciones" class="form-control" id="" rows="3"></textarea>
+									<textarea name="observaciones" class="form-control" id="" rows="3">{{ old('descripcion') }}</textarea>
 								</div>
+								<input type="hidden" name="total" value="{{ $total }}" >
+								<div class="form-group">
+									<label for=""> <i class="fas fa-file-invoice text-info" ></i> ¿Solicita Factura?
+										<input type="checkbox" value="si" name="is_factura" id="is_factura"  >
+									</label>
+								</div>
+
+								<div id="factura" style="display: none" >
+									<div class="col-sm-12 text-center" >
+										<i class="fas fa-file-invoice fa-2x text-info" ></i>
+									</div>
+									<div class="form-group">
+										<label> <i class="fas fa-user-circle text-info" ></i> Nombre o Razón Social </label>
+										<input  type="text" name="razon_social" class="form-control" id="razon_social" >
+									</div>
+									<div class="form-group">
+										<label> <i class="fas fa-user text-info" ></i> RFC </label>
+										<input  type="text" name="rfc" class="form-control" id="rfc" >
+									</div>
+									<div class="form-group">
+										<label> <i class="fas fa-map-marker-alt text-info" ></i> Domicilio </label>
+										<input  type="text" name="domicilio" class="form-control" id="domicilio" >
+									</div>
+									<div class="form-group">
+										<label> <i class="fas fa-envelope text-info" ></i> Correo Electrónico </label>
+										<input  type="text" name="email" class="form-control" id="email" >
+									</div>
+								</div>
+
 
 								<div class="col-sm-12" >
 									<button class="btn btn-sm btn-block btn-primary" > <i class="fas fa-save" ></i> Guardar</button>
@@ -104,7 +144,9 @@
 					</div>
 					<div class="col-sm-8">
 						<div class="card">
-							<div class="card-header" >Lista de Lineas de Producto (Hoy) {{ Date("d/m/Y") }} </div>
+							<div class="card-header" >Lista de Lineas de Producto (Hoy) <span class="text-info" > {{ Date("d/m/Y") }}</span>
+							Total en Caja: <span class="text-info" > ${{ $total }}</span>
+							</div>
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="datatable table table-hover table-center mb-0">
@@ -115,6 +157,7 @@
 												<th>Importe</th>
 												<th>Tipo</th>
 												<th>Método</th>
+												<th>Factura</th>
 												<th>Fecha</th>
 											</tr>
 										</thead>
@@ -127,8 +170,16 @@
 												<td>$ {{ $pagoh->importe }}</td>		
 												<td>{{ $pagoh->tipo_movimiento }}</td>			
 												<td>{{ $pagoh->metodo_pago }}</td>			
+												<td>
+												@if ($pagoh->is_factura == "si")
+												<button class="btn btn-sm bg-success-light" data-toggle="modal" data-target="#factura{{ $pagoh->id }}" > Si</button>
+												@else
+												<span class="text-warning" >No</span>
+												@endif
+												</td>			
 												<td>{{ $pagoh->created_at->diffForHumans() }}</td>			
 											</tr>
+											
 											@endforeach
 											@endif
 											
@@ -152,6 +203,7 @@
 											<th>Observaciones</th>
 											<th>Importe</th>
 											<th>Tipo</th>
+											<th>Factura</th>
 											<th>Fecha</th>
 										</tr>
 									</thead>
@@ -163,6 +215,13 @@
 											<td>{{ $pago->observaciones }}</td>		
 											<td>$ {{ $pago->importe }}</td>		
 											<td>{{ $pago->tipo_movimiento }}</td>
+											<td>
+												@if ($pago->is_factura == "si")
+												<button class="btn btn-sm bg-success-light" data-toggle="modal" data-target="#factura{{ $pago->id }}" > Si</button>
+												@else
+												<span class="text-warning" >No</span>
+												@endif
+											</td>
 											<td>{{ $pago->created_at }}</td>
 										</tr>
 										@endforeach
@@ -175,6 +234,7 @@
 						</div>
 					</div>
 				</div>
+				@endif
 			</div>
 		</div>
 	</div>
@@ -211,7 +271,30 @@
 		</div>
 	</div>
 </div>
-<!-- /Ver Details Modal -->
-
+@if (!empty($pagosH))
+	@foreach ($pagosH as $pagoh)
+	<!-- /Ver Details Modal -->
+	<div class="modal fade" id="factura{{ $pagoh->id }}" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="factura{{ $pagoh->id }}Label">Datos de Facturación. Pago N° {{ $pagoh->id }}. </h5>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col">
+						<p>Razón Social: <span class="text-secondary" >{{ $pagoh->razon_social }} </span></p>
+						<p>RFC: <span class="text-secondary" >{{ $pagoh->rfc }} </span></p>
+						<p>Domicilio: <span class="text-secondary" >{{ $pagoh->domicilio }} </span></p>
+						<p>Email: <span class="text-secondary" >{{ $pagoh->email }} </span></p>
+						<p>Descripción del pago: <span class="text-secondary" >{{ $pagoh->descripcion }} </span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	@endforeach
+@endif
 
 @endsection

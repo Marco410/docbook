@@ -94,6 +94,34 @@ class HistorialController extends Controller
         return Historial::where('paciente_id','=',$id)->update($datosHeredo);
     }
 
+    public function store_esquema_vacuna(){
+        $id = request()->paciente_id;
+        $datosEsquemaVacuna = request()->except(["_token",'paciente_id']);
+
+        return Historial::where('paciente_id','=',$id)->update($datosEsquemaVacuna);
+    }
+
+    public function store_gineco(){
+        $id = request()->paciente_id;
+        $datosGineco = request()->except(["_token",'paciente_id']);
+
+        return Historial::where('paciente_id','=',$id)->update($datosGineco);
+    }
+
+    public function store_perinatal(){
+        $id = request()->paciente_id;
+        $datosPerinatal = request()->except(["_token",'paciente_id']);
+
+        return Historial::where('paciente_id','=',$id)->update($datosPerinatal);
+    }
+
+    public function store_postnatal(){
+        $id = request()->paciente_id;
+        $datosPostnatal = request()->except(["_token",'paciente_id']);
+
+        return Historial::where('paciente_id','=',$id)->update($datosPostnatal);
+    }
+
     public function store_psiqui(){
         $id = request()->paciente_id;
         $datosPsiqui = request()->except(["_token",'paciente_id']);

@@ -111,16 +111,28 @@
 									<h3 class="text-info" > <i class="fas fa-chart-bar " ></i> Ventas de Contado</h3>
 								</div>
 								<div class="form-group col-sm-4">
-									<label><i class="fas fa-money-bill-wave text-info" ></i> Efectivo <span class="text-danger">*</span></label>
+									<label><i class="fas fa-money-bill-wave text-info" ></i> Efectivo Entradas <span class="text-danger">*</span></label>
 									<input readonly type="text" name="ventas_efectivo" class="form-control" id="ventas_efectivo" value="<?php echo e($efectivo); ?>" >
 								</div>
 								<div class="form-group col-sm-4">
-									<label><i class="fas fa-credit-card text-info" ></i> Tarjeta <span class="text-danger">*</span></label>
+									<label><i class="fas fa-credit-card text-info" ></i> Tarjeta Entradas <span class="text-danger">*</span></label>
 									<input  readonly type="text" name="ventas_tarjeta" class="form-control" id="ventas_tarjeta" value="<?php echo e($tarjeta); ?>" >
 								</div>
 								<div class="form-group col-sm-4">
-									<label><i class="fas fa-exchange-alt text-info" ></i> Transferencia <span class="text-danger">*</span></label>
+									<label><i class="fas fa-exchange-alt text-info" ></i> Transferencia Entradas <span class="text-danger">*</span></label>
 									<input readonly type="text" name="ventas_transferencia" class="form-control" id="ventas_transferencia" value="<?php echo e($transferencia); ?>">
+								</div>
+								<div class="form-group col-sm-4">
+									<label><i class="fas fa-money-bill-wave text-info" ></i> Efectivo Salidas <span class="text-danger">*</span></label>
+									<input readonly type="text" name="salidas_efectivo" class="form-control" id="salidas_efectivo" value="<?php echo e($efectivoS); ?>" >
+								</div>
+								<div class="form-group col-sm-4">
+									<label><i class="fas fa-credit-card text-info" ></i> Tarjeta Salidas <span class="text-danger">*</span></label>
+									<input  readonly type="text" name="salidas_tarjeta" class="form-control" id="salidas_tarjeta" value="<?php echo e($tarjetaS); ?>" >
+								</div>
+								<div class="form-group col-sm-4">
+									<label><i class="fas fa-exchange-alt text-info" ></i> Transferencia Salidas <span class="text-danger">*</span></label>
+									<input readonly type="text" name="salidas_transferencia" class="form-control" id="salidas_transferencia" value="<?php echo e($transferenciaS); ?>">
 								</div>
 							</div>
 							<div class="row">

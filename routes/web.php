@@ -126,7 +126,15 @@ Route::get('/paciente/nuevo','DoctorController@new_patient')->name('paciente-nue
 
 Route::post('/paciente/registro','DoctorController@patient_registro')->name('doctor-paciente-registro');
 
+Route::post('/paciente/editar','DoctorController@patient_editar')->name('doctor-paciente-editar');
+
+Route::get('/perfil-paciente/{paciente}','DoctorController@profile_patient')->name('perfil-paciente');
+
+Route::get('/editar-paciente/{paciente}','DoctorController@edit_patient')->name('editar-paciente');
+
 Route::get('/get_patient/{paciente}','DoctorController@get_patient')->name('get_patient');
+
+Route::get('/delete-patient/{paciente}','DoctorController@delete_patient')->name('delete-patient');
 
 Route::post('/store-consulta-rapida','DoctorController@new_consulta_rapida')->name('store-consulta-rapida');
 
@@ -164,6 +172,7 @@ Route::post('/make-report-diario','DoctorController@make_report_diario')->name('
 
 Route::post('/make-report-resumen','DoctorController@make_report_resumen')->name('make-report-resumen');
 
+Route::post('/make-report-suive','DoctorController@make_report_suive')->name('make-report-suive');
 
 ###### RUTAS HISTORIAL ######
 
@@ -185,6 +194,14 @@ Route::post('/store-patologicos','HistorialController@store_patologicos')->name(
 Route::post('/store-npatologicos','HistorialController@store_npatologicos')->name('store-npatologicos');
 
 Route::post('/store-heredo','HistorialController@store_heredo')->name('store-heredo');
+
+Route::post('/store-esquema-vacuna','HistorialController@store_esquema_vacuna')->name('store-esquema-vacuna');
+
+Route::post('/store-gineco','HistorialController@store_gineco')->name('store-gineco');
+
+Route::post('/store-perinatal','HistorialController@store_perinatal')->name('store-perinatal');
+
+Route::post('/store-postnatal','HistorialController@store_postnatal')->name('store-postnatal');
 
 Route::post('/store-psiqui','HistorialController@store_psiqui')->name('store-psiqui');
 

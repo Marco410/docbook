@@ -34,6 +34,7 @@ class CreateHistorialsTable extends Migration
             $table->string("alergias_option")->nullable();
 
             $table->string("hospi")->nullable();
+            $table->text("text-hospi")->nullable();
             $table->string("cirugia")->nullable();
             $table->string("diabetes")->nullable();
             $table->string("tiroideas")->nullable();

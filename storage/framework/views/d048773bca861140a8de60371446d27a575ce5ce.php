@@ -51,7 +51,7 @@
 							<div class="card-body">
 							<?php if(!$pacientes->isEmpty()): ?>
 								<div class="table-responsive">
-									<table class="datatable table table-hover table-center mb-0">
+									<table class="table table-hover table-center mb-0" id="table_pacients">
 										<thead>
 											<tr>
 												<th>Folio</th>
@@ -82,7 +82,7 @@
 															<?php endif; ?>
 															
 														</a>
-														<a href="profile"><?php echo e($paciente->nombre); ?> <?php echo e($paciente->apellido_p); ?> <?php echo e($paciente->apellido_m); ?></a>
+														<a href="<?php echo e(route('historial',$paciente)); ?>"><?php echo e($paciente->nombre); ?> <?php echo e($paciente->apellido_p); ?> <?php echo e($paciente->apellido_m); ?></a>
 													</h2>
 												</td>
 												<td><?php echo e($paciente->get_edad()); ?></td>
@@ -95,11 +95,10 @@
 													<div class="actions btn-group">
 														<a title="Consulta" class="btn btn-sm bg-primary-light btn-editar"  href="<?php echo e(route('historial',$paciente)); ?>">
 															<i class="fas fa-notes-medical"></i></a>
-														<a title="Ver Perfíl" class="btn btn-sm bg-info-light btn-editar" data-toggle="modal"  href="">
-																<i class="fas fa-id-card-alt"></i></a>
-														<a title="Editar" class="btn btn-sm bg-warning-light btn-editar" data-toggle="modal" data-id="<?php echo e($paciente->id); ?>" data-value="<?php echo e($paciente->nombre); ?>" href="#edit_specialities_details">
-																<i class="fas fa-edit"></i></a>
-														<a  title="Eliminar" data-toggle="modal" href="#delete_modal" class="btn btn-sm bg-danger-light btn-delete" data-id="<?php echo e($paciente->id); ?>"><i class="fas fa-trash-alt"></i></a>
+														<a title="Ver Perfíl" class="btn btn-sm bg-info-light " href="<?php echo e(route('perfil-paciente',$paciente)); ?>">
+														<i class="fas fa-id-card-alt"></i></a>
+														<a title="Editar" class="btn btn-sm bg-warning-light btn-editar"  href="<?php echo e(route('editar-paciente',$paciente)); ?>"><i class="fas fa-edit"></i></a>
+														<a  title="Eliminar" class="btn btn-sm bg-danger-light btn-delete" data-id="<?php echo e($paciente->id); ?>"><i class="fas fa-trash-alt"></i></a>
 														<a title="Ver"  data-toggle="modal"  class="btn btn-sm  bg-secondary-light btn-ver" data-id="<?php echo e($paciente->id); ?>">
 																<i class="fas fa-ellipsis-v"></i></a>
 													</div>

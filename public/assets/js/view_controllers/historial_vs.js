@@ -15,6 +15,20 @@ $("#no_a_todo").on("click",function(){
     $("#sexual2").prop('checked',true);
     $("#cardio2").prop('checked',true);
     $("#pato_otros").val("");
+
+    $("#p-text-hospi").hide();
+    $("#p-text-cirugia").hide();
+    $("#p-text-diabetes").hide();
+    $("#p-text-tiroideas").hide();
+    $("#p-text-hipertension").hide();
+    $("#p-text-cardio").hide();
+    $("#p-text-trauma").hide();
+    $("#p-text-cancer").hide();
+    $("#p-text-tuberculosis").hide();
+    $("#p-text-trans").hide();
+    $("#p-text-pato_respiratorias").hide();
+    $("#p-text-pato_gastro").hide();
+    $("#p-text-sexual").hide();
 });
 
 $("#npato_no_a_todo").on("click",function(){
@@ -25,6 +39,14 @@ $("#npato_no_a_todo").on("click",function(){
     $("#sustancias2").prop('checked',true);
     $("#vacuna_reciente2").prop('checked',true);
     $("#npato_otros").val("");
+
+    $("#p-text-fisica").hide();
+    $("#p-text-tabaco").hide();
+    $("#p-text-tabaco").hide();
+    $("#p-text-alcohol").hide();
+    $("#p-text-sustancias").hide();
+    $("#p-text-vacuna_reciente").hide();
+
 });
 
 $("#heredo_no_a_todo").on("click",function(){
@@ -34,6 +56,12 @@ $("#heredo_no_a_todo").on("click",function(){
     $("#h_hipertension2").prop('checked',true);
     $("#h_tiroideas2").prop('checked',true);
     $("#heredo_otros").val("");
+
+    $("#p-text-heredo_diabetes").hide();
+    $("#p-text-h_cardio").hide();
+    $("#p-text-h_hipertension").hide();
+    $("#p-text-h_tiroideas").hide();
+
 });
 
 $("#psiqui_no_a_todo").on("click",function(){
@@ -74,6 +102,67 @@ $("#dieta_no_a_todo").on("click",function(){
     $("#nutri_otros").val("");
 });
 
+$("#gineco_no_a_todo").on("click",function(){
+
+    $("#primera_menstruacion").val("");
+    $("#ultima_menstruacion").val("");
+    $("#caracteristicas_menstruacion").val("");
+    $("#parejas_sexuales").val("");
+    $("#embarazos2").prop('checked',true);
+    $("#p-text-embarazos").hide();
+    $("#partos2").prop('checked',true);
+    $("#p-text-partos").hide();
+    $("#abortos2").prop('checked',true);
+    $("#p-text-abortos").hide();
+    $("#cesareas2").prop('checked',true);
+    $("#p-text-cesareas").hide();
+    $("#cancer_cervico2").prop('checked',true);
+    $("#p-text-cancer_cervico").hide();
+    $("#cancer_uterino2").prop('checked',true);
+    $("#p-text-cancer_uterino").hide();
+    $("#cancer_mama2").prop('checked',true);
+    $("#p-text-cancer_mama").hide();
+    $("#actividad_sexual2").prop('checked',true);
+    $("#p-text-actividad_sexual").hide();
+    $("#metodo_familiar2").prop('checked',true);
+    $("#p-text-metodo_familiar").hide();
+    $("#terapia_hormonal2").prop('checked',true);
+    $("#p-text-terapia_hormonal").hide();
+    $("#papanicolau").val("");
+    $("#mastografia").val("");
+    $("#otros_gineco2").prop('checked',true);
+    $("#p-text-otros_gineco").hide();
+
+
+
+    
+});
+
+$("#perinatal_no_a_todo").on("click",function(){
+
+    $("#ultimo_ciclo_menstrual").val("");
+    $("#duracion_ciclo").val("");
+    $("#ultimo_metodo_anti").val("");
+    $("#concepcion_asistida2").prop('checked',true);
+    $("#p-text-concepcion_asistida").hide();
+    $("#fecha_ucm").val("");
+    $("#fpp_final").val("");
+    $("#notas_embarazo").val("");    
+});
+
+$("#postnatal_no_a_todo").on("click",function(){
+
+    $("#detalles_parto").val("");
+    $("#nombre_bb").val("");
+    $("#peso_nacer").val("");
+    $("#salud_bb").val("");
+    $("#alimentacion_bb").hide();
+    $("#alimentacion_tipo1").prop('checked',false);
+    $("#alimentacion_tipo2").prop('checked',false);
+    $("#alimentacion_tipo3").prop('checked',false);
+    $("#estado_emocional").val("");   
+});
+
 function calcular_imc(estatura, peso){
 
     var estatura_m = estatura / 100;
@@ -110,7 +199,6 @@ $("#estatura-signos2 ,  #peso-signos2").keyup(function(){
     }
         
  });
-
 
 // Remueve los elementos seleccionados de las alergias, vacunas y medicamentos
 function remove(elemento){
@@ -210,6 +298,106 @@ $('#btn-save-heredo').on("click", function(){
             title: 'Éxito',
             position: 'topRight',
             message: 'Antecedentes Heredofamiliares Guardados.',
+        });
+
+    }).catch((err) => {
+        iziToast.error({
+            timeout: 6000,
+            title: 'Error',
+            position: 'topRight',
+            message: 'Algo salio mal, intentelo de nuevo y recargue.',
+        });
+    });  
+});
+
+$('#btn-save-esquema-vacuna').on("click", function(){
+
+    var fd = new FormData($("#formVacunacion")[0]);
+    fd.append("paciente_id",$("#paciente_id").val());
+                
+    const response =  axios.post('/store-esquema-vacuna',fd,{
+    }).then(res =>  {
+
+        iziToast.success({
+            timeout: 6000,
+            title: 'Éxito',
+            position: 'topRight',
+            message: 'Esquema de Vacunación Guardada.',
+        });
+
+    }).catch((err) => {
+        iziToast.error({
+            timeout: 6000,
+            title: 'Error',
+            position: 'topRight',
+            message: 'Algo salio mal, intentelo de nuevo y recargue.',
+        });
+    });  
+});
+
+$('#btn-save-gineco').on("click", function(){
+
+    var fd = new FormData($("#formGineco")[0]);
+    fd.append("paciente_id",$("#paciente_id").val());
+                
+    const response =  axios.post('/store-gineco',fd,{
+    }).then(res =>  {
+
+        iziToast.success({
+            timeout: 6000,
+            title: 'Éxito',
+            position: 'topRight',
+            message: 'Antecedentes Gineco-obstetricios Guardados.',
+        });
+
+    }).catch((err) => {
+        iziToast.error({
+            timeout: 6000,
+            title: 'Error',
+            position: 'topRight',
+            message: 'Algo salio mal, intentelo de nuevo y recargue.',
+        });
+    });  
+});
+
+$('#btn-save-perinatal').on("click", function(){
+
+    var fd = new FormData($("#formPerinatal")[0]);
+    fd.append("paciente_id",$("#paciente_id").val());
+                
+    const response =  axios.post('/store-perinatal',fd,{
+    }).then(res =>  {
+
+        iziToast.success({
+            timeout: 6000,
+            title: 'Éxito',
+            position: 'topRight',
+            message: 'Antecedentes Perinatales Guardados.',
+        });
+
+    }).catch((err) => {
+        iziToast.error({
+            timeout: 6000,
+            title: 'Error',
+            position: 'topRight',
+            message: 'Algo salio mal, intentelo de nuevo y recargue.',
+        });
+    });  
+});
+
+$('#btn-save-postnatal').on("click", function(){
+
+    var fd = new FormData($("#formPostnatal")[0]);
+    fd.append("paciente_id",$("#paciente_id").val());
+                
+    const response =  axios.post('/store-postnatal',fd,{
+    }).then(res =>  {
+
+        iziToast.success({
+            timeout: 6000,
+            title: 'Éxito',
+            position: 'topRight',
+            message: 'Antecedentes Perinatales Guardados.',
         });
 
     }).catch((err) => {
@@ -376,6 +564,7 @@ $("#btn-add-consulta-rapida").on("click", function(){
     } 
     
 });
+
 function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_corporal,temperatura,frec_signos,sistolica,diastolica){
 
     var fd = new FormData();
@@ -427,8 +616,6 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
     }); 
 
 }
-
-
 
 $('#cobro1').change(function() {
 
@@ -550,7 +737,6 @@ $("#btn-hacer-pago").on("click",function(){
 
 });
 
-
 function pagar_atrasado(id_consulta, diagnostico, motivo){
 
     $("#id_consulta_rapida").val(id_consulta);
@@ -620,7 +806,6 @@ function warning(input){
         message: 'Selecciona: '+input,
     });
 }
-
 
 function getCookie(name) {
     let cookieValue = null;

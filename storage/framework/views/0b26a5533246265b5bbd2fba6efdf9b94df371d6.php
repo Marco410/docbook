@@ -246,14 +246,23 @@
 										<strong>Entradas</strong> $<?php echo e($entradas); ?> <br>
 										<strong>Salidas</strong> $<?php echo e($salidas); ?> <br>
 									</p>
+									
+									<p>
+										<strong>Saldo en Caja: </strong> $<?php echo e($total); ?> 
+									</p>
 									<p class="invoice-details" style="text-align: left;" >
+										<strong>-Entradas-</strong>
 										<strong>Efectivo:</strong> $<?php echo e($efectivo); ?><br>
 										<strong>Tarjeta:</strong> $<?php echo e($tarjeta); ?> <br>
 										<strong>Transferencia: </strong> $<?php echo e($transferencia); ?> <br>
 										
 									</p>
-									<p>
-										<strong>Total en Caja: </strong> $<?php echo e($total); ?> 
+									<p class="invoice-details" style="text-align: left;" >
+										<strong>-Salidas-</strong>
+										<strong>Efectivo:</strong> $<?php echo e($efectivoS); ?><br>
+										<strong>Tarjeta:</strong> $<?php echo e($tarjetaS); ?> <br>
+										<strong>Transferencia: </strong> $<?php echo e($transferenciaS); ?> <br>
+										
 									</p>
 								</td>
 							
@@ -261,6 +270,38 @@
 						</table>
 					</div>
 				</div>
+				<?php if(!empty($pagos)): ?>
+
+				<div style="width: 100%;" >
+					<h4>Movimientos</h4>
+						<table style="width: 100%" >
+							<thead>
+								<tr>
+									<th style="text-align: left;" > <span> Movimiento</span></th>
+									<th style="text-align: left;" > <span> Descripción</span></th>
+									<th style="text-align: left;" > <span> Importe</span></th>
+									<th style="text-align: left;" > <span> Método de Pago</span></th>
+									<th style="text-align: left;" > <span> Observaciones</span></th>
+									<th style="text-align: left;" > <span> Fecha</span></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php $__currentLoopData = $pagos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pago): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+								<tr>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($pago->tipo_movimiento); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($pago->descripcion); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e($pago->importe); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($pago->metodo_pago); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($pago->observaciones); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($pago->created_at); ?></span></td>
+									
+								</tr>
+								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+									
+							</tbody>
+						</table>
+					</div>
+					<?php endif; ?>
 				<div style="width: 100%;">
 					<table style="width: 100%;" >
 						<tbody>
