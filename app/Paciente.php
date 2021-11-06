@@ -18,7 +18,7 @@ class Paciente extends Authenticatable
 
     protected $fillable = [
         'nombre', 'email', 'password',
-        'apellido_p', 'apellido_m','status','telefono','sexo','fecha_nacimiento','tipo_sangre','curp','calle','colonia','cp','ciudad','estado','recordatorio','correo_bienvenida'
+        'apellido_p', 'apellido_m','status','telefono','sexo','fecha_nacimiento','tipo_sangre','curp','calle','colonia','cp','ciudad','estado','recordatorio','correo_bienvenida','nombre_familiar','telefono_familiar','seguro_social','nacionalidad','empleo'
     ];
 
     protected $hidden = [
@@ -26,14 +26,6 @@ class Paciente extends Authenticatable
     ];
 
     public function get_edad(){
-
-        /* $fch=explode("-",$this->fecha_nacimiento);
-        $tfecha=$fch[2]."-".$fch[1]."-".$fch[0];
-        $dias = explode("-", $tfecha, 3);
-        $dias = mktime(0,0,0,$dias[1],$dias[0],$dias[2]);
-        $edad = (int)((time()-$dias)/31556926 );
-
-        return date('Y') - $fch[0] ; */
 
         list($ano,$mes,$dia) = explode("-",$this->fecha_nacimiento);
         $ano_diferencia = date("Y") - $ano;

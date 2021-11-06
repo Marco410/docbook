@@ -26,12 +26,6 @@ $('#table_pacients').DataTable({
     fixedHeader: true,
     scrollY: true,
     order: [ 0, 'desc' ],
-    /* columnDefs: [{
-        //orderable: true,
-        targets:   [5],
-    },
-    //{ targets: [0], visible: false }
-    ], */
     language: espanol
 });
 
@@ -129,8 +123,6 @@ $('.btn-delete').on('click',function(){
     
 
 });
-
-
 
 $("#clinic_is_registered").on("click",function(){
 

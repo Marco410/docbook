@@ -597,7 +597,7 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
             message: 'Consulta rápida creada.',
         });
         //window.location.reload();
-        $("#id_consulta_rapida").val(res['data']['consulta'].id);
+        $("#id_consulta").val(res['data']['consulta'].id);
         $("#diagnostico-consulta-cobro").html(res['data']['diagnostico']);
         $("#motivo-consulta-cobro").html(res['data']['motivo']);
 
@@ -606,6 +606,9 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
             backdrop: 'static',
             show: true
         });
+        $("#tipo_consulta").val("Consulta Rapida");
+
+
     }).catch((err) => {
         iziToast.error({
             timeout: 6000,
@@ -617,7 +620,7 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
 
 }
 
-$('#cobro1').change(function() {
+/* $('#cobro1').change(function() {
 
     var extra = $("#cobro_extra").val();
    
@@ -675,9 +678,8 @@ $("#cobro_extra").keyup(function(){
 $("#btn-pagar").on("click",function(){
     $("#pagar_consulta").modal("show");
 });
-
-$("#btn-hacer-pago").on("click",function(){
-    $("#id_consulta_rapida").val();
+ */
+/* $("#btn-hacer-pago").on("click",function(){
 
     if($("#cobro1").is(":checked")){
         costo_consulta = $("#cobro1").val();
@@ -686,20 +688,24 @@ $("#btn-hacer-pago").on("click",function(){
     }
     
     var totalF = $("#total_consulta_rapida").html();
-    var id_consulta = $("#id_consulta_rapida").val();
+    var id_consulta = $("#id_consulta").val();
     var motivo_extra = $("#motivo_extra").val();
     var extra =  $("#cobro_extra").val();
     var metodo =  $("#metodo_pago").val();
+    var tipo_consulta =  $("#tipo_consulta").val();
+
     if(metodo.length > 0){
 
         var fd = new FormData();    
         fd.append("paciente_id",$("#paciente_id").val());
-        fd.append("id_consulta_rapida",id_consulta);
+        fd.append("id_consulta",id_consulta);
         fd.append("total",totalF);
         fd.append("motivo_extra",motivo_extra);
         fd.append("extra",extra);
         fd.append("costo_consulta",costo_consulta);
         fd.append("metodo",metodo);
+        fd.append("tipo_consulta",tipo_consulta);
+        
     
         const response =  axios.post('/make-pay',fd,{
         }).then(res =>  {
@@ -735,11 +741,12 @@ $("#btn-hacer-pago").on("click",function(){
         });
     }
 
-});
+}); */
 
-function pagar_atrasado(id_consulta, diagnostico, motivo){
+function pagar_atrasado(id_consulta, diagnostico, motivo,tipo_consulta){
 
-    $("#id_consulta_rapida").val(id_consulta);
+    $("#id_consulta").val(id_consulta);
+    $("#tipo_consulta").val(tipo_consulta);
     $("#diagnostico-consulta-cobro").html(diagnostico);
     $("#motivo-consulta-cobro").html(motivo);
 

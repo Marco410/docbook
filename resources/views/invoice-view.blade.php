@@ -33,7 +33,7 @@
 		overflow-x: hidden;
 	}
 	h1,h2 {
-		font-size: 20px;
+		font-size: 18px;
 	}
 	p,span {
 		font-size: 11px;
@@ -156,6 +156,7 @@
 														<br>
 														{{ $doctor->especialidad[0]->nombre }}<br>
 														<strong>Cédula Profesional:</strong> {{ $doctor->cedula }}<br>
+														<strong>Institución:</strong> {{ $doctor->institucion_cedula }}
 													</p>
 												</td>
 												<td style="width: 25%; text-align: right; "  ><img src="assets/img/medicina.png" height="70px" width="70px" alt="logo" /></td>
@@ -173,8 +174,7 @@
 												</td>
 												<td style="width: 50%; text-align: right;"">
 													<p style="margin-top: 10px;" >
-														<strong>Fecha: </strong>{{ Date("d/m/Y") }}<strong> Hora: </strong>{{ Date("h:i A") }} <strong>Edad: </strong> {{ $paciente->get_edad() }} <strong>Temp:</strong> {{ $temp }} C°<br>
-														<strong>T/A: </strong> - <strong>FC: </strong> - <strong>S02: </strong> -
+														<strong>Fecha: </strong>{{ Date("d/m/Y") }}<strong> Hora: </strong>{{ Date("h:i A") }} <strong>Edad: </strong> {{ $paciente->get_edad() }} <strong>Temp:</strong> {{ $temp }} C°													
 													</p>
 												</td>
 											</tbody>

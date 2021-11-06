@@ -81,6 +81,24 @@
 				 </div>
 			 </div>
 			 <?php else: ?>
+				<?php 
+				$date1 = new DateTime("now"); 
+				$date2 = new DateTime($openCaja->created_at);
+				$diff = $date1->diff($date2);
+				$fechaInt = strtotime($openCaja->created_at);
+				//se añadio en el archivo main_vs.js desde head_blade
+				if($diff->days > 0 ){
+				?>
+				<input type="hidden" value="<?php echo e($openCaja->id); ?>" id="check_caja_id" >
+				<input type="hidden" value="<?php echo e(date("Y-m-d", $fechaInt)); ?>" id="check_caja_fecha" >
+				<input type="hidden" value="<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->id); ?>" id="check_caja_clinic" >
+				<input type="hidden" value="<?php echo e(auth()->user("doctors")->id); ?>" id="check_caja_doctor" >
+				<input type="hidden" value="<?php echo e($openCaja->apertura); ?>" id="check_caja_apertura" >
+					<script>
+					verificar_caja();
+					</script>
+				<?php
+				}  ?>
 				<?php if($openCaja->abierta == "1"): ?>
 				<div class="row">
 					<div class="col-sm-12">

@@ -748,14 +748,23 @@
 						<h3 >ANTECEDENTES</h3>
 					</div>
 					<div class="col-sm-6 mb-4">
-						{{-- <div class="">
-							<a href="#{{ route('registro-paciente') }}" class="btn btn-primary btn-md float-right"><i class="fas fa-play"></i> Iniciar Consulta</a>
-						</div> --}}
+						
+						@if ($consulta_actual != null)
+						<input type="hidden" id="id_consulta_actual" value="{{ $consulta_actual[0]->id }}" >
+						<div id="panel-termino-consulta">
+							<a data-toggle="modal" data-target="#consulta" class="btn btn-danger btn-md float-right text-white"><i class="fas fa-stop"></i> Terminar Consulta</a>
+						</div>
+						@else
+						<div id="panel-inicio-consulta">
+							<a data-toggle="modal" data-target="#consulta" class="btn btn-primary btn-md float-right text-white"><i class="fas fa-play"></i> Iniciar Consulta</a>
+						</div>
+						@endif
 					</div>
 				</div>
 
+				
+
 				<div class="row">
-					
 				<!--- ALERGIAS -->
 				<div class="card col-sm-12 border-left ">
 					<div class="card-header " data-toggle="collapse" href="#alergias">
@@ -2309,10 +2318,95 @@
 							
 							</div>
 					</div>
+
+					{{-- Vista de consultas --}}
+
 					<div class="col-sm-12">
-						<h5 class="text-secondary text-sm" >CONSULTAS INICIADAS</h5>
+						<div id="accordion">
+							<div class="card">
+							  <div class="card-header" id="headingOne">
+								<h5 class="mb-0">
+								  <button class="btn btn-link" data-toggle="collapse" data-target="#consultas" aria-expanded="true" aria-controls="consultas">
+									<h5 class="text-secondary text-sm" >CONSULTAS INICIADAS <i class="fas fa-chevron-down" ></i>  </h5>
+								  </button>
+								</h5>
+							  </div>
+						  
+							  <div id="consultas" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+								<h5 class="text-secondary text-sm text-center" >CONSULTAS 	NORMALES</h5>
 						@if(!empty($consultas))
 							@foreach ($consultas as $consulta)
+								<i style="display: none;" >{{ $fechaInt = strtotime($consulta->created_at)
+									}}</i>
+								<div class="card boder-primary">
+									<div class="card-header text-center" >
+										<label class="text-info text-lg" for=""><i class="fas fa-laptop-medical" ></i></label>
+										@if ($consulta->termino == "No")
+											<br>
+											<label class="text-warning">En Proceso</label>
+										@endif
+									</div>
+									<div class="row card-body">
+										<div class="col-sm-4 text-center p-2">
+											<label class="text-secondary text-sm mb-1" >{{ date("d", $fechaInt) }}</label><br>
+											<label class="text-secondary text-lg mb-1" >{{ date("M", $fechaInt) }}</label><br>
+											<label class="text-secondary text-md mb-1">{{ date("Y", $fechaInt) }}</label>
+										</div>
+										<div class="col-sm-8 p-2">
+											<div class="row">											<div class="col-sm-8">
+													<label class="text-secondary text-sm mb-3 font-italic" for="">Dr. {{ $consulta->doctor()->get()[0]->nombre }} {{ $consulta->doctor()->get()[0]->apellido_p }}</label> 
+												</div>
+												<div class="col-sm-4">
+													<label class="text-secondary  text-sm mb-3 " >{{ date("h:i A", $fechaInt) }}</label>
+												</div>
+												<div class="col-sm-12">
+													<label class="text-primary text-sm font-weight-bold mb-1 " for="">{{ $consulta->motivo()->get()[0]->motivo }}</label><br>
+													<label class="text-secondary text-sm font-weight-bold mb-1 " for=""> <small>{{ ($consulta->diagnostico_id) ?  $consulta->diagnostico()->first()->descripcion_4 : $consulta->diagnostico_str }}</small></label>
+												</div>
+											</div>
+											
+											
+										</div>
+									</div>
+									<div class="card-footer" >
+										<div class="row">
+
+											<div class="col-sm-4">
+												<a class="btn btn-sm bg-info-light" href="{{ $consulta->receta }}" target="_blank" >Ver Receta</a>
+											</div>
+											<div class="col-sm-3" >
+												<a class="btn bg-warning-light btn-sm" data-toggle="collapse" href="#notas{{ $consulta->id }}" role="button" aria-expanded="false" aria-controls="notas{{ $consulta->id }}">Notas
+												</a>
+											</div>
+
+											<div class="col-sm-5" >
+												@if($consulta->pagado == 0)
+													<button class="btn btn-sm bg-danger-light" onclick="pagar_atrasado('{{ $consulta->id }}','{{ ($consulta->diagnostico_id) ?  $consulta->diagnostico()->first()->descripcion_4 : $consulta->diagnostico_str }}','{{ $consulta->motivo()->get()[0]->motivo }}','Consulta')"> Pagar</button>
+												@elseif($consulta->pagado == 1)
+												<a class="btn btn-sm bg-success-light" href="{{ $consulta->recibo }}" target="_blank" >Recibo de Pago</a>
+												
+												@endif
+
+											</div>
+										</div>
+
+									</div>
+									
+									<div class="collapse" id="notas{{ $consulta->id }}">
+										<div class="card card-body">
+											{!! $consulta->notas_consulta_rapida !!}
+										</div>
+										</div>
+									
+								</div>
+							@endforeach
+						@endif
+						<div class="col-sm-12 text-center" >
+							{{ $consultas->links() }}
+						</div>
+						<h5 class="text-secondary text-sm text-center" >CONSULTAS RAPIDAS</h5>
+						@if(!empty($consultasr))
+							@foreach ($consultasr as $consulta)
 								<i style="display: none;" >{{ $fechaInt = strtotime($consulta->created_at)
 									}}</i>
 								<div class="card boder-primary">
@@ -2354,7 +2448,7 @@
 
 											<div class="col-sm-5" >
 												@if($consulta->pagado == 0)
-													<button class="btn btn-sm bg-danger-light" onclick="pagar_atrasado('{{ $consulta->id }}','{{ ($consulta->diagnostico_id) ?  $consulta->diagnostico()->first()->descripcion_4 : $consulta->diagnostico_str }}','{{ $consulta->motivo()->get()[0]->motivo }}')"> Pagar</button>
+													<button class="btn btn-sm bg-danger-light" onclick="pagar_atrasado('{{ $consulta->id }}','{{ ($consulta->diagnostico_id) ?  $consulta->diagnostico()->first()->descripcion_4 : $consulta->diagnostico_str }}','{{ $consulta->motivo()->get()[0]->motivo }}','Rapida')"> Pagar</button>
 												@elseif($consulta->pagado == 1)
 												<a class="btn btn-sm bg-success-light" href="{{ $consulta->recibo }}" target="_blank" >Recibo de Pago</a>
 												
@@ -2375,9 +2469,21 @@
 							@endforeach
 						@endif
 						<div class="col-sm-12 text-center" >
-							{{ $consultas->links() }}
+							{{ $consultasr->links() }}
+						</div>
+
+							  </div>
+							</div>
 						</div>
 					</div>
+
+					
+
+					<div class="col-sm-12">
+						
+					</div>
+					{{-- Termina Vista de consultas --}}
+
 				</div>
 			</div>
 			<!-- Termina 3er Columna -->
@@ -2389,7 +2495,104 @@
 		</div>
 		<!-- /Main Wrapper -->
 
-		<!-- Consulta Rápida Modal -->
+<!-- Consulta Modal -->
+<div class="modal fade" id="consulta" aria-hidden="true" role="dialog">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
+		<div class="modal-content">
+			<div class="modal-header">
+				
+				<h5 class="modal-title text-info">
+					Nueva Consulta
+				</h5>
+				
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12 mb-4">
+						<div class="row">
+							<div class="col-sm-4">
+								@if ($consulta_actual != null)
+								@else
+								<div class="col-sm-12">
+									<div class="input-group mb-4" id="input_buscar_motivo_consulta">
+										<input type="text" class="form-control" id="buscar_motivo_consulta" 
+										placeholder="Escribe para buscar motivo de consulta..." />
+									</div>
+								</div>
+
+								@endif
+								
+								<div class="col-sm-12">
+								@if ($consulta_actual != null)
+								<h3 class='text-info' >{{ $consulta_actual[0]->motivo->motivo }}<small></small></h3><input type='hidden' name='motivo_consulta' id='motivo_consulta' value='{{ $consulta_actual[0]->motivo_consulta_id }}' />
+								@else
+								
+								<div id="panel-motivo-select-consulta" ></div>
+								@endif
+								</div>
+								
+							</div>
+							<div class="col-sm-8">
+								<div class="input-group ">
+									<input type="text" class="form-control" placeholder="Diagnostico Principal" id="diagnostico_principal_consulta" value="{{($consulta_actual != null) ?  ($consulta_actual[0]->diagnostico_id == "" ) ? $consulta_actual[0]->diagnostico_str : $consulta_actual[0]->diagnostico->descripcion_4  : "" }}" readonly data-id="{{($consulta_actual != null) ?  ($consulta_actual[0]->diagnostico_id == "" ) ? '0' : $consulta_actual[0]->diagnostico_id  : "" }}" />
+									<button class="btn btn-sm btn-info" {{ ($consulta_actual != null) ? "disabled" : "" }}  data-toggle="modal" data-target="#agregar_diagnostico" > <i class="fas fa-search" ></i> Buscar</button>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div id="panel-motivos-consulta" ></div>
+							</div>
+						</div>
+						
+					</div>
+					<div id="panel-estudios_consulta" class="col-sm-6 text-center">
+						<h4>Estudios</h4>
+						<div id="panel-estudios-consulta-estudio" class="col-sm-12" ></div>
+						
+					</div>
+					<div id="panel-medi_consulta" class="col-sm-6 text-center">
+						<h4>Medicamentos</h4>
+						<div id="panel-articulos-consulta-articulo" class="col-sm-12" ></div>
+					</div>
+
+					@if ($consulta_actual != null)
+					<div class="col-sm-6 mb-2 text-center">
+						<div>
+							<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#agregar_estudio" > <i class="fas fa-plus" ></i> Agregar Estudio</button>
+						</div>
+					</div>
+					<div class="col-sm-6 mb-2 text-center">
+						
+						<button class="btn btn-sm btn-info"  data-toggle="modal" data-target="#agregar_articulo" > <i class="fas fa-plus" ></i> Agregar Artículo</button>
+					</div>
+					@else
+					<div class="col-sm-12 text-center " >
+						<h5 class="text-warning" >Para agregar estudios y medicamentos inicia la consulta</h5>
+					</div>
+					@endif
+					
+				</div>
+				
+			</div>
+			<div class="modal-footer">
+				<div class="col-sm-12" >
+					@if ($consulta_actual != null)
+					<button class="btn btn-sm btn-danger btn-block" id="btn-terminar-consulta"><i class="fas fa-stop"></i> Terminar Ahora</button>
+					@else
+					<button class="btn btn-sm btn-primary btn-block" id="btn-add-consulta"><i class="fas fa-play"></i> Iniciar Ahora</button>
+					@endif
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<!-- /Consulta Modal -->
+
+<!-- Consulta Rápida Modal -->
 <div class="modal fade" id="consulta_rapida" aria-hidden="true" role="dialog">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
 		<div class="modal-content">
@@ -2723,21 +2926,29 @@
 				</div>
 				<div class="select-gender-col text-center">
 					<div class="row">
-						<div class="col-sm-6 pr-2">
-							<input type="hidden" id="id_consulta_rapida" name="id_consulta_rapida" >
+						<div class="col-sm-5 pr-2">
+							<input type="hidden" id="id_consulta" name="id_consulta" >
+							<input type="hidden" id="tipo_consulta" name="tipo_consulta" >
 							<input type="radio" id="cobro1" name="cobro" checked="" value="{{ auth()->user("doctors")->seguimiento }}">
 							<label for="cobro1">{{-- 
 								<span class="gender-icon"><img src="assets/img/icons/male.png" alt=""></span> --}}
 								<span>${{ auth()->user("doctors")->seguimiento }}</span>
 							</label>
 						</div>
-						<div class="col-sm-6 pl-2">
+						<div class="col-sm-2">
+							<label for="no_cobro"> 
+							<input type="checkbox" id="no_cobro" name="no_cobro" value="">
+								No Cobrar consulta
+							</label>
+						</div>
+						<div class="col-sm-5 pl-2">
 							<input type="radio" id="cobro2" name="cobro" value="{{ auth()->user("doctors")->primera }}">
 							<label for="cobro2">{{-- 
 								<span class="gender-icon"><img src="assets/img/icons/female.png" alt=""></span> --}}
 								<span>${{ auth()->user("doctors")->primera }}</span>
 							</label>
 						</div>
+						
 					</div>
 				</div>
 				<div class="row">
@@ -2753,6 +2964,12 @@
 						<input type="number" min="0"  id="cobro_extra" class="form-control" placeholder="$" >
 						<input type="text" id="motivo_extra" name="motivo_extra"  class="form-control" placeholder="Motivo cobro extra"   >
 						<p> <strong>Total: $</strong><span id="total_consulta_rapida" >{{ auth()->user("doctors")->seguimiento }}</span> </p>
+					</div>
+					<div class="col-sm-6 text-center offset-3" >
+						
+						<input type="number" id="descuento" name="descuento"  class="form-control" placeholder="Escribre aqui si deseas agregar un descuento en %"   >
+						<small for="">Escribre aqui si deseas agregar un descuento en <i class="fas fa-percentage"></i></small>
+
 					</div>
 					<div class="col-sm-6 offset-3 text-center" >
 						<h4>Metodo de Pago:</h4>

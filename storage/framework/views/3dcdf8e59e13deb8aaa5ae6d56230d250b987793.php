@@ -36,6 +36,12 @@
 		<?php if(Route::is(['historial'])): ?>
 		<link rel="stylesheet" href="/assets/css/views/historial.css">
 	   <?php endif; ?> 
+
+	   	<?php if(Route::is(['doctor-inicio','caja'])): ?>
+		<script src="/main/axios.min.js"></script>
+		<script  src="/assets/js/view_controllers/check_caja_vs.js"></script>
+		<?php endif; ?>
+
 		<!-- Main CSS -->
 		<link rel="stylesheet" href="/assets/css/style.css">
 		

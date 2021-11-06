@@ -1,6 +1,6 @@
 <script src="/assets_admin/js/jquery-3.2.1.min.js"></script>
 
-<script src="/main/axios.min.js"></script>
+		<script src="/main/axios.min.js"></script>
 		<!-- Bootstrap Core JS -->
 		<script src="/assets/js/popper.min.js"></script>
 		<script src="/assets/js/bootstrap.min.js"></script>
@@ -68,6 +68,7 @@
 		@endif
 		
 		@if (Route::is(['historial','perfil-paciente']))
+		<script  src="/assets/js/view_controllers/historial/consulta_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/alergias_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/vacunas_vs.js"></script>
 		<script  src="/assets/js/view_controllers/historial/medicamentos_vs.js"></script>

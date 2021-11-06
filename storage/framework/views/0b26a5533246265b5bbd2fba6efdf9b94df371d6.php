@@ -34,36 +34,21 @@
 
 	}
 
-
-
 	html {
-
-		margin: 0px;
-
+		background-color: #fff;
+		margin-left: 30px;
+		margin-right: 30px;
 	}
-
-
-
 	body {
-
-		background-color: #f8f9fa;
-
 		color: #272b41;
-
 		font-family: "Poppins",sans-serif;
-
 		font-size: 0.9375rem;
-
 		height: 100%;
-
 		overflow-x: hidden;
 
 	}
-
 	h1,h2 {
-
-		font-size: 20px;
-
+		font-size: 18px;
 	}
 
 	p,span {
@@ -229,8 +214,8 @@
 									<p>
 										<strong>Dr. <?php echo e($doctor->nombre); ?> <?php echo e($doctor->apellido_p); ?> <?php echo e($doctor->apellido_m); ?></strong>
 										<br>
-										<?php echo e($doctor->especialidad[0]->nombre); ?>
-
+										<?php echo e($doctor->especialidad[0]->nombre); ?><br>
+										<strong>Reporte de caja</strong>
 									</p>
 								</td>
 							</tbody>

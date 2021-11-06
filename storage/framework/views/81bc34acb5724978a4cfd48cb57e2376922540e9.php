@@ -15,122 +15,74 @@
 	@font-face {
 
 		font-family: 'Material Icons';
-
 		font-style: normal;
-
 		font-weight: 400;
-
 		src: url(../fonts/MaterialIcons-Regular.eot); /* For IE6-8 */
-
 		src: local('Material Icons'),
-
 		local('MaterialIcons-Regular'),
-
 		url(../fonts/MaterialIcons-Regular.woff2) format('woff2'),
-
 		url(../fonts/MaterialIcons-Regular.woff) format('woff'),
-
 		url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
-
 	}
 
 
 
 	html {
-
-		margin: 0px;
-
+		background-color: #fff;
+		margin-left: 30px;
+		margin-right: 30px;
 	}
-
-
-
 	body {
-
-		background-color: #f8f9fa;
-
 		color: #272b41;
-
 		font-family: "Poppins",sans-serif;
-
 		font-size: 0.9375rem;
-
 		height: 100%;
-
 		overflow-x: hidden;
 
 	}
-
 	h1,h2 {
-
-		font-size: 20px;
-
+		font-size: 18px;
 	}
-
 	p,span {
-
 		font-size: 12px;
-
 	}
-
-
-
 	table td.v  {
-
-		border: 1px solid #000;
-
-		/* Alto de las celdas */
-
+		border: 1px solid #2c2c2c;
 		height: 8px;
-
 		font-size: 8px;
-
 		}
-
-
+	
 
 	.invoice-content {
-
-		background-color: #fff;
-
-		border: 1px solid #f0f0f0;
-
 		border-radius: 4px;
-
 		padding-bottom: 10px;
-
 		padding-right: 20px;
-
 		padding-left: 20px;
-
 	}
 
 	.invoice-item .invoice-logo {
-
 		margin-bottom: 30px;
-
 	}
 
 	.invoice-item .invoice-logo img {
 		width: auto;
 		max-height: 52px;
-
 	}
 
 	.invoice-item .invoice-text h2 {
-		color:#272b41;
+		color:#2c2c2c;
 		font-size:36px;
 		font-weight:600;
-
 	}
 
 	.invoice-item .invoice-details {
 		text-align:right;
-		color:#757575;
+		color:#2c2c2c;
 		font-weight:500
 	}
 
 	.invoice-item .invoice-details strong {
-		color:#272b41
+		color:#2c2c2c
 	}
 
 	.invoice-item .invoice-details-two {
@@ -160,7 +112,7 @@
 
 	.invoice-item .customer-text {
 		font-size: 18px;
-		color: #272b41;
+		color: #2c2c2c;
 		font-weight: 600;
 		margin-bottom: 8px;
 		display: block
@@ -172,7 +124,7 @@
 	.invoice-table-two tr th,
 	.invoice-table-two tr td {
 
-		color: #272b41;
+		color: #2c2c2c;
 		font-weight: 600;
 		padding: 10px 20px;
 		line-height: inherit
@@ -182,7 +134,7 @@
 	.invoice-table tr td,
 
 	.invoice-table-two tr td {
-		color: #757575;
+		color: #2c2c2c;
 		font-weight: 500;
 
 	}
@@ -197,19 +149,13 @@
 		text-align: right
 
 	}
-
 	.invoice-info h5 {
-
 		font-size: 16px;
-
 		font-weight: 500;
-
 	}
 
 	.other-info {
-
 		margin-top: 10px;
-
 	}
 
 </style>
@@ -231,7 +177,7 @@
 										<strong>Dr. <?php echo e($doctor->nombre); ?> <?php echo e($doctor->apellido_p); ?> <?php echo e($doctor->apellido_m); ?></strong>
 										<br>
 										<?php echo e($doctor->especialidad[0]->nombre); ?><br>
-										<strong>Cédula Profesional:</strong> <?php echo e($doctor->cedula); ?><br>
+										<strong>Recibo de Pago<br>
 									</p>
 								</td>
 								<td style="width: 25%; text-align: right; "  ><img src="assets/img/medicina.png" height="70px" width="70px" alt="logo" /></td>
@@ -275,15 +221,15 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>Consulta Rápida</td>
+									<td><?php echo e($tipo_consulta); ?></td>
 									<td class="text-center">Consulta</td>
-									<td class="text-right"><?php echo e($costo_consulta); ?></td>
+									<td class="text-right"><?php echo e(number_format($costo_consulta)); ?></td>
 								</tr>
 								<?php if(!empty($extra)): ?>
 								<tr>
 									<td>Monto Extra</td>
 									<td class="text-center"><?php echo e($motivo_extra); ?></td>
-									<td class="text-right"><?php echo e($extra); ?></td>
+									<td class="text-right"><?php echo e(number_format($extra)); ?></td>
 								</tr>
 								<?php endif; ?>
 							</tbody>
@@ -293,8 +239,16 @@
 					<table >
 						<tbody>
 						<tr>
-							<th>Total:</th>
-							<td><span>$<?php echo e($cobro); ?></span></td>
+							<th><span> <strong> Descuento:</strong></span></th>
+							<td><span><?php echo e($descuento); ?>%</span></td>
+						</tr>
+						<tr>
+							<th><span> <strong>Subtotal:</strong></span></th>
+							<td><span>$<?php echo e(number_format($subtotal)); ?></span></td>
+						</tr>
+						<tr>
+							<th><span> <strong>Total:</strong></span></th>
+							<td><span>$<?php echo e(number_format($cobro)); ?></span></td>
 						</tr>
 						</tbody>
 					</table>

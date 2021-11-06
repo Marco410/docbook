@@ -83,7 +83,6 @@ ALTER TABLE `historials` ADD `concepcion_asistida` TEXT NULL AFTER `heredo_otros
 ALTER TABLE `historials` ADD `ultimo_metodo_anti` TEXT NULL AFTER `heredo_otros`;
 ALTER TABLE `historials` ADD `duracion_ciclo` TEXT NULL AFTER `heredo_otros`;
 ALTER TABLE `historials` ADD `ultimo_ciclo_menstrual` TEXT NULL AFTER `heredo_otros`;
-
 ALTER TABLE `historials` ADD `estado_emocional` TEXT NULL AFTER `text_otros_gineco`;
 ALTER TABLE `historials` ADD `alimentacion_tipo` TEXT NULL AFTER `text_otros_gineco`;
 ALTER TABLE `historials` ADD `alimentacion_bb` TEXT NULL AFTER `text_otros_gineco`;
@@ -91,3 +90,12 @@ ALTER TABLE `historials` ADD `salud_bb` TEXT NULL AFTER `text_otros_gineco`;
 ALTER TABLE `historials` ADD `peso_nacer` TEXT NULL AFTER `text_otros_gineco`;
 ALTER TABLE `historials` ADD `nombre_bb` TEXT NULL AFTER `text_otros_gineco`;
 ALTER TABLE `historials` ADD `detalles_parto` TEXT NULL AFTER `text_otros_gineco`;
+
+//Nuevos
+ALTER TABLE `consultas` ADD `diagnostico_str` VARCHAR(191) NULL AFTER `diagnostico_id`, ADD `notas_consulta` TEXT NULL AFTER `diagnostico_str`;
+ALTER TABLE `consultas` CHANGE `diagnostico_id` `diagnostico_id` BIGINT(20) UNSIGNED NULL;
+ALTER TABLE `consultas` ADD `termino` VARCHAR(191) NULL AFTER `pagado`;
+ALTER TABLE `pagos` ADD `paciente_id` BIGINT(20) NULL AFTER `caja_id`;
+ALTER TABLE `pacientes` CHANGE `email` `email` VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
+ALTER TABLE `pacientes` ADD `nombre_familiar` VARCHAR(191) NULL AFTER `cp`, ADD `telefono_familiar` VARCHAR(191) NULL AFTER `nombre_familiar`;
+ALTER TABLE `pacientes` ADD `seguro_social` VARCHAR(191) NULL AFTER `telefono_familiar`, ADD `nacionalidad` VARCHAR(191) NULL AFTER `seguro_social`, ADD `empleo` VARCHAR(191) NULL AFTER `nacionalidad`;

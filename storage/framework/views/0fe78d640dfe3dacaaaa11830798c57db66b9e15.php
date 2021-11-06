@@ -54,11 +54,31 @@
                       </div>
                         
                     <?php endif; ?>
+
                     <?php if($countCaja === 0): ?>
                     <div class="alert alert-warning fade show" role="alert">
                         <strong>Recuerda</strong> ¡Tienes que abrir tu caja para empezar a trabajar! <a href="<?php echo e(route("caja")); ?>">Clic aquí para abrirla</a>
                       </div>
+                    <?php else: ?>
+                        <?php 
+                        //verifica si la caja se paso de 24hrs
+                        $date1 = new DateTime("now"); 
+                        $date2 = new DateTime($cajaOpen[0]->created_at);
+                        $diff = $date1->diff($date2);
+                        $fechaInt = strtotime($cajaOpen[0]->created_at);
+                        //se añadio en el archivo check_caja_vs.js desde head_blade
+                        if($diff->days > 0 ){
+                        ?>
+                        <input type="hidden" value="<?php echo e($cajaOpen[0]->id); ?>" id="check_caja_id" >
+                        <input type="hidden" value="<?php echo e(date("Y-m-d", $fechaInt)); ?>" id="check_caja_fecha" >
+                        <input type="hidden" value="<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->id); ?>" id="check_caja_clinic" >
+                        <input type="hidden" value="<?php echo e(auth()->user("doctors")->id); ?>" id="check_caja_doctor" >
+                        <input type="hidden" value="<?php echo e($cajaOpen[0]->apertura); ?>" id="check_caja_apertura" >
+                        <script>verificar_caja();</script>
+                        <?php
+                        } ?>
                     <?php endif; ?>
+
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="mb-4">Bienvenido a  <strong class="text-info" >Docbook</strong></h3>
@@ -71,7 +91,7 @@
                         <div class="col-sm-9">
                             <div class="form-group">
 								<label for="" class="text-secondary"> <i class="fas fa-clinic-medical" ></i> Selecciona la clinica en la que te encuentres: </label>
-								<select class="form-control select" name="change_clinica" id="">
+								<select class="form-control select" name="change_clinica" id="change_clinica">
                                     <?php $__currentLoopData = $clinicas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $clinica): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 									<option value="<?php echo e($clinica->id); ?>"><?php echo e($clinica->nombre_consultorio); ?> <small class="text-secondary" > (<?php echo e($clinica->nombre_organizacion); ?>)</small> <?php echo e(($clinica->activa == "1") ? "-Activa-" : ""); ?> </option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

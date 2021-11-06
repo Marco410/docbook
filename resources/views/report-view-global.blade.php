@@ -19,18 +19,20 @@
 		url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
 	}
 	html {
-		margin: 0px;
+		background-color: #fff;
+		margin-left: 30px;
+		margin-right: 30px;
 	}
 	body {
-		background-color: #f8f9fa;
 		color: #272b41;
 		font-family: "Poppins",sans-serif;
 		font-size: 0.9375rem;
 		height: 100%;
 		overflow-x: hidden;
+
 	}
 	h1,h2 {
-		font-size: 20px;
+		font-size: 18px;
 	}
 	p,span {
 		font-size: 12px;
@@ -182,7 +184,13 @@
 									<p>
 										<strong>Dr. {{ $doctor->nombre }} {{ $doctor->apellido_p }} {{ $doctor->apellido_m }}</strong>
 										<br>
-										{{ $doctor->especialidad[0]->nombre }}
+										{{ $doctor->especialidad[0]->nombre }}  <br>
+										<strong>Reporte de caja detallado</strong> <br>
+										@if ($fecha_ini != "")
+										<strong>Entre las Fechas</strong>
+										{{ $fecha_ini }} a {{ $fecha_fin }}
+										@endif
+										
 									</p>
 								</td>
 							</tbody>
@@ -191,29 +199,32 @@
 					<div style="width: 100%;">
 						<table style="width: 100%;">
 							<tbody>
-								<td style="width: 100%; text-align: left;" >
+								<td style="width: 25%; text-align: left;" >
 									<p class="invoice-details" style="text-align: left;" >
 										<strong>Identificador de Caja:</strong> {{ $caja_id}}<br>
-										<strong>Monto de Apertura:</strong> ${{ $apertura}} <br>
-										<strong>Entradas</strong> ${{ $entradas }} <br>
-										<strong>Salidas</strong> ${{ $salidas }} <br>
+										<strong>Monto de Apertura:</strong> ${{ number_format($apertura)}} <br>
+										<strong>Entradas</strong> ${{ number_format($entradas) }} <br>
+										<strong>Salidas</strong> ${{ number_format($salidas) }} <br>
 									</p>
-									
 									<p>
-										<strong>Saldo en Caja: </strong> ${{ $total }} 
+										<strong>Saldo en Caja: </strong> ${{ number_format($total) }} 
 									</p>
+								</td>
+								<td style="width: 25%; text-align: left;" >
+									
 									<p class="invoice-details" style="text-align: left;" >
 										<strong>-Entradas-</strong><br>
-										<strong>Efectivo:</strong> ${{ $efectivo}}<br>
-										<strong>Tarjeta:</strong> ${{ $tarjeta}} <br>
-										<strong>Transferencia: </strong> ${{ $transferencia }} <br>
-										
+										<strong>Efectivo:</strong> ${{ number_format($efectivo)}}<br>
+										<strong>Tarjeta:</strong> ${{ number_format($tarjeta)}} <br>
+										<strong>Transferencia: </strong> ${{ number_format($transferencia) }} 
 									</p>
+								</td>
+								<td style="width: 25%; text-align: left;" >
 									<p class="invoice-details" style="text-align: left;" >
 										<strong>-Salidas-</strong> <br>	
-										<strong>Efectivo:</strong> ${{ $efectivoS}}<br>
-										<strong>Tarjeta:</strong> ${{ $tarjetaS}} <br>
-										<strong>Transferencia: </strong> ${{ $transferenciaS }} <br>
+										<strong>Efectivo:</strong> ${{ number_format($efectivoS)}}<br>
+										<strong>Tarjeta:</strong> ${{ number_format($tarjetaS)}} <br>
+										<strong>Transferencia: </strong> ${{ number_format($transferenciaS) }} <br>
 										
 									</p>
 								</td>
@@ -239,7 +250,7 @@
 								<tr>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $pago->tipo_movimiento }}</span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $pago->descripcion }}</span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ $pago->importe }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ number_format($pago->importe) }}</span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $pago->metodo_pago }}</span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $pago->observaciones }}</span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $pago->created_at }}</span></td>
@@ -272,13 +283,13 @@
 								@foreach ($cajas as $caja)
 								<tr>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> #{{ $caja->id }}</span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ $caja->apertura }}</span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ $caja->entradas }}</span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ $caja->salidas }}</span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ $caja->ventas_efectivo }}</span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ $caja->ventas_tarjeta }}</span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ $caja->ventas_transferencia }}</span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ $caja->total }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ number_format($caja->apertura) }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ number_format($caja->entradas) }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ number_format($caja->salidas) }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ number_format($caja->ventas_efectivo) }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ number_format($caja->ventas_tarjeta) }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ number_format($caja->ventas_transferencia) }}</span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> ${{ number_format($caja->total) }}</span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $caja->created_at }}</span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> {{ $caja->updated_at }}</span></td>
 									

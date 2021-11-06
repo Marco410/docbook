@@ -16,18 +16,20 @@
 		url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
 	}
 	html {
-		margin: 0px;
+		background-color: #fff;
+		margin-left: 30px;
+		margin-right: 30px;
 	}
 	body {
-		background-color: #f8f9fa;
 		color: #272b41;
 		font-family: "Poppins",sans-serif;
 		font-size: 0.9375rem;
 		height: 100%;
 		overflow-x: hidden;
+
 	}
 	h1,h2 {
-		font-size: 20px;
+		font-size: 18px;
 	}
 	p,span {
 		font-size: 12px;
@@ -179,8 +181,14 @@
 									<p>
 										<strong>Dr. <?php echo e($doctor->nombre); ?> <?php echo e($doctor->apellido_p); ?> <?php echo e($doctor->apellido_m); ?></strong>
 										<br>
-										<?php echo e($doctor->especialidad[0]->nombre); ?>
+										<?php echo e($doctor->especialidad[0]->nombre); ?>  <br>
+										<strong>Reporte de caja detallado</strong> <br>
+										<?php if($fecha_ini != ""): ?>
+										<strong>Entre las Fechas</strong>
+										<?php echo e($fecha_ini); ?> a <?php echo e($fecha_fin); ?>
 
+										<?php endif; ?>
+										
 									</p>
 								</td>
 							</tbody>
@@ -189,29 +197,32 @@
 					<div style="width: 100%;">
 						<table style="width: 100%;">
 							<tbody>
-								<td style="width: 100%; text-align: left;" >
+								<td style="width: 25%; text-align: left;" >
 									<p class="invoice-details" style="text-align: left;" >
 										<strong>Identificador de Caja:</strong> <?php echo e($caja_id); ?><br>
-										<strong>Monto de Apertura:</strong> $<?php echo e($apertura); ?> <br>
-										<strong>Entradas</strong> $<?php echo e($entradas); ?> <br>
-										<strong>Salidas</strong> $<?php echo e($salidas); ?> <br>
+										<strong>Monto de Apertura:</strong> $<?php echo e(number_format($apertura)); ?> <br>
+										<strong>Entradas</strong> $<?php echo e(number_format($entradas)); ?> <br>
+										<strong>Salidas</strong> $<?php echo e(number_format($salidas)); ?> <br>
 									</p>
-									
 									<p>
-										<strong>Saldo en Caja: </strong> $<?php echo e($total); ?> 
+										<strong>Saldo en Caja: </strong> $<?php echo e(number_format($total)); ?> 
 									</p>
+								</td>
+								<td style="width: 25%; text-align: left;" >
+									
 									<p class="invoice-details" style="text-align: left;" >
 										<strong>-Entradas-</strong><br>
-										<strong>Efectivo:</strong> $<?php echo e($efectivo); ?><br>
-										<strong>Tarjeta:</strong> $<?php echo e($tarjeta); ?> <br>
-										<strong>Transferencia: </strong> $<?php echo e($transferencia); ?> <br>
-										
+										<strong>Efectivo:</strong> $<?php echo e(number_format($efectivo)); ?><br>
+										<strong>Tarjeta:</strong> $<?php echo e(number_format($tarjeta)); ?> <br>
+										<strong>Transferencia: </strong> $<?php echo e(number_format($transferencia)); ?> 
 									</p>
+								</td>
+								<td style="width: 25%; text-align: left;" >
 									<p class="invoice-details" style="text-align: left;" >
 										<strong>-Salidas-</strong> <br>	
-										<strong>Efectivo:</strong> $<?php echo e($efectivoS); ?><br>
-										<strong>Tarjeta:</strong> $<?php echo e($tarjetaS); ?> <br>
-										<strong>Transferencia: </strong> $<?php echo e($transferenciaS); ?> <br>
+										<strong>Efectivo:</strong> $<?php echo e(number_format($efectivoS)); ?><br>
+										<strong>Tarjeta:</strong> $<?php echo e(number_format($tarjetaS)); ?> <br>
+										<strong>Transferencia: </strong> $<?php echo e(number_format($transferenciaS)); ?> <br>
 										
 									</p>
 								</td>
@@ -237,7 +248,7 @@
 								<tr>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($pago->tipo_movimiento); ?></span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($pago->descripcion); ?></span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e($pago->importe); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e(number_format($pago->importe)); ?></span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($pago->metodo_pago); ?></span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($pago->observaciones); ?></span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($pago->created_at); ?></span></td>
@@ -270,13 +281,13 @@
 								<?php $__currentLoopData = $cajas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $caja): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 								<tr>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> #<?php echo e($caja->id); ?></span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e($caja->apertura); ?></span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e($caja->entradas); ?></span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e($caja->salidas); ?></span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e($caja->ventas_efectivo); ?></span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e($caja->ventas_tarjeta); ?></span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e($caja->ventas_transferencia); ?></span></td>
-									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e($caja->total); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e(number_format($caja->apertura)); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e(number_format($caja->entradas)); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e(number_format($caja->salidas)); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e(number_format($caja->ventas_efectivo)); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e(number_format($caja->ventas_tarjeta)); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e(number_format($caja->ventas_transferencia)); ?></span></td>
+									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> $<?php echo e(number_format($caja->total)); ?></span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($caja->created_at); ?></span></td>
 									<td style="Word-break:break-all; Word-wrap:break-Word;" > <span> <?php echo e($caja->updated_at); ?></span></td>
 									

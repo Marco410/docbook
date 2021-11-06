@@ -40,36 +40,21 @@
 
 	}
 
-
-
 	html {
-
-		margin: 0px;
-
+		background-color: #fff;
+		margin-left: 30px;
+		margin-right: 30px;
 	}
-
-
-
 	body {
-
-		background-color: #f8f9fa;
-
 		color: #272b41;
-
 		font-family: "Poppins",sans-serif;
-
 		font-size: 0.9375rem;
-
 		height: 100%;
-
 		overflow-x: hidden;
 
 	}
-
 	h1,h2 {
-
-		font-size: 20px;
-
+		font-size: 18px;
 	}
 
 	p,span {
@@ -235,7 +220,8 @@
 									<p>
 										<strong>Dr. {{ $doctor->nombre }} {{ $doctor->apellido_p }} {{ $doctor->apellido_m }}</strong>
 										<br>
-										{{ $doctor->especialidad[0]->nombre }}
+										{{ $doctor->especialidad[0]->nombre }}<br>
+										<strong>Reporte de caja</strong>
 									</p>
 								</td>
 							</tbody>

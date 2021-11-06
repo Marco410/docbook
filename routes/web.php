@@ -138,6 +138,10 @@ Route::get('/delete-patient/{paciente}','DoctorController@delete_patient')->name
 
 Route::post('/store-consulta-rapida','DoctorController@new_consulta_rapida')->name('store-consulta-rapida');
 
+Route::post('/store-consulta','DoctorController@new_consulta')->name('store-consulta');
+
+Route::post('/end-consulta','DoctorController@end_consulta')->name('end-consulta');
+
 Route::post('/make-pay','DoctorController@make_pay')->name('make-pay');
 
 Route::get('/receta','IndexController@receta')->name('receta');
@@ -151,6 +155,8 @@ Route::get('/caja','DoctorController@caja')->name('caja');
 Route::post('/open-caja','DoctorController@open_caja')->name('open-caja');
 
 Route::post('/close-caja','DoctorController@close_caja')->name('close-caja');
+
+Route::post('/close-caja-check','CajasController@close_caja_check')->name('close-caja-check');
 
 Route::post('/make-report','DoctorController@make_report')->name('make-report');
 

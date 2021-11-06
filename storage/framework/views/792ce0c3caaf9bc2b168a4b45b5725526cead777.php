@@ -30,7 +30,7 @@
 		overflow-x: hidden;
 	}
 	h1,h2 {
-		font-size: 20px;
+		font-size: 18px;
 	}
 	p,span {
 		font-size: 11px;
@@ -153,6 +153,8 @@
 														<br>
 														<?php echo e($doctor->especialidad[0]->nombre); ?><br>
 														<strong>Cédula Profesional:</strong> <?php echo e($doctor->cedula); ?><br>
+														<strong>Institución:</strong> <?php echo e($doctor->institucion_cedula); ?>
+
 													</p>
 												</td>
 												<td style="width: 25%; text-align: right; "  ><img src="assets/img/medicina.png" height="70px" width="70px" alt="logo" /></td>
@@ -170,8 +172,7 @@
 												</td>
 												<td style="width: 50%; text-align: right;"">
 													<p style="margin-top: 10px;" >
-														<strong>Fecha: </strong><?php echo e(Date("d/m/Y")); ?><strong> Hora: </strong><?php echo e(Date("h:i A")); ?> <strong>Edad: </strong> <?php echo e($paciente->get_edad()); ?> <strong>Temp:</strong> <?php echo e($temp); ?> C°<br>
-														<strong>T/A: </strong> - <strong>FC: </strong> - <strong>S02: </strong> -
+														<strong>Fecha: </strong><?php echo e(Date("d/m/Y")); ?><strong> Hora: </strong><?php echo e(Date("h:i A")); ?> <strong>Edad: </strong> <?php echo e($paciente->get_edad()); ?> <strong>Temp:</strong> <?php echo e($temp); ?> C°													
 													</p>
 												</td>
 											</tbody>

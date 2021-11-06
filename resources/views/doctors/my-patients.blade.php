@@ -18,6 +18,7 @@
 	</div>
 </div>
 <!-- /Breadcrumb -->
+
 			
 <!-- Page Content -->
 <div class="content">
@@ -36,6 +37,24 @@
 						  </button>
                       </div>
                 @else
+				<?php 
+				$date1 = new DateTime("now"); 
+				$date2 = new DateTime($openCaja[0]->created_at);
+				$diff = $date1->diff($date2);
+				$fechaInt = strtotime($openCaja[0]->created_at);
+				//se añadio en el archivo main_vs.js desde head_blade
+				if($diff->days > 0 ){
+				?>
+				<input type="hidden" value="{{ $openCaja[0]->id }}" id="check_caja_id" >
+				<input type="hidden" value="{{ date("Y-m-d", $fechaInt) }}" id="check_caja_fecha" >
+				<input type="hidden" value="{{ auth()->user("doctors")->clinicas->where('activa',1)->first()->id }}" id="check_caja_clinic" >
+				<input type="hidden" value="{{ auth()->user("doctors")->id }}" id="check_caja_doctor" >
+				<input type="hidden" value="{{ $openCaja[0]->apertura }}" id="check_caja_apertura" >
+					<script>
+					verificar_caja();
+					</script>
+				<?php
+				}  ?>
 				<div class="row">
 					<div class="col-sm-12 mb-4">
 						<div class="">
@@ -54,6 +73,7 @@
 									<table class="table table-hover table-center mb-0" id="table_pacients">
 										<thead>
 											<tr>
+												<th>#</th>
 												<th>Folio</th>
 												<th>Nombre</th>
 												<th>Edad</th>
@@ -66,7 +86,8 @@
 										<tbody>
 											@foreach ($pacientes as $paciente)
 											<tr  >
-												<td>P-{{ $paciente->id }}</td>
+												<td>{{ $paciente->id }}</td>
+												<td>P{{ $paciente->id }}</td>
 												
 												<td>
 													<h2 class="table-avatar">

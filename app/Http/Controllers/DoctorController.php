@@ -24,6 +24,7 @@ use App\Diagnostic;
 use App\Estudios;
 use App\Articulos;
 use App\ConsultaRapida;
+use App\Consultas;
 use App\MotivoConsulta;
 
 use App\Exports\DiagnosticsExport;
@@ -50,11 +51,13 @@ class DoctorController extends Controller
             $doctor_id = auth()->user("doctors")->id;
     
             $countCaja = Caja::where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","1")->get()->count();
+            $caja = Caja::where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","1")->get();
         }else{
             $countCaja = 0;
+            $caja = "";
         }
 
-        return view('doctors.doctor-dashboard',['clinicas' => $clinicas,'countCaja'=>$countCaja]);
+        return view('doctors.doctor-dashboard',['clinicas' => $clinicas,'countCaja'=>$countCaja,'cajaOpen'=> $caja]);
     }
 
     public function change_clinic(){
@@ -90,10 +93,11 @@ class DoctorController extends Controller
         $doctor_id = auth()->user("doctors")->id;
         //$doctor = Doctor::findOrFail(1);
 
-       $pacientes = Auth::user()->pacientes()->where("status","1")->orderBy("created_at","desc")->get();
-       $countCaja = Caja::where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","1")->get()->count();
+        $pacientes = Auth::user()->pacientes()->where("status","1")->orderBy("created_at","desc")->get();
+        $countCaja = Caja::where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","1")->get()->count();
+        $caja = Caja::where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","1")->get();
 
-        return view('doctors.my-patients',['pacientes' => $pacientes,'countCaja'=>$countCaja]);
+        return view('doctors.my-patients',['pacientes' => $pacientes,'countCaja'=>$countCaja,'openCaja'=> $caja]);
     }
 
     public function get_patient($paciente){
@@ -126,13 +130,21 @@ class DoctorController extends Controller
 
         }else{
 
-           $consultas =  ConsultaRapida::query()->where("paciente_id",$paciente)->with(['diagnostico'])->orderBy("created_at","DESC")->paginate(5);
-           
+           $consultas_rapidas =  ConsultaRapida::query()->where("paciente_id",$paciente)->with(['diagnostico'])->orderBy("created_at","DESC")->paginate(3);
+
+           $consultas =  Consultas::query()->where("paciente_id",$paciente)->with(['diagnostico'])->orderBy("created_at","DESC")->paginate(3);
+
+           $consulta_actual =  Consultas::where("paciente_id",$paciente)->where("termino","No")->get()->count();
+
+           if($consulta_actual == 0){
+               $consulta_actual = null;
+            }else{
+                $consulta_actual =  Consultas::where("paciente_id",$paciente)->where("termino","No")->with(['motivo','diagnostico'])->get();
+           }
             
-            return view('doctors.historial', ['paciente' => $pa,'consultas' => $consultas]);
+            return view('doctors.historial', ['paciente' => $pa,'consultasr' => $consultas_rapidas,'consulta_actual'=> $consulta_actual,'consultas'=>$consultas]);
         }
     }
-
      
     public function new_patient(){
          return view('doctors.doctor-patient-register');
@@ -143,17 +155,19 @@ class DoctorController extends Controller
         $datosPaciente = request()->except("_token");
         
         $datosPaciente = request()->validate([
-            'email' => ['required','email','unique:pacientes,email'],
+            /* 'email' => ['required', 'email','unique:pacientes,email'], */
             'nombre' => 'required',
             'apellido_p' => 'required',
             'sexo' => 'required',
             'fecha_nacimiento' => 'required',
-            'telefono' => 'required|min:10'
+            'telefono' => 'required|min:10',
+            'terminos' => 'required'
         ],[
-            'email.unique' => 'Este correo ya se encuentra registrado',
-            'email.required' => 'Ingresa un correo electronico valido',
+            /* 'email.unique' => 'Este correo ya se encuentra registrado', */
+            /* 'email.required' => 'Ingresa un correo electronico valido', */
             'email.email' => 'Ingresa un correo electronico valido',
             'nombre.required' => 'Ingresa tu nombre',
+            'terminos.required' => 'El paciente debe aceptar los terminos y condiciones',
             'apellido_p.required' => 'Ingresa tu Apellido Paterno',
             'telefono.required' => 'Ingresa un número de teléfono con Whatsapp',
             'telefono.min' => 'Ingresa un número de teléfono válido',
@@ -164,6 +178,7 @@ class DoctorController extends Controller
 
         $pass = "P" . date('Y') . substr($datosPaciente['nombre'],0,2) . substr($datosPaciente['apellido_p'],0,2) . "DBk" ;
         
+        $datosPaciente['email'] = request()->email;
         $datosPaciente['apellido_m'] = request()->apellido_m;
         $datosPaciente['created_at'] = date('Y-m-d H:i:s');
         $datosPaciente['password'] = bcrypt($pass);
@@ -178,6 +193,13 @@ class DoctorController extends Controller
         $datosPaciente['cp'] = request()->cp;
         $datosPaciente['ciudad'] = request()->ciudad;
         $datosPaciente['estado'] = request()->estado;
+        $datosPaciente['nombre_familiar'] = request()->nombre_familiar;
+        $datosPaciente['telefono_familiar'] = request()->telefono_familiar;
+
+        $datosPaciente['seguro_social'] = request()->seguro_social;
+        $datosPaciente['nacionalidad'] = request()->nacionalidad;
+        $datosPaciente['empleo'] = request()->empleo;
+
         $datosPaciente['recordatorio'] = request()->recordatorio;
         $datosPaciente['correo_bienvenida'] = request()->correo_bienvenida;
         
@@ -225,7 +247,7 @@ class DoctorController extends Controller
             'fecha_nacimiento.required' => 'Ingresa la fecha de nacimiento'
 
         ]);
-/* 
+        /* 
         $pass = "P" . date('Y') . substr($datosPaciente['nombre'],0,2) . substr($datosPaciente['apellido_p'],0,2) . "DBk" ; */
         
         $datosPaciente['apellido_m'] = request()->apellido_m;
@@ -355,17 +377,168 @@ class DoctorController extends Controller
         return $request;
     }
 
+    public function new_consulta(){
+
+       $doctor = Doctor::where('id',auth()->user("doctors")->id)->with(['clinicas'])->get()[0];
+       $paciente = Paciente::where('id',request()->paciente_id)->get()[0];
+       if(strlen(request()->diagnostico) > 5){
+           $diagnostico = request()->diagnostico;
+       }else {
+           $diagnostico = Diagnostic::where('id',request()->diagnostico)->get()[0]->descripcion_4;
+           $diagnostico_id = request()->diagnostico;
+       }
+
+       $motivo = MotivoConsulta::where('id', request()->motivo)->get()[0]->motivo;
+       
+       
+       if(strlen(request()->diagnostico) > 5){
+
+           $consulta = Consultas::create([
+               'paciente_id' => request()->paciente_id, 
+               'doctor_id' => auth()->user("doctors")->id, 
+               'motivo_consulta_id' => request()->motivo, 
+               'diagnostico_str' => request()->diagnostico, 
+               'notas_consulta' => request()->notas,
+               'motivo_extra' => "-",
+               'termino' => "No",
+               'pagado' => "0" 
+           ]);
+       }else {
+           
+           $consulta = Consultas::create([
+               'paciente_id' => request()->paciente_id, 
+               'doctor_id' => auth()->user("doctors")->id, 
+               'motivo_consulta_id' => request()->motivo, 
+               'diagnostico_id' => $diagnostico_id, 
+               'notas_consulta' => request()->notas,
+               'motivo_extra' => "-",
+               'termino' => "No",
+               'pagado' => "0" 
+           ]);
+       }
+       $request = [
+           'consulta' => $consulta,
+           'motivo' => $motivo,
+           'diagnostico' => $diagnostico
+       ];
+
+       return $request;
+    }
+
+    public function end_consulta(){
+       
+       Historial::where('paciente_id','=',request()->paciente_id)->update([
+           'estatura' => request()->estatura,
+           'peso' => request()->peso,
+           'masa_corporal' => request()->masa_corporal,
+           'temperatura' => request()->temperatura,
+           'frec_respiratoria' => request()->frec_signos,
+           'sistolica' => request()->sistolica,
+           'diastolica' => request()->diastolica
+       ]);
+
+       $doctor = Doctor::where('id',auth()->user("doctors")->id)->with(['clinicas'])->get()[0];
+       $paciente = Paciente::where('id',request()->paciente_id)->get()[0];
+       if(strlen(request()->diagnostico) > 5){
+           $diagnostico = request()->diagnostico;
+       }else {
+           $diagnostico = Diagnostic::where('id',request()->diagnostico)->get()[0]->descripcion_4;
+           $diagnostico_id = request()->diagnostico;
+       }
+
+       $temp = request()->temperatura;
+       $motivo = MotivoConsulta::where('id', request()->motivo)->get()[0]->motivo;
+
+       $arrayIdArt = json_decode(request()->id_articulos);
+       $arrayIndi = json_decode(request()->indiArticulos);
+       $i = 0;
+       
+       $arrayIdEst = json_decode(request()->id_estudios);
+       $arrayObs = json_decode(request()->obsEstudios);
+       $j = 0;
+       
+       if (!empty($arrayIdArt)) {
+           foreach ($arrayIdArt as $idArticulo){
+               $articulo = Articulos::where('id', $idArticulo)->get()[0];
+               $articulosF[$i] = array(
+                   "articulo" =>$articulo->articulo,
+                   "indicaciones" => $arrayIndi[$i]
+               );  
+               $i++;
+           }
+       }else{
+           $articulosF = [];
+       }
+       if (!empty($arrayIdEst)) {
+           foreach ($arrayIdEst as $idEstudio){
+               $estudio = Estudios::where('id', $idEstudio)->get()[0];
+               $estudiosF[$j] = array(
+                   "estudio" => $estudio->estudio,
+                   "observaciones" => $arrayObs[$j]
+               );  
+               $j++;
+           }
+       }else{
+          $estudiosF = [];
+       }
+       
+       $pdf = \PDF::loadView('invoice-view',['doctor'=> $doctor,'paciente'=>$paciente,'indicaciones' => $articulosF,'estudios' => $estudiosF,'diagnostico' => $diagnostico,'temp'=>$temp]);
+       $pdf->setPaper(array(0,0,595.28,420.94), 'portrait');
+       $date = Date("dmys");
+       $path = 'public/recetas/p'.request()->paciente_id.'/r-'.$date.'.pdf';
+       $pathSave = Storage::put($path, $pdf->output());
+       
+       $id_consulta = request()->id_consulta_actual;
+
+       if(strlen(request()->diagnostico) > 5){
+
+           $consulta = Consultas::where("id",$id_consulta)->update([
+               'paciente_id' => request()->paciente_id, 
+               'doctor_id' => auth()->user("doctors")->id, 
+               'motivo_consulta_id' => request()->motivo, 
+               'diagnostico_str' => request()->diagnostico, 
+               'notas_consulta' => request()->notas,
+               'receta' => "/storage/recetas/p".request()->paciente_id."/r-".$date.".pdf",
+               'motivo_extra' => "-",
+               'termino' => "Si" 
+           ]);
+       }else {
+           
+           $consulta = Consultas::where("id",$id_consulta)->update([
+               'paciente_id' => request()->paciente_id, 
+               'doctor_id' => auth()->user("doctors")->id, 
+               'motivo_consulta_id' => request()->motivo, 
+               'diagnostico_id' => $diagnostico_id, 
+               'notas_consulta' => request()->notas,
+               'receta' => "/storage/recetas/p".request()->paciente_id."/r-".$date.".pdf",
+               'motivo_extra' => "-",
+               'termino' => "Si" 
+           ]);
+       }
+       $request = [
+           'consulta' => $id_consulta,
+           'motivo' => $motivo,
+           'diagnostico' => $diagnostico,
+           'pdf' => "/storage/recetas/p".request()->paciente_id."/r-".$date.".pdf"
+       ];
+
+       return $request;
+    }
+
     public function make_pay(){
         $clinica_id = auth()->user("doctors")->clinicas->where('activa',1)->first()->id;
         $doctor_id = auth()->user("doctors")->id;
 
         $paciente_id = request()->paciente_id;
-        $id_consulta = request()->id_consulta_rapida;
+        $id_consulta = request()->id_consulta;
         $cobro = request()->total;
         $costo_consulta = request()->costo_consulta;
         $extra = request()->extra;
         $motivo_extra = request()->motivo_extra;
         $metodo = request()->metodo;
+        $tipo_consulta = request()->tipo_consulta;
+        $descuento = request()->descuento;
+        $subtotal = $extra + $costo_consulta;
 
         
         $paciente = Paciente::where('id',$paciente_id)->get()[0];
@@ -373,46 +546,58 @@ class DoctorController extends Controller
         $consulta = ConsultaRapida::where('id',$id_consulta)->get();
         
         
-        $pdf = \PDF::loadView('ticket-view',['doctor'=> $doctor,'paciente'=>$paciente,'cobro'=>$cobro,'extra' => $extra,'motivo_extra'=> $motivo_extra,'costo_consulta'=> $costo_consulta,'id_consulta' => $id_consulta]);
+        $pdf = \PDF::loadView('ticket-view',['doctor'=> $doctor,'paciente'=>$paciente,'cobro'=>$cobro,'extra' => $extra,'motivo_extra'=> $motivo_extra,'costo_consulta'=> $costo_consulta,'id_consulta' => $id_consulta,'tipo_consulta' => $tipo_consulta,'descuento'=>$descuento,'subtotal'=>$subtotal]);
         //ancho de la página [0,0,1,0]
         $pdf->setPaper(array(0,0,450.00,800.00), 'portrait');
         $date = Date("dmys");
         $path = 'public/recibos/p'.$paciente_id.'/r-'.$date.'.pdf';
         $pathSave = Storage::put($path, $pdf->output());
 
-        $cr = ConsultaRapida::where('id',$id_consulta)->update([
-            'cobro' => $cobro,
-            'motivo_extra' => $motivo_extra,
-            'costo_consulta' => $costo_consulta,
-            'costo_extra' => $extra,
-            'recibo' => "/storage/recibos/p".$paciente_id."/r-".$date.".pdf",
-            'pagado' => "1"
-        ]);
+        if($tipo_consulta == "Rapida"){
+            $cr = ConsultaRapida::where('id',$id_consulta)->update([
+                'cobro' => $cobro,
+                'motivo_extra' => $motivo_extra,
+                'costo_consulta' => $costo_consulta,
+                'costo_extra' => $extra,
+                'recibo' => "/storage/recibos/p".$paciente_id."/r-".$date.".pdf",
+                'pagado' => "1"
+            ]);
+        }else if ($tipo_consulta == "Consulta"){
+            $cr = Consultas::where('id',$id_consulta)->update([
+                'cobro' => $cobro,
+                'motivo_extra' => $motivo_extra,
+                'costo_consulta' => $costo_consulta,
+                'costo_extra' => $extra,
+                'recibo' => "/storage/recibos/p".$paciente_id."/r-".$date.".pdf",
+                'pagado' => "1"
+            ]);
+        }
+        if($costo_consulta != "0"){
 
-        if($cr){
             $pago = Pagos::create([
                 'clinica_id' => $clinica_id,
                 'doctor_id' => $doctor_id,
+                'paciente_id' => $paciente_id,
                 'tipo_movimiento' => "Entrada",
-                'descripcion' => "Consulta Rápida",
+                'descripcion' => $tipo_consulta,
                 'importe' => $costo_consulta,
                 'metodo_pago' => $metodo,
                 'cerrado' => "0",
                 'observaciones' => "Paciente: ".$paciente->nombre. " ". $paciente->apellido_p
             ]);
-            if(!empty($extra)){
-                $pago = Pagos::create([
-                    'clinica_id' => $clinica_id,
-                    'doctor_id' => $doctor_id,
-                    'tipo_movimiento' => "Entrada",
-                    'descripcion' => "Consulta Rápida cobro extra ".$motivo_extra,
-                    'importe' => $extra,
-                    'metodo_pago' => $metodo,
-                    'observaciones' => "Paciente: ".$paciente->nombre. " ". $paciente->apellido_p
-                ]);
-            }
         }
-
+        if(!empty($extra)){
+            $pago = Pagos::create([
+                'clinica_id' => $clinica_id,
+                'doctor_id' => $doctor_id,
+                'paciente_id' => $paciente_id,
+                'tipo_movimiento' => "Entrada",
+                'descripcion' => $tipo_consulta . " cobro extra ".$motivo_extra,
+                'importe' => $extra,
+                'metodo_pago' => $metodo,
+                'observaciones' => "Paciente: ".$paciente->nombre. " ". $paciente->apellido_p
+            ]);
+        }
         
         $request = [
             'pdf' => "/storage/recibos/p".$paciente_id."/r-".$date.".pdf"
@@ -656,7 +841,7 @@ class DoctorController extends Controller
 
             $pagos = Pagos::whereDate('created_at',Date('Y-m-d', strtotime($dateRequest)))->where("clinica_id",$clinic_id)->where("caja_id",$caja_id)->get();
 
-            $pdf = \PDF::loadView('report-view-global',['doctor'=> $doctor,'caja_id'=>$caja_id,'apertura'=>$caja->apertura,'entradas' => $caja->entradas,'salidas'=> $caja->salidas,'efectivo'=> $caja->ventas_efectivo,'tarjeta' => $caja->ventas_tarjeta,'transferencia' => $caja->ventas_transferencia,'efectivoS'=> $caja->salidas_efectivo,'tarjetaS' => $caja->salidas_tarjeta,'transferenciaS' => $caja->salidas_transferencia,'total'=>$caja->total,'pagos'=>$pagos]);
+            $pdf = \PDF::loadView('report-view-global',['doctor'=> $doctor,'caja_id'=>$caja_id,'apertura'=>$caja->apertura,'entradas' => $caja->entradas,'salidas'=> $caja->salidas,'efectivo'=> $caja->ventas_efectivo,'tarjeta' => $caja->ventas_tarjeta,'transferencia' => $caja->ventas_transferencia,'efectivoS'=> $caja->salidas_efectivo,'tarjetaS' => $caja->salidas_tarjeta,'transferenciaS' => $caja->salidas_transferencia,'total'=>$caja->total,'pagos'=>$pagos,'fecha_ini'=>"",'fecha_fin'=>""]);
             //ancho de la página [0,0,1,0]
             $pdf->setPaper("A4", 'portrait');
             $path = 'public/reportes/r'.$caja_id.$date.'.pdf';
@@ -717,7 +902,7 @@ class DoctorController extends Controller
         //se obtienen las cajas que se cerraron entre las fechas
         $cajas = Caja::whereBetween('created_at',[$fecha_ini,$fecha_fin])->where("doctor_id",$doctor_id)->where("clinica_id",$clinica_id)->where("abierta","0")->get();
 
-        $pdf = \PDF::loadView('report-view-global',['doctor'=> $doctor,'caja_id'=>"-",'apertura'=>$apertura,'entradas' => $entradas,'salidas'=> $salidas,'efectivo'=> $ventas_efectivo,'tarjeta' => $ventas_tarjeta,'transferencia' => $ventas_transferencia,'efectivoS'=> $salidas_efectivo,'tarjetaS' => $salidas_tarjeta,'transferenciaS' => $salidas_transferencia,'total'=>$total,'pagos'=>$pagos,'cajas'=>$cajas]);
+        $pdf = \PDF::loadView('report-view-global',['doctor'=> $doctor,'caja_id'=>"-",'apertura'=>$apertura,'entradas' => $entradas,'salidas'=> $salidas,'efectivo'=> $ventas_efectivo,'tarjeta' => $ventas_tarjeta,'transferencia' => $ventas_transferencia,'efectivoS'=> $salidas_efectivo,'tarjetaS' => $salidas_tarjeta,'transferenciaS' => $salidas_transferencia,'total'=>$total,'pagos'=>$pagos,'cajas'=>$cajas,'fecha_ini'=>request()->fecha_ini,'fecha_fin'=>request()->fecha_fin]);
         //ancho de la página [0,0,1,0]
         $pdf->setPaper("A4", 'portrait');
         $path = 'public/reportesfecha/r'.$doctor_id.$date.'.pdf';
