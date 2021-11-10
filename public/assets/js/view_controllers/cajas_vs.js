@@ -46,7 +46,7 @@ var table_caja = $('#table_cajas').DataTable({
             if(value == null){
                 return "$";
             }else{
-                return "$"+value;
+                return "$"+Intl.NumberFormat("es-MX").format(value);
             }
         }},
         {"data":"entradas",
@@ -54,7 +54,7 @@ var table_caja = $('#table_cajas').DataTable({
             if(value == null){
                 return "$";
             }else{
-                return "$"+value;
+                return "$"+Intl.NumberFormat("es-MX").format(value);
             }
         }},
         {"data":"salidas",
@@ -62,7 +62,7 @@ var table_caja = $('#table_cajas').DataTable({
             if(value == null){
                 return "$";
             }else{
-                return "$"+value;
+                return "$"+Intl.NumberFormat("es-MX").format(value);
             }
         }},
         {"data":"ventas_efectivo",
@@ -70,7 +70,7 @@ var table_caja = $('#table_cajas').DataTable({
             if(value == null){
                 return "$";
             }else{
-                return "$"+value;
+                return "$"+Intl.NumberFormat("es-MX").format(value);
             }
         }},
         {"data":"ventas_tarjeta",
@@ -78,7 +78,7 @@ var table_caja = $('#table_cajas').DataTable({
             if(value == null){
                 return "$";
             }else{
-                return "$"+value;
+                return "$"+Intl.NumberFormat("es-MX").format(value);
             }
         }},
         {"data":"ventas_transferencia",
@@ -86,7 +86,31 @@ var table_caja = $('#table_cajas').DataTable({
             if(value == null){
                 return "$";
             }else{
-                return "$"+value;
+                return "$"+Intl.NumberFormat("es-MX").format(value);
+            }
+        }},
+        {"data":"salidas_efectivo",
+        "render": function(value){
+            if(value == null){
+                return "$";
+            }else{
+                return "$"+Intl.NumberFormat("es-MX").format(value);
+            }
+        }},
+        {"data":"salidas_tarjeta",
+        "render": function(value){
+            if(value == null){
+                return "$";
+            }else{
+                return "$"+Intl.NumberFormat("es-MX").format(value);
+            }
+        }},
+        {"data":"salidas_transferencia",
+        "render": function(value){
+            if(value == null){
+                return "$";
+            }else{
+                return "$"+Intl.NumberFormat("es-MX").format(value);
             }
         }},
         {"data":"total",
@@ -94,7 +118,7 @@ var table_caja = $('#table_cajas').DataTable({
             if(value == null){
                 return "$";
             }else{
-                return "$"+value;
+                return "$"+Intl.NumberFormat("es-MX").format(value);
             }
         }},
         {"data":"created_at",

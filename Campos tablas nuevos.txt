@@ -90,8 +90,6 @@ ALTER TABLE `historials` ADD `salud_bb` TEXT NULL AFTER `text_otros_gineco`;
 ALTER TABLE `historials` ADD `peso_nacer` TEXT NULL AFTER `text_otros_gineco`;
 ALTER TABLE `historials` ADD `nombre_bb` TEXT NULL AFTER `text_otros_gineco`;
 ALTER TABLE `historials` ADD `detalles_parto` TEXT NULL AFTER `text_otros_gineco`;
-
-//Nuevos
 ALTER TABLE `consultas` ADD `diagnostico_str` VARCHAR(191) NULL AFTER `diagnostico_id`, ADD `notas_consulta` TEXT NULL AFTER `diagnostico_str`;
 ALTER TABLE `consultas` CHANGE `diagnostico_id` `diagnostico_id` BIGINT(20) UNSIGNED NULL;
 ALTER TABLE `consultas` ADD `termino` VARCHAR(191) NULL AFTER `pagado`;
@@ -99,3 +97,11 @@ ALTER TABLE `pagos` ADD `paciente_id` BIGINT(20) NULL AFTER `caja_id`;
 ALTER TABLE `pacientes` CHANGE `email` `email` VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
 ALTER TABLE `pacientes` ADD `nombre_familiar` VARCHAR(191) NULL AFTER `cp`, ADD `telefono_familiar` VARCHAR(191) NULL AFTER `nombre_familiar`;
 ALTER TABLE `pacientes` ADD `seguro_social` VARCHAR(191) NULL AFTER `telefono_familiar`, ADD `nacionalidad` VARCHAR(191) NULL AFTER `seguro_social`, ADD `empleo` VARCHAR(191) NULL AFTER `nacionalidad`;
+
+//Nuevas 8/11/21
+ALTER TABLE `doctors` ADD `institucion_logo` VARCHAR(191) NULL AFTER `institucion_cedula`;
+ALTER TABLE `clinicas` ADD `logotipo_base64` TEXT NULL AFTER `logotipo`;
+ALTER TABLE `clinicas` ADD `tipo_logo` VARCHAR(191) NULL AFTER `logotipo_base64`;
+ALTER TABLE `clinicas` ADD `status` INT NOT NULL DEFAULT '1' AFTER `tel_consultorio`;
+ALTER TABLE `doctors` ADD `institucion_tipo_logo` VARCHAR(191) NULL AFTER `institucion_logo`;
+ALTER TABLE `doctors` CHANGE `institucion_logo` `institucion_logo` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;

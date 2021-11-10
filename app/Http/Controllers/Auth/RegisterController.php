@@ -209,11 +209,9 @@ class RegisterController extends Controller
        $espe = Especialidad::all();
        
        return view('doctors.doctor-register-step3',['especialidad'=> $espe], compact('doctor'));
-       
     } 
    
     public function store_step_three(Request $request){
-        
         $datosDoctorstep3 = request()->except("_token");
         
         $id_dr = $datosDoctorstep3['id'];
@@ -244,7 +242,6 @@ class RegisterController extends Controller
 
             $datosClinicastep2['ine_front']=  "doctor_docs/".$id_dr."/ine_front.png";
         } 
-
         if ($request->hasFile("ine_front")){
             $datosClinicastep2['ine_back'] = $request->file("ine_back")->storeAs("public","doctor_docs/".$id_dr."/ine_back.png");
             $datosClinicastep2['ine_back'] = "doctor_docs/".$id_dr."/ine_back.png"; 
@@ -265,7 +262,6 @@ class RegisterController extends Controller
     }
 
     public function p_register(){
-        
         return view('pacients.patient-register');
     }
 
@@ -313,25 +309,26 @@ class RegisterController extends Controller
         
         return view('pacients.patient-register-step1', ['id' => $paciente['id'], 'nombre'=> $paciente['nombre'], 'apellido'=> $paciente['apellido_p']]);
         
-        }
+    }
 
     public function p_store_step_one(Request $request){
     
-            $datosPacientetep1 = request()->except("_token");
-            $id = $datosPacientetep1['id'];
-            
-            if ($request->hasFile("foto")){
-                $request->file("foto")->storeAs('public','paciente_perfil/p-'.$id.".png");
-                $datosPacientetep1['foto'] = 'paciente_perfil/p-'.$id.".png";
-            }
-            
-            Paciente::where('id','=',$id)->update($datosPacientetep1);
-            
-            $paciente = Paciente::findOrFail($id);
+        $datosPacientetep1 = request()->except("_token");
+        $id = $datosPacientetep1['id'];
+        
+        if ($request->hasFile("foto")){
+            $request->file("foto")->storeAs('public','paciente_perfil/p-'.$id.".png");
+            $datosPacientetep1['foto'] = 'paciente_perfil/p-'.$id.".png";
 
-            return view('pacients.patient-register-step2', compact('paciente'));
-            
         }
+        
+        Paciente::where('id','=',$id)->update($datosPacientetep1);
+        
+        $paciente = Paciente::findOrFail($id);
+
+        return view('pacients.patient-register-step2', compact('paciente'));
+            
+    }
 
     public function p_store_step_two(Request $request){
     
@@ -345,19 +342,19 @@ class RegisterController extends Controller
         return view('pacients.patient-register-step3', compact('paciente'));
         
     }
+
     public function p_store_step_three(Request $request){
-            
-            $datosPacientetep3 = request()->except("_token");
-            $id = $datosPacientetep3['id'];
-            
-            Paciente::where('id','=',$id)->update($datosPacientetep3);
-            
-            $paciente = Paciente::findOrFail($id);
+        
+        $datosPacientetep3 = request()->except("_token");
+        $id = $datosPacientetep3['id'];
+        
+        Paciente::where('id','=',$id)->update($datosPacientetep3);
+        
+        $paciente = Paciente::findOrFail($id);
 
-            return view('pacients.patient-register-step4', compact('paciente'));
+        return view('pacients.patient-register-step4', compact('paciente'));
             
-        } 
-
+    } 
 
     public function p_store_step_four(Request $request){
         
@@ -367,9 +364,7 @@ class RegisterController extends Controller
         Paciente::where('id','=',$id)->update($datosPacientetep4);
         
         $paciente = Paciente::findOrFail($id);
-
         return redirect()->route('iniciar-sesion-paciente');
-        
     }
    
 

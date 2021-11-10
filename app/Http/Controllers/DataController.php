@@ -7,13 +7,16 @@ use Illuminate\Http\Request;
 use App\Alergia;
 use App\Caja;
 use App\Vacuna;
+use App\Clinica;
 use App\Medicamento;
 use App\MotivoConsulta;
 use App\Articulos;
 use App\Diagnostic;
 use App\Estudios;
+use App\Doctor;
 use Auth;
 
+use Illuminate\Support\Facades\DB;
 
 class DataController extends Controller
 {
@@ -130,6 +133,20 @@ class DataController extends Controller
     public function get_cajas(){
         $e = Caja::where("doctor_id",$_GET['user'])->where("clinica_id",$_GET['clinic'])->get();
         $array["data"]=$e;     
+        echo json_encode($array);
+    }
+
+    public function get_clinicas(){
+        $c = Clinica::where("status","1")->get();
+       /* $c = DB::table("clinicas")->select('id','nombre_consultorio', DB::raw('calle_consultorio , colonia_consultorio  as direccion'))->get(); */
+
+        $array["data"]=$c;     
+        echo json_encode($array);
+    }
+
+    public function get_doctores(){
+        $c = Doctor::with(['especialidad'])->get();
+        $array["data"]=$c;     
         echo json_encode($array);
     }
 

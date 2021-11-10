@@ -39,7 +39,7 @@
                 <?php else: ?>
 				<?php 
 				$date1 = new DateTime("now"); 
-				$date2 = new DateTime($openCaja[0]->created_at);
+				$date2 = new DateTime(date("Y-m-d", strtotime($openCaja[0]->created_at)));
 				$diff = $date1->diff($date2);
 				$fechaInt = strtotime($openCaja[0]->created_at);
 				//se añadio en el archivo main_vs.js desde head_blade

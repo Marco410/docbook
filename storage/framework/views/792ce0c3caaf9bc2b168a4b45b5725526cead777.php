@@ -137,7 +137,6 @@
 		<div class="content">
 			<div class="container-fluid">
 				<div class="row">
-					
 					<div class="col-lg-8 offset-lg-2">
 						<div class="invoice-content">
 							<div class="invoice-item">
@@ -145,7 +144,16 @@
 									<div style="width: 100%;">
 										<table style="border-bottom:3px solid #3399ff!important;width: 100%;">
 											<tbody  >
-												<td style="width: 25%; text-align: left;" ><img src="assets/img/logo.png" height="70px" width="150px"  alt="logo" /></td>
+												<td style="width: 25%; text-align: left;" >
+													<?php if(auth()->user("doctors")->clinicas->where('activa',1)->first()->tipo_logo == "Imagotipo"): ?>
+														
+													<img height="70px" width="150px" src="data:image/png;base64,<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64); ?>" />
+													<?php else: ?>
+													<img height="70px" width="70px" src="data:image/png;base64,<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64); ?>" />
+
+													<?php endif; ?>
+
+												</td>
 												<td style="width: 50%; text-align: center;"  >
 													<h2><?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion); ?></h2>
 													<p>
@@ -157,7 +165,19 @@
 
 													</p>
 												</td>
-												<td style="width: 25%; text-align: right; "  ><img src="assets/img/medicina.png" height="70px" width="70px" alt="logo" /></td>
+												<td style="width: 25%; text-align: right; "  >
+													<?php if($doctor->institucion_logo != ""): ?>
+														<?php if($doctor->institucion_tipo_logo == "Imagotipo"): ?>
+														<img height="70px" width="150px" src="data:image/png;base64,<?php echo e($doctor->institucion_logo); ?>" />
+														<?php else: ?>
+														<img height="70px" width="70px" src="data:image/png;base64,<?php echo e($doctor->institucion_logo); ?>" />
+														
+														<?php endif; ?>
+													<?php else: ?>
+													<img src="assets/img/medicina.png" height="70px" width="70px" alt="logo" />
+													<?php endif; ?>
+												
+												</td>
 											</tbody>
 										</table>
 									</div>

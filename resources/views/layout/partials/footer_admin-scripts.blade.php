@@ -54,5 +54,9 @@
 		<script  src="/assets_admin/js/view_controllers/admin-doctor.js"></script>
 		@endif
 
+		@if (Route::is(['lista-clinicas']))
+		<script  src="/assets_admin/js/view_controllers/clinics_vs.js"></script>
+		@endif
+
 	
 

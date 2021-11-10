@@ -335,8 +335,10 @@ class DoctorController extends Controller
         }else{
            $estudiosF = [];
         }
+
+        $url = request()->root();
         
-        $pdf = \PDF::loadView('invoice-view',['doctor'=> $doctor,'paciente'=>$paciente,'indicaciones' => $articulosF,'estudios' => $estudiosF,'diagnostico' => $diagnostico,'temp'=>$temp]);
+        $pdf = \PDF::loadView('invoice-view',['doctor'=> $doctor,'paciente'=>$paciente,'indicaciones' => $articulosF,'estudios' => $estudiosF,'diagnostico' => $diagnostico,'temp'=>$temp,'url'=> $url]);
         $pdf->setPaper(array(0,0,595.28,420.94), 'portrait');
         $date = Date("dmys");
         $path = 'public/recetas/p'.request()->paciente_id.'/r-'.$date.'.pdf';
@@ -941,7 +943,13 @@ class DoctorController extends Controller
             $datosClinicastep2['logotipo'] = $request->file("logotipo")->storeAs("public","clinica_logos/logotipo_". $clinica_nombre .date('dmy') .".png");
 
             $datosClinicastep2['logotipo'] = "clinica_logos/logotipo_". $clinica_nombre .date('dmy') .".png";
+
+            $logotipo_base64 = base64_encode(file_get_contents($request->file('logotipo')->pat‌​h()));
+
+            $datosClinicastep2['logotipo_base64'] = $logotipo_base64;
+
         } 
+        $datosClinicastep2['activa'] = "0";
         //se crea la clinica
         $clinica = Clinica::create($datosClinicastep2);
        

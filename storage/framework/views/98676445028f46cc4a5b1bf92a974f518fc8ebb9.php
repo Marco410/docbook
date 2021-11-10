@@ -83,7 +83,7 @@
 			 <?php else: ?>
 				<?php 
 				$date1 = new DateTime("now"); 
-				$date2 = new DateTime($openCaja->created_at);
+				$date2 = new DateTime(date("Y-m-d", strtotime($openCaja->created_at)));
 				$diff = $date1->diff($date2);
 				$fechaInt = strtotime($openCaja->created_at);
 				//se añadio en el archivo main_vs.js desde head_blade
@@ -192,9 +192,12 @@
 										<th>Apertura</th>
 										<th>Entradas</th>
 										<th>Salidas</th>
-										<th>Efectivo</th>
-										<th>Tarjeta</th>
-										<th>Transferencias</th>
+										<th>Entradas Efectivo</th>
+										<th>Entradas Tarjeta</th>
+										<th>Entradas Transferencias</th>
+										<th>Salidas Efectivo</th>
+										<th>Salidas Tarjeta</th>
+										<th>Salidas Transferencias</th>
 										<th>Total</th>
 										<th>Abierta</th>
 										<th>Cerrada</th>

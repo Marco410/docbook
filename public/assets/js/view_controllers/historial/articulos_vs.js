@@ -1,5 +1,3 @@
-
-
 $("#btn-add-new-articulo").on("click", function(){
     var articulo = $("#new_articulo_rapida").val();
     var descripcion = $("#new_descripcion_rapida").val();

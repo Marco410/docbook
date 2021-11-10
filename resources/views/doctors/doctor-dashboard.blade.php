@@ -63,7 +63,7 @@
                         <?php 
                         //verifica si la caja se paso de 24hrs
                         $date1 = new DateTime("now"); 
-                        $date2 = new DateTime($cajaOpen[0]->created_at);
+                        $date2 = new DateTime(date("Y-m-d", strtotime($cajaOpen[0]->created_at)));
                         $diff = $date1->diff($date2);
                         $fechaInt = strtotime($cajaOpen[0]->created_at);
                         //se añadio en el archivo check_caja_vs.js desde head_blade

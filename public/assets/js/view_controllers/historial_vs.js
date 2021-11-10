@@ -587,6 +587,7 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
                 
     const response =  axios.post('/store-consulta-rapida',fd,{
     }).then(res =>  {
+        
 
         window.open(res['data']['pdf']);
 

@@ -22,15 +22,12 @@ class AdminController extends Controller
     }
     
     public function doctor_list(){
-
          $doctors = DB::table('doctors')
             
             ->join('doctor_has_especialidad', 'doctors.id', '=', 'doctor_has_especialidad.doctor_id')
             ->join('especialidads', 'doctor_has_especialidad.especialidad_id', '=', 'especialidads.id')
             ->select('doctors.id','doctors.nombre','doctors.apellido_p','doctors.created_at','doctors.status','doctors.foto','especialidads.nombre as espe')
             ->get();
-
-     
 
         //$doctors = Doctor::all();
         return view('admin.doctor-list',['doctors'=> $doctors]);
@@ -44,9 +41,97 @@ class AdminController extends Controller
     }
 
     public function clinic_list(){
-        $clinicas = Clinica::all();
+        $clinicas = Clinica::where("status","1")->get();
 
         return view('admin.pharmacy-list',compact('clinicas'));
+    }
+
+    public function edit_clinic($clinica){
+        $clinica = Clinica::where('id',$clinica)->get()[0];
+
+        return view('admin.clinics.edit',['clinica'=> $clinica]);
+    }
+
+    public function edit_doctor($doctor){
+        $doctor = Doctor::where('id',$doctor)->get()[0];
+
+        return view('admin.doctors.edit',['doctor'=> $doctor]);
+    }
+
+    public function update_clinic(Request $request){
+        $datosClinica = request()->except("_token");
+
+        $clinica_id = request()->clinica_id;
+        $datosClinica['nombre_consultorio'] = request()->nombre_consultorio;
+        $datosClinica['status'] = "1";
+        $datosClinica['fecha_nacimiento'] = request()->fecha_nacimiento;
+        $datosClinica['sexo'] = request()->sexo;
+        $datosClinica['tipo_sangre'] = request()->tipo_sangre;
+        
+        $nombre_consultorio = request()->nombre_consultorio;
+        $tipo_logo = request()->tipo_logo;
+        $tel_consultorio = request()->tel_consultorio;
+        $no_medicos = request()->no_medicos;
+        $calle_consultorio = request()->calle_consultorio;
+        $colonia_consultorio = request()->colonia_consultorio;
+        $ciudad_consultorio = request()->ciudad_consultorio;
+        $estado_consultorio = request()->estado_consultorio;
+        $pais_consultorio = request()->pais_consultorio;
+        
+        $cliniaUpdated = Clinica::where("id",$clinica_id)->update([
+            "nombre_consultorio" => $nombre_consultorio,
+            "tipo_logo" => $tipo_logo,
+            "tel_consultorio" => $tel_consultorio,
+            "no_medicos" => $no_medicos,
+            "calle_consultorio" => $calle_consultorio,
+            "colonia_consultorio" => $colonia_consultorio,
+            "ciudad_consultorio" => $ciudad_consultorio,
+            "estado_consultorio" => $estado_consultorio,
+            "pais_consultorio" => $pais_consultorio
+        ]);
+
+        $clinica_nombre = Funciones::eliminar_acentos($nombre_consultorio);
+        
+         if (request()->hasFile("logotipo")){
+
+            if($datosClinica["antigua_imagen"] != null){
+
+                unlink("storage/".$datosClinica['antigua_imagen']);
+            }
+
+            $datosClinicaU['logotipo'] = $request->file("logotipo")->storeAs("public","clinica_logos/logotipo_". $clinica_nombre .date('dmy') .".png");
+
+            $datosClinicaU['logotipo'] = "clinica_logos/logotipo_". $clinica_nombre .date('dmy').".png";
+
+            $logotipo_base64 = base64_encode(file_get_contents($request->file('logotipo')));
+
+            $datosClinicaU['logotipo_base64'] = $logotipo_base64;
+            Clinica::where('id','=',$clinica_id)->update($datosClinicaU);
+
+        }
+
+        return redirect()->route('lista-clinicas');
+    }
+
+    public function update_doctor(Request $request){
+        $datosDoctor = request()->except("_token");
+
+        $doctor_id = request()->doctor_id;
+
+        unset($datosDoctor['doctor_id']);
+        
+        $cliniaUpdated = Doctor::where("id",$doctor_id)->update($datosDoctor);
+        
+         if (request()->hasFile("institucion_logo")){
+
+            $logotipo_base64 = base64_encode(file_get_contents($request->file('institucion_logo')));
+
+            $datosDoctorU['institucion_logo'] = $logotipo_base64;
+            Doctor::where('id','=',$doctor_id)->update($datosDoctorU);
+
+        }
+
+        return redirect()->route('lista-doctor');
     }
 
     public function doctor_profile(){

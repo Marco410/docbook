@@ -259,6 +259,9 @@ Route::get('/get-estudios','DataController@get_estudios')->name('get-estudios');
 
 Route::get('/get-cajas','DataController@get_cajas')->name('get-cajas');
 
+Route::get('/get-clinicas','DataController@get_clinicas')->name('get-clinicas');
+
+Route::get('/get-doctores','DataController@get_doctores')->name('get-doctores');
 
 
 
@@ -497,12 +500,19 @@ Route::Group(['prefix' => 'admin'], function () {
 
         Route::get('/lista-clinicas','AdminController@clinic_list')->name('lista-clinicas');
 
+        Route::get('/editar-clinica/{clinica}','AdminController@edit_clinic')->name('editar-clinica'); 
+        
+        Route::get('/editar-doctor/{doctor}','AdminController@edit_doctor')->name('editar-doctor'); 
+
+        Route::post('/update-clinic','AdminController@update_clinic')->name('update-clinic'); 
+
+        Route::post('/update-doctor','AdminController@update_doctor')->name('update-doctor');
+
         Route::get('/usuarios','UserController@index')->name('usuarios');
         
         Route::get('/diagnosticos','AdminController@diagnostics')->name('diagnosticos');
 
         Route::post('/save-diagnostic','AdminController@save_diagnostic')->name('save-diagnostic');
-
 
         Route::get('/reviews', function () {
         return view('admin.reviews');

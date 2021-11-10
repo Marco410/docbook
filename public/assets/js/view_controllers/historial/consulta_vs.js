@@ -175,11 +175,6 @@ $("#btn-add-consulta").on("click", function(){
     fd.append("id_articulos",JSON.stringify(check_idarticulos_consulta()));
     fd.append("indiArticulos",JSON.stringify(check_indiArticulos_consulta()));
 
-    console.log(check_idarticulos_consulta());
-    console.log(check_idestudios_consulta());
-    console.log(check_obsEstudios_consulta());
-    console.log(check_indiArticulos_consulta());
-
     const response =  axios.post('/end-consulta',fd,{
     }).then(res =>  {
 
@@ -192,9 +187,6 @@ $("#btn-add-consulta").on("click", function(){
             message: 'Consulta rápida creada.',
         });
         //window.location.reload();
-
-        console.log(res);
-
         $("#id_consulta").val(res['data']['consulta']);
         $("#diagnostico-consulta-cobro").html(res['data']['diagnostico']);
         $("#motivo-consulta-cobro").html(res['data']['motivo']);

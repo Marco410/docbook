@@ -54,6 +54,10 @@
 		<script  src="/assets_admin/js/view_controllers/admin-doctor.js"></script>
 		<?php endif; ?>
 
+		<?php if(Route::is(['lista-clinicas'])): ?>
+		<script  src="/assets_admin/js/view_controllers/clinics_vs.js"></script>
+		<?php endif; ?>
+
 	
 
 <?php /**PATH D:\xampp\htdocs\pixelar_doc\laravel-files\template\resources\views/layout/partials/footer_admin-scripts.blade.php ENDPATH**/ ?>

@@ -1,4 +1,3 @@
-
 //cambia el estatus de si tiene o no alergias
 $('#paciente_alergias').on("click", function(){
 
