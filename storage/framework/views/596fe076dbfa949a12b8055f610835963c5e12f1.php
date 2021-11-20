@@ -40,9 +40,9 @@
                                     <div class="form-group">
                                         <label>Logotipo: </label>
                                         <?php if($clinica->tipo_logo == "Imagotipo"): ?>
-                                        <img height="20px" width="80px" src="data:image/png;base64,<?php echo e($clinica->logotipo_base64); ?>" />
+                                        <img height="20px" width="80px" src="<?php echo e($clinica->logotipo_base64); ?>" />
                                         <?php else: ?>
-                                        <img height="30px" width="30px" src="data:image/png;base64,<?php echo e($clinica->logotipo_base64); ?>" />
+                                        <img height="30px" width="30px" src="<?php echo e($clinica->logotipo_base64); ?>" />
                                         <?php endif; ?>
                                         <small>Si deaseas actualizarlo selecciona otro.</small>
                                         <input type="file" name="logotipo"  class="form-control">

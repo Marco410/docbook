@@ -39,9 +39,9 @@
                                     <div class="form-group">
                                         <label>Logotipo: </label>
                                         @if ($clinica->tipo_logo == "Imagotipo")
-                                        <img height="20px" width="80px" src="data:image/png;base64,{{$clinica->logotipo_base64 }}" />
+                                        <img height="20px" width="80px" src="{{$clinica->logotipo_base64 }}" />
                                         @else
-                                        <img height="30px" width="30px" src="data:image/png;base64,{{$clinica->logotipo_base64 }}" />
+                                        <img height="30px" width="30px" src="{{$clinica->logotipo_base64 }}" />
                                         @endif
                                         <small>Si deaseas actualizarlo selecciona otro.</small>
                                         <input type="file" name="logotipo"  class="form-control">

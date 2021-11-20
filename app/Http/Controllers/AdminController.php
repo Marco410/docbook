@@ -94,18 +94,18 @@ class AdminController extends Controller
         
          if (request()->hasFile("logotipo")){
 
-            if($datosClinica["antigua_imagen"] != null){
-
-                unlink("storage/".$datosClinica['antigua_imagen']);
-            }
-
+            $espa = array("\n", "\r");
             $datosClinicaU['logotipo'] = $request->file("logotipo")->storeAs("public","clinica_logos/logotipo_". $clinica_nombre .date('dmy') .".png");
 
             $datosClinicaU['logotipo'] = "clinica_logos/logotipo_". $clinica_nombre .date('dmy').".png";
 
             $logotipo_base64 = base64_encode(file_get_contents($request->file('logotipo')));
 
-            $datosClinicaU['logotipo_base64'] = $logotipo_base64;
+            
+
+            $src = 'data:'.str_replace($espa, "", $request->logotipo->extension()).';base64,'.$logotipo_base64;
+
+            $datosClinicaU['logotipo_base64'] = $src;
             Clinica::where('id','=',$clinica_id)->update($datosClinicaU);
 
         }
@@ -119,14 +119,27 @@ class AdminController extends Controller
         $doctor_id = request()->doctor_id;
 
         unset($datosDoctor['doctor_id']);
-        
+        $espa = array("\n", "\r");
         $cliniaUpdated = Doctor::where("id",$doctor_id)->update($datosDoctor);
-        
+
          if (request()->hasFile("institucion_logo")){
 
             $logotipo_base64 = base64_encode(file_get_contents($request->file('institucion_logo')));
 
-            $datosDoctorU['institucion_logo'] = $logotipo_base64;
+            $src = "data:".str_replace($espa, "", $request->institucion_logo->extension()).";base64,".$logotipo_base64;
+
+            $datosDoctorU['institucion_logo'] = $src;
+            Doctor::where('id','=',$doctor_id)->update($datosDoctorU);
+
+        }
+
+        if (request()->hasFile("firma")){
+
+            $logotipo_base64f = base64_encode(file_get_contents($request->file('firma')));
+
+            $src2 = "data:".str_replace($espa, "", $request->firma->extension()).";base64,".$logotipo_base64f;
+
+            $datosDoctorU['firma'] = $src2;
             Doctor::where('id','=',$doctor_id)->update($datosDoctorU);
 
         }

@@ -89,7 +89,7 @@
 
 	.invoice-item .invoice-details {
 		text-align:right;
-		color:#757575;
+		color: #272b41;
 		font-weight:500
 	}
 
@@ -146,7 +146,7 @@
 	.invoice-table tr td,
 
 	.invoice-table-two tr td {
-		color: #757575;
+		color: #272b41;
 		font-weight: 500;
 
 	}

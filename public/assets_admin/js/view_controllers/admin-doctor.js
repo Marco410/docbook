@@ -52,17 +52,18 @@ var table_doctors = $('#table_doctors').DataTable({
             }else{
                 var c = "";
             }
-            return "<div class='status-toggle' id='btn-status'><input type='checkbox' class='check' "+c+"  /> <label class='checktoggle'>checkbox</label></div>";
+            return "<div class='status-toggle btn-status'><input type='checkbox' class='check' "+c+"  /> <label class='checktoggle'>checkbox</label></div>";
         }},
         {"defaultContent":"<a class='btn btn-sm bg-success-light' id='btn-editar-doctor' ><i class='fe fe-pencil'></i> Editar</a>"}
         
     ],
 });
 
-$("#table_doctors").on("click", "#btn-status", function(){
-    var data = table_doctors.row( $(this).parents("tr") ).data();
+
+$("#table_doctors tbody").on("click", "tr .btn-status", function(){
+    var data = table_doctors.row($(this).parents("tr")).data();
     var status = 0;
-    $("#btn-status").find('input').each(function() {
+    $(this).find('input[type="checkbox"]').each(function() {
         if( $(this).attr('checked') ) {
             $(this).prop("checked", false);
             status = 0;   

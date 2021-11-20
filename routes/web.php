@@ -142,6 +142,8 @@ Route::post('/store-consulta','DoctorController@new_consulta')->name('store-cons
 
 Route::post('/end-consulta','DoctorController@end_consulta')->name('end-consulta');
 
+Route::get('/consulta/{paciente}/{consulta}','DoctorController@consulta')->name('consulta');
+
 Route::post('/make-pay','DoctorController@make_pay')->name('make-pay');
 
 Route::get('/receta','IndexController@receta')->name('receta');

@@ -21,23 +21,14 @@
 	@font-face {
 
 		font-family: 'Material Icons';
-
 		font-style: normal;
-
 		font-weight: 400;
-
 		src: url(../fonts/MaterialIcons-Regular.eot); /* For IE6-8 */
-
 		src: local('Material Icons'),
-
 		local('MaterialIcons-Regular'),
-
 		url(../fonts/MaterialIcons-Regular.woff2) format('woff2'),
-
 		url(../fonts/MaterialIcons-Regular.woff) format('woff'),
-
 		url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
-
 	}
 
 	html {
@@ -58,8 +49,7 @@
 	}
 
 	p,span {
-
-		font-size: 12px;
+		font-size: 11px;
 
 	}
 
@@ -116,7 +106,7 @@
 
 	.invoice-item .invoice-details {
 		text-align:right;
-		color:#757575;
+		color: #272b41;
 		font-weight:500
 	}
 
@@ -173,7 +163,7 @@
 	.invoice-table tr td,
 
 	.invoice-table-two tr td {
-		color: #757575;
+		color: #272b41;
 		font-weight: 500;
 
 	}
@@ -262,7 +252,7 @@
 					</div>
 				</div>
 				@if (!empty($pagos))
-
+				<br><br><br><br><br>
 				<div style="width: 100%;" >
 					<h4>Movimientos</h4>
 						<table style="width: 100%" >

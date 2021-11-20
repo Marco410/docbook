@@ -383,45 +383,21 @@ class DoctorController extends Controller
 
        $doctor = Doctor::where('id',auth()->user("doctors")->id)->with(['clinicas'])->get()[0];
        $paciente = Paciente::where('id',request()->paciente_id)->get()[0];
-       if(strlen(request()->diagnostico) > 5){
-           $diagnostico = request()->diagnostico;
-       }else {
-           $diagnostico = Diagnostic::where('id',request()->diagnostico)->get()[0]->descripcion_4;
-           $diagnostico_id = request()->diagnostico;
-       }
 
        $motivo = MotivoConsulta::where('id', request()->motivo)->get()[0]->motivo;
        
+        $consulta = Consultas::create([
+            'paciente_id' => request()->paciente_id, 
+            'doctor_id' => auth()->user("doctors")->id, 
+            'motivo_consulta_id' => request()->motivo, 
+            'termino' => "No",
+            'pagado' => "0" 
+        ]);
        
-       if(strlen(request()->diagnostico) > 5){
-
-           $consulta = Consultas::create([
-               'paciente_id' => request()->paciente_id, 
-               'doctor_id' => auth()->user("doctors")->id, 
-               'motivo_consulta_id' => request()->motivo, 
-               'diagnostico_str' => request()->diagnostico, 
-               'notas_consulta' => request()->notas,
-               'motivo_extra' => "-",
-               'termino' => "No",
-               'pagado' => "0" 
-           ]);
-       }else {
-           
-           $consulta = Consultas::create([
-               'paciente_id' => request()->paciente_id, 
-               'doctor_id' => auth()->user("doctors")->id, 
-               'motivo_consulta_id' => request()->motivo, 
-               'diagnostico_id' => $diagnostico_id, 
-               'notas_consulta' => request()->notas,
-               'motivo_extra' => "-",
-               'termino' => "No",
-               'pagado' => "0" 
-           ]);
-       }
        $request = [
            'consulta' => $consulta,
-           'motivo' => $motivo,
-           'diagnostico' => $diagnostico
+           'paciente' => $paciente,
+           'motivo' => $motivo
        ];
 
        return $request;
@@ -527,6 +503,17 @@ class DoctorController extends Controller
        return $request;
     }
 
+    public function consulta($paciente,$consulta){
+
+        $pa =  Paciente::where('id',$paciente)->get();
+        $consulta =  Consultas::where('id',$consulta)->with(['motivo'])->get();
+       
+        return view('doctors.consulta',['paciente' => $pa,'consulta_actual' => $consulta]);
+
+        
+    }
+
+    
     public function make_pay(){
         $clinica_id = auth()->user("doctors")->clinicas->where('activa',1)->first()->id;
         $doctor_id = auth()->user("doctors")->id;
@@ -548,7 +535,7 @@ class DoctorController extends Controller
         $consulta = ConsultaRapida::where('id',$id_consulta)->get();
         
         
-        $pdf = \PDF::loadView('ticket-view',['doctor'=> $doctor,'paciente'=>$paciente,'cobro'=>$cobro,'extra' => $extra,'motivo_extra'=> $motivo_extra,'costo_consulta'=> $costo_consulta,'id_consulta' => $id_consulta,'tipo_consulta' => $tipo_consulta,'descuento'=>$descuento,'subtotal'=>$subtotal]);
+        $pdf = \PDF::loadView('ticket-view',['doctor'=> $doctor,'paciente'=>$paciente,'cobro'=>$cobro,'extra' => $extra,'motivo_extra'=> $motivo_extra,'costo_consulta'=> $costo_consulta,'id_consulta' => $id_consulta,'tipo_consulta' => $tipo_consulta,'descuento'=>$descuento,'subtotal'=>$subtotal,'metodo'=>$metodo]);
         //ancho de la página [0,0,1,0]
         $pdf->setPaper(array(0,0,450.00,800.00), 'portrait');
         $date = Date("dmys");
@@ -597,6 +584,7 @@ class DoctorController extends Controller
                 'descripcion' => $tipo_consulta . " cobro extra ".$motivo_extra,
                 'importe' => $extra,
                 'metodo_pago' => $metodo,
+                'cerrado' => "0",
                 'observaciones' => "Paciente: ".$paciente->nombre. " ". $paciente->apellido_p
             ]);
         }

@@ -170,7 +170,14 @@
 					<div style="width: 100%;">
 						<table style="border-bottom:3px solid #3399ff!important;width: 100%;">
 							<tbody>
-								<td style="width: 25%; text-align: left;" ><img src="assets/img/logo.png" height="65px" width="150px"  alt="logo" /></td>
+								<td style="width: 25%; text-align: left;" >
+									<?php if(auth()->user("doctors")->clinicas->where('activa',1)->first()->tipo_logo == "Imagotipo"): ?>
+									<img height="80px" width="160px" src="<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64); ?>" />
+									<?php else: ?>
+									<img height="80px" width="80px" src="<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64); ?>" />
+									<?php endif; ?>
+								</td>
+
 								<td style="width: 50%; text-align: center;"  >
 									<h2><?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion); ?></h2>
 									<p>
@@ -180,7 +187,18 @@
 										<strong>Recibo de Pago<br>
 									</p>
 								</td>
-								<td style="width: 25%; text-align: right; "  ><img src="assets/img/medicina.png" height="70px" width="70px" alt="logo" /></td>
+								<td style="width: 25%; text-align: right; "  >
+									<?php if($doctor->institucion_logo != ""): ?>
+									<?php if($doctor->institucion_tipo_logo == "Imagotipo"): ?>
+									<img height="70px" width="150px" src="<?php echo e($doctor->institucion_logo); ?>" />
+									<?php else: ?>
+									<img height="70px" width="70px" src="<?php echo e($doctor->institucion_logo); ?>" />
+									
+									<?php endif; ?>
+								<?php else: ?>
+								<img src="assets/img/medicina.png" height="70px" width="70px" alt="logo" />
+								<?php endif; ?>
+								</td>
 							</tbody>
 						</table>
 					</div>
@@ -241,6 +259,10 @@
 						<tr>
 							<th><span> <strong> Descuento:</strong></span></th>
 							<td><span><?php echo e($descuento); ?>%</span></td>
+						</tr>
+						<tr>
+							<th><span> <strong> Método:</strong></span></th>
+							<td><span><?php echo e($metodo); ?></span></td>
 						</tr>
 						<tr>
 							<th><span> <strong>Subtotal:</strong></span></th>

@@ -68,7 +68,8 @@
 	}
 	.invoice-item .invoice-details {
 		text-align:right;
-		color:#757575;
+		color: #272b41;
+
 		font-weight:500
 	}
 	.invoice-item .invoice-details strong {
@@ -111,7 +112,7 @@
 	}
 	.invoice-table tr td,
 	.invoice-table-two tr td {
-		color: #757575;
+		color: #272b41;
 		font-weight: 500;
 	}
 	.invoice-table-two {
@@ -149,13 +150,10 @@
 											<tbody  >
 												<td style="width: 25%; text-align: left;" >
 													@if (auth()->user("doctors")->clinicas->where('activa',1)->first()->tipo_logo == "Imagotipo")
-														
-													<img height="70px" width="150px" src="data:image/png;base64,{{auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64 }}" />
+													<img height="80px" width="160px" src="{{auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64 }}" />
 													@else
-													<img height="70px" width="70px" src="data:image/png;base64,{{auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64 }}" />
-
+													<img height="80px" width="80px" src="{{auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64 }}" />
 													@endif
-
 												</td>
 												<td style="width: 50%; text-align: center;"  >
 													<h2>{{ auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion }}</h2>
@@ -170,9 +168,9 @@
 												<td style="width: 25%; text-align: right; "  >
 													@if ($doctor->institucion_logo != "")
 														@if ($doctor->institucion_tipo_logo == "Imagotipo")
-														<img height="70px" width="150px" src="data:image/png;base64,{{ $doctor->institucion_logo }}" />
+														<img height="70px" width="150px" src="{{ $doctor->institucion_logo }}" />
 														@else
-														<img height="70px" width="70px" src="data:image/png;base64,{{ $doctor->institucion_logo }}" />
+														<img height="70px" width="70px" src="{{ $doctor->institucion_logo }}" />
 														
 														@endif
 													@else
@@ -202,7 +200,7 @@
 										</table>
 
 									</div>
-									<div style="height: 128pt">
+									<div style="height: 70pt">
 									@if(!empty($indicaciones))
 
 									<div style="width: 100%;" >
@@ -254,7 +252,7 @@
 										<table style="width: 100%;" >
 											<tbody>
 												<td style="width: 100%; text-align: center;"">
-													<p>___________________________<br>
+													<p><img height="80px" width="160px" src="{{$doctor->firma }}" /><br>
 													 <strong>Dr. {{ $doctor->nombre }} {{ $doctor->apellido_p }} {{ $doctor->apellido_m }}</strong>
 													</p>
 												</td>

@@ -65,7 +65,8 @@
 	}
 	.invoice-item .invoice-details {
 		text-align:right;
-		color:#757575;
+		color: #272b41;
+
 		font-weight:500
 	}
 	.invoice-item .invoice-details strong {
@@ -108,7 +109,7 @@
 	}
 	.invoice-table tr td,
 	.invoice-table-two tr td {
-		color: #757575;
+		color: #272b41;
 		font-weight: 500;
 	}
 	.invoice-table-two {
@@ -146,13 +147,10 @@
 											<tbody  >
 												<td style="width: 25%; text-align: left;" >
 													<?php if(auth()->user("doctors")->clinicas->where('activa',1)->first()->tipo_logo == "Imagotipo"): ?>
-														
-													<img height="70px" width="150px" src="data:image/png;base64,<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64); ?>" />
+													<img height="80px" width="160px" src="<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64); ?>" />
 													<?php else: ?>
-													<img height="70px" width="70px" src="data:image/png;base64,<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64); ?>" />
-
+													<img height="80px" width="80px" src="<?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->logotipo_base64); ?>" />
 													<?php endif; ?>
-
 												</td>
 												<td style="width: 50%; text-align: center;"  >
 													<h2><?php echo e(auth()->user("doctors")->clinicas->where('activa',1)->first()->nombre_organizacion); ?></h2>
@@ -168,9 +166,9 @@
 												<td style="width: 25%; text-align: right; "  >
 													<?php if($doctor->institucion_logo != ""): ?>
 														<?php if($doctor->institucion_tipo_logo == "Imagotipo"): ?>
-														<img height="70px" width="150px" src="data:image/png;base64,<?php echo e($doctor->institucion_logo); ?>" />
+														<img height="70px" width="150px" src="<?php echo e($doctor->institucion_logo); ?>" />
 														<?php else: ?>
-														<img height="70px" width="70px" src="data:image/png;base64,<?php echo e($doctor->institucion_logo); ?>" />
+														<img height="70px" width="70px" src="<?php echo e($doctor->institucion_logo); ?>" />
 														
 														<?php endif; ?>
 													<?php else: ?>
@@ -200,7 +198,7 @@
 										</table>
 
 									</div>
-									<div style="height: 128pt">
+									<div style="height: 70pt">
 									<?php if(!empty($indicaciones)): ?>
 
 									<div style="width: 100%;" >
@@ -252,7 +250,7 @@
 										<table style="width: 100%;" >
 											<tbody>
 												<td style="width: 100%; text-align: center;"">
-													<p>___________________________<br>
+													<p><img height="80px" width="160px" src="<?php echo e($doctor->firma); ?>" /><br>
 													 <strong>Dr. <?php echo e($doctor->nombre); ?> <?php echo e($doctor->apellido_p); ?> <?php echo e($doctor->apellido_m); ?></strong>
 													</p>
 												</td>

@@ -72,24 +72,11 @@ function addNewMotivoConsulta(elemento){
 $("#btn-add-consulta").on("click", function(){
 
     if($("#input_buscar_motivo_consulta").is(":hidden")){
-         if($("#diagnostico_principal_consulta").val() != "" ){
-                                         
             var motivo = $("#motivo_consulta").val();
-            //si es 0, el Dr escribo el diagnostico
-            if($("#diagnostico_principal_consulta").attr("data-id") == "0"){
-                var diagnostico = $("#diagnostico_principal_consulta").val();
-            }else{
-                var diagnostico = $("#diagnostico_principal_consulta").attr("data-id");
-            }
-            var notas = notas_historial.getData();
-
-            create_new_consulta(motivo,diagnostico,notas);
+           
+            create_new_consulta(motivo);
   
-             
-         }else{
-             $("#diagnostico_principal_consulta").focus();
-             warning("Diagnostico Principal");
-         }
+        
      }else {
          $("#buscar_motivo_consulta").focus();
          warning("Motivo de Consulta");
@@ -98,13 +85,11 @@ $("#btn-add-consulta").on("click", function(){
      
  });
  
- function create_new_consulta(motivo,diagnostico,notas){
+function create_new_consulta(motivo){
  
      var fd = new FormData();
      fd.append("paciente_id",$("#paciente_id").val());
      fd.append("motivo",motivo);
-     fd.append("diagnostico",diagnostico);
-     fd.append("notas",notas);
                  
      const response =  axios.post('/store-consulta',fd,{
      }).then(res =>  {
@@ -115,8 +100,11 @@ $("#btn-add-consulta").on("click", function(){
              position: 'topRight',
              message: 'Consulta Iniciada.',
          });
+         consulta = res['data']['consulta'].id;
+         paciente = res['data']['paciente'].id;
+         location.href = "/consulta/"+paciente+"/"+consulta;
          $("#consulta").modal("hide");
-         window.location.reload();
+        
         /*  //window.location.reload();
          */
      }).catch((err) => {
@@ -130,7 +118,7 @@ $("#btn-add-consulta").on("click", function(){
  
  }
 
- $("#btn-terminar-consulta").on("click", function(){
+$("#btn-terminar-consulta").on("click", function(){
 
         
     var motivo = $("#motivo_consulta").val();
@@ -153,7 +141,6 @@ $("#btn-add-consulta").on("click", function(){
  
      
  });
- 
 
  function create_terminar_consulta(motivo,diagnostico,notas,estatura,peso,masa_corporal,temperatura,frec_signos,sistolica,diastolica){
 
@@ -307,14 +294,14 @@ $("#descuento").keyup(function(){
     }else{
         costo_consulta = 0;
     }
-    totalF = parseInt(extra) + parseInt(costo_consulta);
+    totalF = parseFloat(extra) + parseFloat(costo_consulta);
     if($(this).val() != ""){
-        descuento = parseInt($(this).val()) / 100;
-        total = parseInt(totalF) - (parseInt(totalF) * descuento);
+        descuento = $(this).val();
+        total = parseFloat(totalF) - (parseFloat(descuento));
         $("#total_consulta_rapida").html(total);
         console.log(descuento);
     }else{
-        total = parseInt(totalF);
+        total = parseFloat(totalF);
         $("#total_consulta_rapida").html(total);
     }
     

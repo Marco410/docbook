@@ -92,9 +92,9 @@
                                     <div class="form-group">
                                         <label>Logotipo: </label>
                                         @if ($doctor->institucion_tipo_logo == "Imagotipo")
-                                        <img height="20px" width="80px" src="data:image/png;base64,{{$doctor->institucion_logo }}" />
+                                        <img height="20px" width="80px" src="{{$doctor->institucion_logo }}" />
                                         @else
-                                        <img height="30px" width="30px" src="data:image/png;base64,{{$doctor->institucion_logo }}" />
+                                        <img height="30px" width="30px" src="{{$doctor->institucion_logo }}" />
                                         @endif
                                         <small>Si deaseas actualizarlo selecciona otro.</small>
                                         <input type="file" name="institucion_logo"  class="form-control">
@@ -110,6 +110,16 @@
                                             Isotipo
                                             <input type="radio" name="institucion_tipo_logo" {{ ($doctor->institucion_tipo_logo == "Isotipo") ? "checked" : "" }}  value="Isotipo" >
                                         </label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group">
+                                        <label>Firma</label>
+                                      
+                                        <img height="30px" width="30px" src="{{$doctor->firma }}" />
+                                        
+                                        <small>Si deaseas actualizarlo selecciona otro.</small>
+                                        <input type="file" name="firma" accept="image/jpg,image/jpeg"  class="form-control">
                                     </div>
                                 </div>
                             </div>

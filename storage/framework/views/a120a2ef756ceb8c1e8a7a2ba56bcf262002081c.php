@@ -93,9 +93,9 @@
                                     <div class="form-group">
                                         <label>Logotipo: </label>
                                         <?php if($doctor->institucion_tipo_logo == "Imagotipo"): ?>
-                                        <img height="20px" width="80px" src="data:image/png;base64,<?php echo e($doctor->institucion_logo); ?>" />
+                                        <img height="20px" width="80px" src="<?php echo e($doctor->institucion_logo); ?>" />
                                         <?php else: ?>
-                                        <img height="30px" width="30px" src="data:image/png;base64,<?php echo e($doctor->institucion_logo); ?>" />
+                                        <img height="30px" width="30px" src="<?php echo e($doctor->institucion_logo); ?>" />
                                         <?php endif; ?>
                                         <small>Si deaseas actualizarlo selecciona otro.</small>
                                         <input type="file" name="institucion_logo"  class="form-control">
@@ -111,6 +111,16 @@
                                             Isotipo
                                             <input type="radio" name="institucion_tipo_logo" <?php echo e(($doctor->institucion_tipo_logo == "Isotipo") ? "checked" : ""); ?>  value="Isotipo" >
                                         </label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group">
+                                        <label>Firma</label>
+                                      
+                                        <img height="30px" width="30px" src="<?php echo e($doctor->firma); ?>" />
+                                        
+                                        <small>Si deaseas actualizarlo selecciona otro.</small>
+                                        <input type="file" name="firma" accept="image/jpg,image/jpeg"  class="form-control">
                                     </div>
                                 </div>
                             </div>

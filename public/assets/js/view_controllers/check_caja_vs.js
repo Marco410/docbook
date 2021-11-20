@@ -26,7 +26,6 @@ function verificar_caja(){
             message: 'Se cerro una caja automaticamente',
         });
 
-        console.log(res);
         var pathname = window.location.pathname;
         if (pathname == "/caja"){
             alert("Se cerro una caja automaticamente por pasarse de fecha");

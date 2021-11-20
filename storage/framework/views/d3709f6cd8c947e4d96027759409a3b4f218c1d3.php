@@ -2521,7 +2521,7 @@
 				<div class="row">
 					<div class="col-sm-12 mb-4">
 						<div class="row">
-							<div class="col-sm-4">
+							<div class="col-sm-12">
 								<?php if($consulta_actual != null): ?>
 								<?php else: ?>
 								<div class="col-sm-12">
@@ -2533,20 +2533,14 @@
 
 								<?php endif; ?>
 								
-								<div class="col-sm-12">
+								<div class="col-sm-12 text-center" >
 								<?php if($consulta_actual != null): ?>
 								<h3 class='text-info' ><?php echo e($consulta_actual[0]->motivo->motivo); ?><small></small></h3><input type='hidden' name='motivo_consulta' id='motivo_consulta' value='<?php echo e($consulta_actual[0]->motivo_consulta_id); ?>' />
 								<?php else: ?>
 								
 								<div id="panel-motivo-select-consulta" ></div>
 								<?php endif; ?>
-								</div>
-								
-							</div>
-							<div class="col-sm-8">
-								<div class="input-group ">
-									<input type="text" class="form-control" placeholder="Diagnostico Principal" id="diagnostico_principal_consulta" value="<?php echo e(($consulta_actual != null) ?  ($consulta_actual[0]->diagnostico_id == "" ) ? $consulta_actual[0]->diagnostico_str : $consulta_actual[0]->diagnostico->descripcion_4  : ""); ?>" readonly data-id="<?php echo e(($consulta_actual != null) ?  ($consulta_actual[0]->diagnostico_id == "" ) ? '0' : $consulta_actual[0]->diagnostico_id  : ""); ?>" />
-									<button class="btn btn-sm btn-info" <?php echo e(($consulta_actual != null) ? "disabled" : ""); ?>  data-toggle="modal" data-target="#agregar_diagnostico" > <i class="fas fa-search" ></i> Buscar</button>
+								<small  >Al dar en el botón de "nuevo" se agregara tal cual lo estás escribiendo a la lista de motivos de consulta</small>
 								</div>
 							</div>
 							<div class="col-sm-12">
@@ -2555,31 +2549,9 @@
 						</div>
 						
 					</div>
-					<div id="panel-estudios_consulta" class="col-sm-6 text-center">
-						<h4>Estudios</h4>
-						<div id="panel-estudios-consulta-estudio" class="col-sm-12" ></div>
-						
-					</div>
-					<div id="panel-medi_consulta" class="col-sm-6 text-center">
-						<h4>Medicamentos</h4>
-						<div id="panel-articulos-consulta-articulo" class="col-sm-12" ></div>
-					</div>
+					
 
-					<?php if($consulta_actual != null): ?>
-					<div class="col-sm-6 mb-2 text-center">
-						<div>
-							<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#agregar_estudio" > <i class="fas fa-plus" ></i> Agregar Estudio</button>
-						</div>
-					</div>
-					<div class="col-sm-6 mb-2 text-center">
-						
-						<button class="btn btn-sm btn-info"  data-toggle="modal" data-target="#agregar_articulo" > <i class="fas fa-plus" ></i> Agregar Artículo</button>
-					</div>
-					<?php else: ?>
-					<div class="col-sm-12 text-center " >
-						<h5 class="text-warning" >Para agregar estudios y medicamentos inicia la consulta</h5>
-					</div>
-					<?php endif; ?>
+					
 					
 				</div>
 				
@@ -2972,8 +2944,8 @@
 					</div>
 					<div class="col-sm-6 text-center offset-3" >
 						
-						<input type="number" id="descuento" name="descuento"  class="form-control" placeholder="Escribre aqui si deseas agregar un descuento en %"   >
-						<small for="">Escribre aqui si deseas agregar un descuento en <i class="fas fa-percentage"></i></small>
+						<input type="number" id="descuento" name="descuento"  class="form-control" placeholder="Escribre aqui si deseas agregar un descuento en $"   >
+						<small for="">Escribre aqui si deseas agregar un descuento en <i class="fas fa-dollar-sign"></i></small>
 
 					</div>
 					<div class="col-sm-6 offset-3 text-center" >

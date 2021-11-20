@@ -40,7 +40,7 @@ var table_clinics = $('#table_clinics').DataTable({
     columns:[
         {"data":"id"},
         {"data":"logotipo_base64","render": function(value){
-            return "<img width='20px' src='data:image/png;base64,"+value+"' />"
+            return "<img width='20px' src='"+value+"' />"
         }},
         {"data":"nombre_consultorio"},
         {"data":"estado_consultorio"},

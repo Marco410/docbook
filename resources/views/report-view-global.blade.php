@@ -44,43 +44,29 @@
 		font-size: 8px;
 		}
 	.invoice-content {
-
 		background-color: #fff;
-
 		border: 1px solid #f0f0f0;
-
 		border-radius: 4px;
-
 		padding-bottom: 10px;
-
 		padding-right: 20px;
-
 		padding-left: 20px;
-
 	}
-
 	.invoice-item .invoice-logo {
-
 		margin-bottom: 30px;
-
 	}
-
 	.invoice-item .invoice-logo img {
 		width: auto;
 		max-height: 52px;
-
 	}
-
 	.invoice-item .invoice-text h2 {
 		color:#272b41;
 		font-size:36px;
 		font-weight:600;
-
 	}
 
 	.invoice-item .invoice-details {
 		text-align:right;
-		color:#757575;
+		color: #272b41;
 		font-weight:500
 	}
 
@@ -137,7 +123,7 @@
 	.invoice-table tr td,
 
 	.invoice-table-two tr td {
-		color: #757575;
+		color: #272b41;
 		font-weight: 500;
 
 	}
@@ -150,21 +136,15 @@
 	}
 	.invoice-table-two tr td {
 		text-align: right
-
 	}
 
 	.invoice-info h5 {
-
 		font-size: 16px;
-
 		font-weight: 500;
 
 	}
-
 	.other-info {
-
 		margin-top: 10px;
-
 	}
 
 </style>
@@ -232,8 +212,9 @@
 							</tbody>
 						</table>
 					</div>
+					
 					<div style="width: 100%;" >
-					<h4>Movimientos</h4>
+					<h4>Movimientos:</h4>
 						<table style="width: 100%" >
 							<thead>
 								<tr>
