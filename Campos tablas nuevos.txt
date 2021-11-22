@@ -103,7 +103,5 @@ ALTER TABLE `clinicas` ADD `tipo_logo` VARCHAR(191) NULL AFTER `logotipo_base64`
 ALTER TABLE `clinicas` ADD `status` INT NOT NULL DEFAULT '1' AFTER `tel_consultorio`;
 ALTER TABLE `doctors` ADD `institucion_tipo_logo` VARCHAR(191) NULL AFTER `institucion_logo`;
 ALTER TABLE `doctors` CHANGE `institucion_logo` `institucion_logo` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
-
-//Nuevos
 ALTER TABLE `doctors` ADD `firma` TEXT NULL AFTER `certificado_consultorio`;
 ALTER TABLE `doctors` CHANGE `institucion_logo` `institucion_logo` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;

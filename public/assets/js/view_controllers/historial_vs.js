@@ -599,6 +599,7 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
         });
         //window.location.reload();
         $("#id_consulta").val(res['data']['consulta'].id);
+        $("#tipo_consulta").val("Rapida");
         $("#diagnostico-consulta-cobro").html(res['data']['diagnostico']);
         $("#motivo-consulta-cobro").html(res['data']['motivo']);
 
@@ -607,7 +608,6 @@ function create_new_consulta_rapida(motivo,diagnostico,notas,estatura,peso,masa_
             backdrop: 'static',
             show: true
         });
-        $("#tipo_consulta").val("Consulta Rapida");
 
 
     }).catch((err) => {

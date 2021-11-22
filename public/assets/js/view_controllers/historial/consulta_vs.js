@@ -400,6 +400,7 @@ $("#descuento").keyup(function(){
         fd.append("tipo_consulta",tipo_consulta);
         fd.append("descuento",descuento);
 
+
          const response =  axios.post('/make-pay',fd,{
          }).then(res =>  {
      

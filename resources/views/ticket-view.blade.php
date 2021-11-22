@@ -37,10 +37,11 @@
 		background-color: #fff;
 		margin-left: 30px;
 		margin-right: 30px;
+		font-family: "Poppins",sans-serif;
+
 	}
 	body {
 		color: #272b41;
-		font-family: "Poppins",sans-serif;
 		font-size: 0.9375rem;
 		height: 100%;
 		overflow-x: hidden;
@@ -212,7 +213,7 @@
 						<table style="width: 100%;">
 							<tbody>
 								<td style="width: 40%; text-align: left;" >
-									<p class="invoice-details" style="text-align: left;" >
+									<p style="text-align: left;" >
 										<strong>Paciente:</strong> {{ $paciente->nombre }} {{ $paciente->apellido_p }} {{ $paciente->apellido_m }} <br>
 										<strong>Teléfono:</strong> {{ $paciente->telefono }} <br>
 										<strong>Dirección:</strong> {{ $paciente->calle }}, {{ $paciente->colonia }},{{ $paciente->cp }}, {{ $paciente->estado }},{{ $paciente->pais }} 
@@ -234,25 +235,25 @@
 
 			<div style="width: 100%;">
 					<div class="table-responsive">
-						<table class="invoice-table table table-bordered">
+						<table>
 							<thead>
-								<tr>
-									<th>Descripción</th>
-									<th class="text-center">Tipo</th>
-									<th class="text-right">Importe</th>
+								<tr style="width: 100%;" >
+									<th style="margin: 0;" > Descripción</th>
+									<th style="margin: 0;" class="text-center">Tipo</th>
+									<th style="margin: 0;" class="text-right">Importe</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
+								<tr style="width: 100%;">
 									<td>{{ $tipo_consulta }}</td>
 									<td class="text-center">Consulta</td>
-									<td class="text-right">{{ number_format($costo_consulta) }}</td>
+									<td class="text-right">$ {{ number_format($costo_consulta) }}</td>
 								</tr>
 								@if(!empty($extra))
-								<tr>
+								<tr style="width: 100%;">
 									<td>Monto Extra</td>
 									<td class="text-center">{{ $motivo_extra }}</td>
-									<td class="text-right">{{ number_format($extra) }}</td>
+									<td class="text-right">$ {{ number_format($extra) }}</td>
 								</tr>
 								@endif
 							</tbody>

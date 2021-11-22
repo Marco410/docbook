@@ -2944,7 +2944,7 @@
 					</div>
 					<div class="col-sm-6 text-center offset-3" >
 						
-						<input type="number" id="descuento" name="descuento"  class="form-control" placeholder="Escribre aqui si deseas agregar un descuento en $"   >
+						<input type="number" id="descuento" name="descuento"  class="form-control" placeholder="Escribre aqui si deseas agregar un descuento en $">
 						<small for="">Escribre aqui si deseas agregar un descuento en <i class="fas fa-dollar-sign"></i></small>
 
 					</div>
